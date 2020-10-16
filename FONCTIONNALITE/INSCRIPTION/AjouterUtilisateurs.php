@@ -1,42 +1,67 @@
 <?php
+
 require_once('../../FONCTIONCOMMUNE/Fonctions.php');
+require_once('../../BDD/connexion.bdd.php');
+require_once('../../BDD/utilisateur.bdd.php');
+
+if (isset($_POST['email'])) {
+    //Ajouter le nouveau utilisateur dans la base de donnée
 
 
-if(isset($_POST['email'])){                                 //Ajouter le nouveau utilisateur dans la base de donnée
-   $Email = $_POST['email'];
-    if(is_unique_login($session, $Email)){                  // si cette adresse mail n'a pas été utilisé
-        if($_POST["password"] == $_POST["passwordcf"]){     // et les deux mots de passe sont identiques
-            $Password = password_hash($_POST["password"],PASSWORD_DEFAULT);
+
+
+    $Email = $_POST['email'];
+
+
+    if (is_unique_login($session, $Email)) {                  // si cette adresse mail n'a pas été utilisé
+        if ($_POST["password"] == $_POST["passwordcf"]) {     // et les deux mots de passe sont identiques
+            $Password = password_hash($_POST["password"], PASSWORD_DEFAULT);
             $Nom = $_POST['nom'];
             $Prenom = $_POST['prenom'];
             $Type = $_POST['typeu'];
-            
-           /* $query = "INSERT INTO utilisateurs(NomU,PrenomU,Email,MotDePasse,TypeU) VALUES('$Nom','$Prenom','$Email','$Password','$Type')";
-            mysqli_query ($session, $query);
-                session_start();    // Vers la page Accueil
-                $_SESSION['email'] = $Email;
-                $_SESSION['password'] = $Password;
-                header("Location: Accueil.php");
-*/
-            if ($Type !=  Null) {                            // Type est de Pro et Perso
-		$stmt = mysqli_prepare($session, "INSERT INTO utilisateurs(NomU,PrenomU,Email,MotDePasse,TypeU) VALUES(?,?,?,?,?)");   
-            	mysqli_stmt_bind_param($stmt, 'sssss', $Nom,$Prenom,$Email,$Password,$Type);
-	    } else {
-            	$stmt = mysqli_prepare($session, "INSERT INTO utilisateurs(NomU,PrenomU,Email,MotDePasse) VALUES(?,?,?,?)");   
-            	mysqli_stmt_bind_param($stmt, 'ssss', $Nom,$Prenom,$Email,$Password);
-	    }
 
-            if (mysqli_stmt_execute($stmt) == true) {
+
+            $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
+            $bdd = $db->connect();
+
+            $utilisateurs = new utilisateurBDD($bdd);
+            $utilisateur = new utilisateur([]);
+
+
+            $utilisateur->setEmail($Email);
+            $utilisateur->setNomU($Nom);
+            $utilisateur->setPrenomU($Prenom);
+            $utilisateur->setTypeU($Type);
+            $utilisateur->setMotDePasse($Password);
+            
+            $userTest = $utilisateurs->addUser($utilisateur);
+
+            /* $query = "INSERT INTO utilisateurs(NomU,PrenomU,Email,MotDePasse,TypeU) VALUES('$Nom','$Prenom','$Email','$Password','$Type')";
+              mysqli_query ($session, $query);
+              session_start();    // Vers la page Accueil
+              $_SESSION['email'] = $Email;
+              $_SESSION['password'] = $Password;
+              header("Location: Accueil.php");
+             */
+           /* if ($Type != Null) {                            // Type est de Pro et Perso
+                $stmt = mysqli_prepare($session, "INSERT INTO utilisateurs(NomU,PrenomU,Email,MotDePasse,TypeU) VALUES(?,?,?,?,?)");
+                mysqli_stmt_bind_param($stmt, 'sssss', $Nom, $Prenom, $Email, $Password, $Type);
+            } else {
+                $stmt = mysqli_prepare($session, "INSERT INTO utilisateurs(NomU,PrenomU,Email,MotDePasse) VALUES(?,?,?,?)");
+                mysqli_stmt_bind_param($stmt, 'ssss', $Nom, $Prenom, $Email, $Password);
+            }*/
+
+            if ($userTest == true) {
                 session_start();                             // Ouvert la session et rediriger vers la page Accueil
                 $_SESSION['email'] = $Email;
-                $_SESSION['password'] = $Password;                
-                header("Location: ../ACCEUIL/index.php");
+                $_SESSION['password'] = $Password;
+                header("Location: ../ACCUEIL/index.php");
 
                 // Envoyer un mail
-           
-            $destinataire = "$Email"; // adresse mail du destinataire
-            $sujet = "[COUP DE MAIN, COUP DE POUCE] Confirmation de la création de compte"; // sujet du mail
-            $message = '<!DOCTYPE html>
+
+                $destinataire = "$Email"; // adresse mail du destinataire
+                $sujet = "[COUP DE MAIN, COUP DE POUCE] Confirmation de la création de compte"; // sujet du mail
+                $message = '<!DOCTYPE html>
             <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 
             <head>
@@ -750,49 +775,47 @@ if(isset($_POST['email'])){                                 //Ajouter le nouveau
             </div>
             </body>
             </html>'; // message qui dira que le destinataire a bien lu votre mail
-            // maintenant, l'en-tête du mail
-             // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
-     $headers[] = 'MIME-Version: 1.0';
-     $headers[] = 'Content-type: text/html; charset=iso-8859-1';
+                // maintenant, l'en-tête du mail
+                // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
+                $headers[0] = 'MIME-Version: 1.0';
+                $headers[1] = 'Content-type: text/html; charset=iso-8859-1';
 
-     // En-têtes additionnels
-    
-     $headers[] = 'From: COUP DE MAIN, COUP DE POUCE<admincmcp@assurance-maladie.fr>';
+                // En-têtes additionnels
 
-     
-     
-        mail ($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  
-        
+                $headers[2] = 'From: COUP DE MAIN, COUP DE POUCE<admincmcp@assurance-maladie.fr>';
 
 
+
+                mail($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  
             } else {
                 echo 'Inscription échoué';
-                echo $Password ;
+                echo $Password;
                 echo $Nom;
                 echo $Prenom;
                 echo $Type;
             }
-            
-           /* $query = "INSERT INTO utilisateurs (NomU,PrenomU,Email,MotDePasse,TypeU) VALUES($Nom,$Prenom,$Email,$Password,$Type)";
-            if (mysqli_query ($session, $query) == TRUE) {
 
-            }*/
-        }  else {
+            /* $query = "INSERT INTO utilisateurs (NomU,PrenomU,Email,MotDePasse,TypeU) VALUES($Nom,$Prenom,$Email,$Password,$Type)";
+              if (mysqli_query ($session, $query) == TRUE) {
+
+              } */
+        } else {
             ?>
-        <script type="text/javascript">
-            alert("Veuillez saisir deux fois le même mot de passe !");
-            document.location.href = 'Inscription.php';
-        </script>
-        <?php     
-        }
+            <script type="text/javascript">
+                alert("Veuillez saisir deux fois le même mot de passe !");
+                document.location.href = 'Inscription.php';
+            </script>
+            <?php
 
+        }
     } else {
         ?>
         <script type="text/javascript">
             alert("Cet Email est déjà utilisé. \n Veuillez réessayer avec un autre email !");
             document.location.href = 'Inscription.php';
         </script>
-        <?php        
+        <?php
+
     }
 }
 ?>

@@ -1,39 +1,80 @@
-<?php 
+<?php
+
 require_once('../../FONCTIONCOMMUNE/Fonctions.php');
+require_once('../../BDD/talent.bdd.php');
+require_once('../../BDD/connexion.bdd.php');
+require_once('../../BDD/utilisateur.bdd.php');
+require_once('../../PHPMailer/src/PHPMailer.php');
+require_once('../../PHPMailer/src/Exception.php');
+require_once('../../PHPMailer/src/PHPMailer.php');
+require_once('../../PHPMailer/src/SMTP.php');
+require_once('../../PHPMailer/src/PHPMailerAutoload.php');
 
 $TitreT = $_POST['titreT'];
 $DescriptionT = $_POST['descriptionT'];
-$TypeT = $_POST['typeT']; 
-$DatePublicationT = date("yy/m/d");
+$TypeT = $_POST['typeT'];
+//$DatePublicationT = date("yy/m/d");
 $Categorie = $_POST['categorieT'];
 
-//ajouter un nouveau talent
-$stmt = mysqli_prepare($session, "INSERT INTO talents(TitreT,DescriptionT,DatePublicationT,TypeT,CodeC) VALUES(?,?,?,?,?)");  //insérer un nouveau talet dans le table talents
-mysqli_stmt_bind_param($stmt, 'ssssi', $TitreT, $DescriptionT, $DatePublicationT, $TypeT, $Categorie);
 
-if (mysqli_stmt_execute($stmt) === true) {
-        echo "Votre talent a bien été enregistré";
-  
-        
-        //ajouter codeT et CodeU dans le table proposer
-    $sql = "select CodeT from talents order by CodeT DESC limit 1";
-    $result = mysqli_query ($session, $sql);
-    if ($code = mysqli_fetch_array($result)) {   
-        $codet = $code['CodeT'];         //qui a saisit ce talent
-        $stmt2 = mysqli_prepare($session, "INSERT INTO proposer(CodeU,CodeT) VALUES(?,?)");   // insérer le code de l'utilisateur et le code de catégorie dans le table abonner
-        mysqli_stmt_bind_param($stmt2, 'ii', $usercode, $codet);
-        mysqli_stmt_execute($stmt2); 
-    }  
-        
-        header("Location: ../MONESPACE/MonProfil.php");
- 
-        $sql = "select u.Email, t.TitreT from utilisateurs u, talents t, proposer p where u.CodeU = $usercode and u.CodeU = p.CodeU and p.CodeT = t.CodeT order by t.CodeT DESC limit 1";
-        $result = mysqli_query ($session, $sql);
-        if ($email = mysqli_fetch_array($result)) {   
-            $Email = $email['Email'];
-        
+$talent = new talent([]);
+
+
+$talent->setTitreT($TitreT);
+$talent->setDescriptionT($DescriptionT);
+$talent->setTypeT($TypeT);
+$talent->setCodeC($Categorie);
+
+
+
+
+$db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
+$bdd = $db->connect();
+$user = new utilisateurBDD($bdd);
+$talents = new talentBDD($bdd);
+//$besoins = new besoin();
+
+
+
+//ajouter un nouveau talent
+/* $stmt = mysqli_prepare($session, "INSERT INTO talents(TitreT,DescriptionT,DatePublicationT,TypeT,CodeC) VALUES(?,?,?,?,?)");  //insérer un nouveau talet dans le table talents
+  mysqli_stmt_bind_param($stmt, 'ssssi', $TitreT, $DescriptionT, $DatePublicationT, $TypeT, $Categorie); */
+
+
+if ($talents->addTalent($talent)) {
+    echo "Votre talent a bien été enregistré";
+
+    $talentLastID = $talents->idLastTalent();
+    
+    
+    
+    $talents->proposerTalentEtUser($usercode, $talentLastID);
+
+
+
+    //ajouter codeT et CodeU dans le table proposer
+    /* $sql = "select CodeT from talents order by CodeT DESC limit 1";
+      $result = mysqli_query ($session, $sql);
+      if ($code = mysqli_fetch_array($result)) {
+      $codet = $code['CodeT'];         //qui a saisit ce talent
+      $stmt2 = mysqli_prepare($session, "INSERT INTO proposer(CodeU,CodeT) VALUES(?,?)");   // insérer le code de l'utilisateur et le code de catégorie dans le table abonner
+      mysqli_stmt_bind_param($stmt2, 'ii', $usercode, $codet);
+      mysqli_stmt_execute($stmt2);
+      } */
+
+   // header("Location: ../MONESPACE/MonProfil.php");
+    
+    var_dump($usercode);
+    
+    $emailEtTitre = $user->saisirEmailEtTitreTalent($usercode);
+
+    /*$sql = "select u.Email, t.TitreT from utilisateurs u, talents t, proposer p where u.CodeU = $usercode and u.CodeU = p.CodeU and p.CodeT = t.CodeT order by t.CodeT DESC limit 1";
+    $result = mysqli_query($session, $sql);*/
+    if ($emailEtTitre[0]['Email'] != NULL) {
+        $Email = $emailEtTitre[0]['Email'];
+
         $destinataire = "$Email"; // adresse mail du destinataire
-        $sujet = "[COUP DE MAIN, COUP DE POUCE] Création d'une nouvelle carte «{$email['TitreT']}»"; // sujet du mail
+        $sujet = "[COUP DE MAIN, COUP DE POUCE] Création d'une nouvelle carte «{$TitreT}»"; // sujet du mail
         $message = '<!DOCTYPE html>
         <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
         <head>
@@ -290,7 +331,7 @@ if (mysqli_stmt_execute($stmt) === true) {
         </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
         <p style="padding: 0; margin: 0;">Bonjour,</p><span class="mso-font-fix-tahoma">
         </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
-        </span><p style="padding: 0; margin: 0;">Vous venez de cr&eacute;er une nouvelle carte  « '.$email['TitreT'].'». </p><span class="mso-font-fix-tahoma">
+        </span><p style="padding: 0; margin: 0;">Vous venez de cr&eacute;er une nouvelle carte  « ' . $TitreT . '». </p><span class="mso-font-fix-tahoma">
         </span><p style="padding: 0; margin: 0;">Merci de votre participation ! </p><span class="mso-font-fix-tahoma">
         </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
         </span></div>
@@ -357,34 +398,51 @@ if (mysqli_stmt_execute($stmt) === true) {
         </body>
         </html>';
         // maintenant, l'en-tête du mail
-        /*$header = "From: [Plateforme]\r\n"; 
-        $headers = 'Content-Type: text/plain; charset=utf-8' . "\r\n";
-        $header .= "Disposition-Notification-To:l'email d'un administrateur"; // c'est ici que l'on ajoute la directive*/
-        
-           // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
-     $headers[] = 'MIME-Version: 1.0';
-     $headers[] = 'Content-type: text/html; charset=iso-8859-1';
+        /* $header = "From: [Plateforme]\r\n"; 
+          $headers = 'Content-Type: text/plain; charset=utf-8' . "\r\n";
+          $header .= "Disposition-Notification-To:l'email d'un administrateur"; // c'est ici que l'on ajoute la directive */
 
-     // En-têtes additionnels
-    
-     $headers[] = 'From: COUP DE MAIN, COUP DE POUCE<admincmcp@assurance-maladie.fr>';
+        // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
+        /*$headers[0] = 'MIME-Version: 1.0';
+        $headers[1] = 'Content-type: text/html; charset=iso-8859-1';
 
-     
-     
-        mail ($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  
-        
-        
+        // En-têtes additionnels
+
+        $headers[2] = 'From: COUP DE MAIN, COUP DE POUCE<admincmcp@assurance-maladie.fr>';
+         
+*/
+        $Mailer = new PHPMailer\PHPMailer\PHPMailer(true);
+        $Mailer->SMTPDebug = 0;
+        $Mailer->isSMTP();
+
+        //$Mailer->SMTPAuth = true;
+        $Mailer->Timeout = 10000;
+        $Mailer->Host = 'smtp.cpam-toulouse.cnamts.fr';
+        $Mailer->Port = 25;
+        $Mailer->isHTML(true);
+        $Mailer->CharSet = "UTF-8";
+        $Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
+        $Mailer->Subject = $sujet;
+        $Mailer->Body = $message;
+        $Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
+
+        if ($Mailer->send()) {
+            header("Location:../MONESPACE/MonProfil.php");
         }
-     
-} else {
-        ?>
-
-       <script>
-           alert("Désolé, votre talent n'a pas été enregistré ! \nVeuillez saisir toutes les information correctement !");
-           document.location.href = 'Creer1Talent.php';
-        </script>
         
-        <?php 
-}
 
+
+       // mail($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  
+    }
+} else {
+    ?>
+
+    <script>
+        alert("Désolé, votre talent n'a pas été enregistré ! \nVeuillez saisir toutes les information correctement !");
+        document.location.href = 'Creer1Talent.php';
+    </script>
+
+    <?php
+
+}
 ?>

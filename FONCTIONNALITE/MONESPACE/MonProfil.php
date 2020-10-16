@@ -1,97 +1,117 @@
 <!doctype html>
 <html lang="fr">
-<head>
-    
-<!-- Link -->
- <?php require "../../FONCTIONNALITE/link.php"; ?>
-<!-- Link -->
+    <head>
 
-<title>Mon profil</title>
+        <!-- Link -->
+        <?php
+        require "../../FONCTIONNALITE/link.php";
+        require_once('../../BDD/connexion.bdd.php');
+        require_once('../../BDD/utilisateur.bdd.php');
+        require_once('../../BDD/talent.bdd.php');
+        require_once('../../BDD/atelier.bdd.php');
+        require_once('../../BDD/besoin.bdd.php');
+        ?>
+        <!-- Link -->
 
-    <!-- Custom styles for this template -->
-    <link rel="stylesheet" type="text/css" href="../../STYLE/style.css">
-    <script src="jquery.js"></script>
-  </head>
-  <body>
+        <title>Mon profil</title>
 
-    
-<!-- Menu -->
- <?php require "../../FONCTIONNALITE/menu.php"; ?>
-<!-- Fin Menu -->
+
+    </head>
+    <body>
+
+
+        <!-- Menu -->
+        <?php require "../../FONCTIONNALITE/menu.php"; ?>
+        <!-- Fin Menu -->
 
         <div class="jumbotron">
-          
-          <div class="section-title section-title-haut-page" >
+
+            <div class="section-title section-title-haut-page" >
                 <h1 class="text-center">Mon profil</h1>
 
-</div>
-          <div class="container">
+            </div>
+            <div class="container">
 
-    <?php 
-        
-        
-if (isset($_SESSION['email'])) { 
-          echo '<div class="container" id="MesInfos">';
-                   
-            echo '<h1>Mes informations personnelles</h1>';
-            echo '<hr>';
+                <?php
+                if (isset($_SESSION['email'])) {
+                    echo '<div class="container" id="MesInfos">';
 
-            echo '<div class="row">';
-                echo '<div class="col-8">';
-            
-            if(isset($_SESSION['email'])) {
-                
-                    $query = " select NomU, PrenomU, Email, TypeU from utilisateurs where CodeU = {$usercode} ";
-                    $result = mysqli_query ($session, $query);
+                    echo '<h1>Mes informations personnelles</h1>';
+                    echo '<hr>';
 
-                    if ($result == false) {
-                        die("ereur requête : ". mysqli_error($session) );
-                    }
-                    while ($info = mysqli_fetch_array($result)) {                     
-                        echo ('<p>Nom : '.$info["NomU"].'</p>');          
-                        echo ('<p>Prénom : '.$info["PrenomU"].'</p>');  
-                        echo ('<p>Adresse mail : '.$info["Email"].'</p>');  
+                    echo '<div class="row">';
+                    echo '<div class="col-8">';
+
+                    if (isset($_SESSION['email'])) {
+
+
+
+                        $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
+                        $bdd = $db->connect();
+
+                        $utilisateurs = new utilisateurBDD($bdd);
+                        //$besoins = new besoin();
+
+                        $utilisateur = $utilisateurs->un_User($usercode);
+                        /* $query = " select NomU, PrenomU, Email, TypeU from utilisateurs where CodeU = {$usercode} ";
+                          $result = mysqli_query ($session, $query);
+
+                          if ($result == false) {
+                          die("ereur requête : ". mysqli_error($session) );
+                          } */
+
+                        echo ('<p>Nom : ' . $utilisateur->getNomU() . '</p>');
+                        echo ('<p>Prénom : ' . $utilisateur->getPrenomU() . '</p>');
+                        echo ('<p>Adresse mail : ' . $utilisateur->getEmail() . '</p>');
                         echo ('<p><a href="changemdp.html.php">Changer mon mot de passe</a></p>');
-                    } 
-            }
-                echo '</div>';
-                echo '<div class="col-4">';
+
+
+
+                        /* while ($info = mysqli_fetch_array($result)) {                     
+                          echo ('<p>Nom : '.$info["NomU"].'</p>');
+                          echo ('<p>Prénom : '.$info["PrenomU"].'</p>');
+                          echo ('<p>Adresse mail : '.$info["Email"].'</p>');
+                          echo ('<p><a href="changemdp.html.php">Changer mon mot de passe</a></p>');
+                          } */
+                    }
+                    echo '</div>';
+                    echo '<div class="col-4">';
                     echo '<form name="Supprimer" action="Supprimer1Compte.php" method="post"><br>';
-                        
+
                     echo('<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#supprimer">Supprimer mon compte</button>');
-                    
+
                     echo('<div class="modal" tabindex="-1" id="supprimer" role="dialog">');
-                        echo('<div class="modal-dialog" role="document">');
-                          echo('<div class="modal-content">');
-                            echo('<div class="modal-header">');
-                              echo('<h5 class="modal-title">Vérification</h5>');
-                              echo('<button type="button" class="close" data-dismiss="modal" aria-label="Close">');
-                                echo('<span aria-hidden="true">&times;</span>');
-                              echo('</button>');
-                            echo('</div>');
-                            echo('<div class="modal-body">');
-                              echo('<p>Êtes-Vous sûr de supprimer votre compte ? <br>');
-                              echo('Attention : toutes vos cartes associées seront supprimées.<br>');
-                              echo('Pour tout problème, veuillez contacter l\'administrateur. </p>');
-                            echo('</div>');
-                            echo('<div class="modal-footer">');
-                              echo('<button type="submit" class="btn btn-primary">Supprimer</button>');
-                              echo('<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>');
-                            echo('</div>');
-                          echo('</div>');
-                        echo('</div>');
-                      echo('</div>');                
-        
+                    echo('<div class="modal-dialog" role="document">');
+                    echo('<div class="modal-content">');
+                    echo('<div class="modal-header">');
+                    echo('<h5 class="modal-title">Vérification</h5>');
+                    echo('<button type="button" class="close" data-dismiss="modal" aria-label="Close">');
+                    echo('<span aria-hidden="true">&times;</span>');
+                    echo('</button>');
+                    echo('</div>');
+                    echo('<div class="modal-body">');
+                    echo('<p>Êtes-Vous sûr de supprimer votre compte ? <br>');
+                    echo('Attention : toutes vos cartes associées seront supprimées.<br>');
+                    echo('Pour tout problème, veuillez contacter l\'administrateur. </p>');
+                    echo('</div>');
+                    echo('<div class="modal-footer">');
+                    echo('<button type="submit" class="btn btn-primary">Supprimer</button>');
+                    echo('<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>');
+                    echo('</div>');
+                    echo('</div>');
+                    echo('</div>');
+                    echo('</div>');
+
                     echo '</form>';
                     echo '<br>';
                     echo '<p>Si vous voulez modifier votre adresse mail, veuillez recréer un nouveau compte. </p>';
-                echo '</div>';
-            echo '</div>';
+                    echo '</div>';
+                    echo '</div>';
 
-                echo '<form method="POST" action="monespace.fonction.php">';
+                    echo '<form method="POST" action="monespace.fonction.php">';
 
                     echo ('<p>Type d\'information affichée : </p>');    //afficher le type d'utilisateur (checked)
-                    if ($_SESSION['type'] == ''){
+                    if ($_SESSION['type'] == '') {
                         echo ('<div class="switch-field">');
                         echo ('<input type="radio" id="radio-three" name="switch-two" value="" checked/>');
                         echo ('<label for="radio-three">Tout</label>');
@@ -117,7 +137,7 @@ if (isset($_SESSION['email'])) {
                         echo ('<label for="radio-four">Pro</label>');
                         echo ('<input type="radio" id="radio-five" name="switch-two" value="Perso" checked />');
                         echo ('<label for="radio-five">Perso</label>');
-                        echo ('</div>');                 
+                        echo ('</div>');
                     }
                     echo '<br>';
                     echo '<button type="submit" onclick="Modifier()" class="btn btn-outline-dark">Modifier le type d\'information affichée</button>';
@@ -125,65 +145,109 @@ if (isset($_SESSION['email'])) {
                     <script>
                         function Modifier() {
                             alert("Modification réussite !");
-                            }
+                        }
                     </script>   
                     <?php
-                echo '</form>';
-            echo '</div>';
-            echo '<br><br>';
-         
+                    echo '</form>';
+                    echo '</div>';
+                    echo '<br><br>';
+
 //<!--------------------------------------------------------------------------------------------------------------------------------------------->           
-           echo '<div class="container" id="MesBesoins">';
-           
-            echo '<div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">';
-              echo '<h1> Mes besoins </h1>';
-              is_login_new_besoin();
-            echo '</div>';
-            echo '<hr>';
-  
-            echo '<form method="POST" action="Desactiver1CarteB.php">';
-                echo '<div class="row">';
-                echo '<div class="col-10">';
-                echo '<ul class="list-inline">';
+                    echo '<div class="container" id="MesBesoins">';
 
-            $query = "select b.ReponseB, b.VisibiliteB, b.CodeB, b.TitreB, b.DescriptionB, b.DatePublicationB, b.DateButoireB, c.PhotoC from categories c, besoins b, saisir s where s.CodeB = b.CodeB and c.CodeC = b.CodeC and s.CodeU = {$usercode} order by b.CodeB DESC ";
+                    echo '<div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">';
+                    echo '<h1> Mes besoins </h1>';
+                    is_login_new_besoin();
+                    echo '</div>';
+                    echo '<hr>';
 
-            $result = mysqli_query ($session, $query);
+                    echo '<form method="POST" action="Desactiver1CarteB.php">';
+                    echo '<div class="row">';
+                    echo '<div class="col-10">';
+                    echo '<ul class="list-inline">';
 
-            if ($result == false) {
-                die("ereur requête : ". mysqli_error($session) );
-            }
-         
-            if (mysqli_num_rows($result)>0) {
-                 while ($besoin = mysqli_fetch_array($result)) {            
-                    if (strtotime($besoin["DateButoireB"]) > strtotime(date("yy/m/d")) && $besoin["VisibiliteB"] == 1) {  
-                        echo('<li class="list-inline-item">');
-                        if ($besoin["ReponseB"] > 0) {  // si il y a des réponses non traitées, affichir le badge rouge
-                            echo ('<span class="badge badge-danger">Nouvelle réponse</span>');                           
+
+
+
+                    $besoins = new besoinBDD($bdd);
+
+
+
+                    $besoinTab = $besoins->selectBesoinsByUser($usercode);
+
+
+                    if (!empty($besoinTab)) {
+
+                        foreach ($besoinTab as $value) {
+                            // echo '<br><br>';
+                            //var_dump($value['besoin']->getDateButoireB());
+
+                            if ($value['besoin']->getVisibiliteB() == 1) {
+
+                                echo('<li class="list-inline-item">');
+                                if ($value['besoin']->getReponseB() > 0) {  // si il y a des réponses non traitées, affichir le badge rouge
+                                    echo ('<span class="badge badge-danger">Nouvelle réponse</span>');
+                                }
+                                echo ('<div class="card" style="width: 12rem;">');
+                                echo ('<div class="card-header">');
+                                echo ('<center><input type="radio" name="codeB" value="' . $value['besoin']->getCodeB() . '"/><center>');
+                                echo ('</div>');
+                                echo ('<img src="' . $value['photo'] . '" class="card-img-top" alt="...">');
+                                echo ('<div class="card-body card text-center">');
+                                echo ('<h5 class="card-title">' . $value['besoin']->getTitreB() . '</h5>');
+                                echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['besoin']->getDatePublicationB())) . '</p>');
+                                echo ('<p class="card-text">Délais souhaité: ' . date("d-m-yy", strtotime($value['besoin']->getDateButoireB())) . '</p>');
+                                echo ('<a href="../BESOIN/BesoinX.php?t=' . $value['besoin']->getCodeB() . '" class="btn btn-outline-dark">Voir la demande</a>');
+                                echo ('<p></p><a href="BesoinModification.php?t=' . $value['besoin']->getCodeB() . '" class="btn btn-outline-dark">Modifier</a>');
+                                if ($value['besoin']->getReponseB() > 0) {       // si il y a des réponses non traitées, affichir le button "Voir la réponse"             
+                                    echo ('<p></p><a href="ReponseBesoin.php?code=' . $value['besoin']->getCodeB() . '" class="btn btn-outline-dark">Voir la réponse</a>');    //prendre les titres pour les besoins pour regrouper les réponses d'un besoin 
+                                }
+                                echo ('</div>');
+                                echo ('</div></li>');
+                            }
                         }
-                        echo ('<div class="card" style="width: 12rem;">');
-                        echo ('<div class="card-header">');    
-                        echo ('<center><input type="radio" name="codeB" value="'.$besoin["CodeB"].'"/><center>');
-                        echo ('</div>');
-                        echo ('<img src="'.$besoin["PhotoC"].'" class="card-img-top" alt="...">');   
-                        echo ('<div class="card-body card text-center">');
-                        echo ('<h5 class="card-title">'.$besoin["TitreB"].'</h5>');
-                        echo ('<p class="card-text">Date de publication: '.date("d-m-yy", strtotime($besoin["DatePublicationB"])).'</p>');
-                        echo ('<p class="card-text">Délais souhaité: '.date("d-m-yy", strtotime($besoin["DateButoireB"])).'</p>');
-                        echo ('<a href="../BESOIN/BesoinX.php?t='.$besoin["CodeB"].'" class="btn btn-outline-dark">Voir la demande</a>');
-                        echo ('<p></p><a href="BesoinModification.php?t='.$besoin["CodeB"].'" class="btn btn-outline-dark">Modifier</a>');
-                        if ($besoin["ReponseB"] > 0) {       // si il y a des réponses non traitées, affichir le button "Voir la réponse"             
-                            echo ('<p></p><a href="ReponseBesoin.php?code='.$besoin["CodeB"].'" class="btn btn-outline-dark">Voir la réponse</a>');    //prendre les titres pour les besoins pour regrouper les réponses d'un besoin 
-                        }
-                        echo ('</div>');  
-                        echo ('</div></li>');       
-                       }
-                } 
-            } else {
-                    echo ("Vous n'avez pas encore saisi un besoin");
-            }             
-  
-            echo'    </ul>
+                    } else {
+
+                        echo('<h5>Aucun résultat</h5>');
+                    }
+                    /* $query = "select b.ReponseB, b.VisibiliteB, b.CodeB, b.TitreB, b.DescriptionB, b.DatePublicationB, b.DateButoireB, c.PhotoC from categories c, besoins b, saisir s where s.CodeB = b.CodeB and c.CodeC = b.CodeC and s.CodeU = {$usercode} order by b.CodeB DESC ";
+
+                      $result = mysqli_query ($session, $query);
+
+                      if ($result == false) {
+                      die("ereur requête : ". mysqli_error($session) );
+                      } */
+
+                    /* if (mysqli_num_rows($result)>0) {
+                      while ($besoin = mysqli_fetch_array($result)) {
+                      if (strtotime($besoin["DateButoireB"]) > strtotime(date("yy/m/d")) && $besoin["VisibiliteB"] == 1) {
+                      echo('<li class="list-inline-item">');
+                      if ($besoin["ReponseB"] > 0) {  // si il y a des réponses non traitées, affichir le badge rouge
+                      echo ('<span class="badge badge-danger">Nouvelle réponse</span>');
+                      }
+                      echo ('<div class="card" style="width: 12rem;">');
+                      echo ('<div class="card-header">');
+                      echo ('<center><input type="radio" name="codeB" value="'.$besoin["CodeB"].'"/><center>');
+                      echo ('</div>');
+                      echo ('<img src="'.$besoin["PhotoC"].'" class="card-img-top" alt="...">');
+                      echo ('<div class="card-body card text-center">');
+                      echo ('<h5 class="card-title">'.$besoin["TitreB"].'</h5>');
+                      echo ('<p class="card-text">Date de publication: '.date("d-m-yy", strtotime($besoin["DatePublicationB"])).'</p>');
+                      echo ('<p class="card-text">Délais souhaité: '.date("d-m-yy", strtotime($besoin["DateButoireB"])).'</p>');
+                      echo ('<a href="../BESOIN/BesoinX.php?t='.$besoin["CodeB"].'" class="btn btn-outline-dark">Voir la demande</a>');
+                      echo ('<p></p><a href="BesoinModification.php?t='.$besoin["CodeB"].'" class="btn btn-outline-dark">Modifier</a>');
+                      if ($besoin["ReponseB"] > 0) {       // si il y a des réponses non traitées, affichir le button "Voir la réponse"
+                      echo ('<p></p><a href="ReponseBesoin.php?code='.$besoin["CodeB"].'" class="btn btn-outline-dark">Voir la réponse</a>');    //prendre les titres pour les besoins pour regrouper les réponses d'un besoin
+                      }
+                      echo ('</div>');
+                      echo ('</div></li>');
+                      }
+                      }
+                      } else {
+                      echo ("Vous n'avez pas encore saisi un besoin");
+                      } */
+
+                    echo'    </ul>
                      </div>
                 <div class="col-2">
                      <!-- Button trigger modal -->
@@ -215,60 +279,104 @@ if (isset($_SESSION['email'])) {
           </div>  
        
         <br><br>';
-            ?>
-<!--------------------------------------------------------------------------------------------------------------------------------------------->     
-        <div class="container" id="MesTalents">
-            <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
-                <h1> Mes talents </h1>             
-                <?php is_login_new_talent(); ?>
-            </div>
-            
-            <hr>
-           
-            <form method="POST" action="Desactiver1CarteT.php">
-              <div class="row">
-              <div class="col-10">
-              <ul class="list-inline">
-                  
-<?php
-            $query = " select t.ReponseT, t.VisibiliteT, t.CodeT, t.TitreT, t.DatePublicationT, c.PhotoC from categories c, talents t, proposer p where p.CodeT = t.CodeT and c.CodeC = t.CodeC and p.CodeU = {$usercode} order by t.CodeT DESC";
+                    ?>
+                    <!--------------------------------------------------------------------------------------------------------------------------------------------->     
+                    <div class="container" id="MesTalents">
+                        <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
+                            <h1> Mes talents </h1>             
+                            <?php is_login_new_talent(); ?>
+                        </div>
 
-            $result = mysqli_query ($session, $query);
+                        <hr>
 
-            if ($result == false) {
-                die("ereur requête : ". mysqli_error($session) );
-            }
-             
-            
-            if (mysqli_num_rows($result)>0) {
-                    while ($talent = mysqli_fetch_array($result)) {                     
-                         if ($talent["VisibiliteT"] == 1) {  //si la carte n'a pas été caché
-                            echo('<li class="list-inline-item">');
-                            if ($talent["ReponseT"] > 0) {  // si il y a des réponses non traitées, affichir "nouvelle message"
-                                echo ('<span class="badge badge-danger">Nouvelle réponse</span>');                           
-                            }
-                            echo ('<div class="card" style="width: 12rem;">');
-                            echo ('<div class="card-header">');
-                            echo ('<center><input type="radio" name="codeT" value="'.$talent["CodeT"].'"/><center>');
-                            echo ('</div>');
-                            echo ('<img src="'.$talent["PhotoC"].'" class="card-img-top" alt="...">');   
-                            echo ('<div class="card-body card text-center">');
-                            echo ('<h5 class="card-title">'.$talent["TitreT"].'</h5>');
-                            echo ('<p class="card-text">Date de publication: '.date("d-m-yy", strtotime($talent["DatePublicationT"])).'</p>');        
-                            echo ('<a href="../TALENT/TalentX.php?t='.$talent["CodeT"].'" class="btn btn-outline-dark">Voir le détail</a>'); 
-                            echo ('<p></p><a href="TalentModification.php?t='.$talent["CodeT"].'" class="btn btn-outline-dark">Modifier</a>'); 
-                            if ($talent["ReponseT"] > 0) { // si il y a des réponses non traitées, affichir le button "Voir la réponse" 
-                                echo ('<p></p><a href="ReponseTalent.php?code='.$talent["CodeT"].'" class="btn btn-outline-dark">Voir la réponse</a>');    //prendre les titres pour les besoins pour regrouper les réponses d'un besoin 
-                            }                            
-                            echo ('</div>');  
-                            echo ('</div></li>');                
-                          } 
-                    }
-            } else {
-                    echo ("Vous n'avez pas encore saisi un talent");
-            }    
+                        <form method="POST" action="Desactiver1CarteT.php">
+                            <div class="row">
+                                <div class="col-10">
+                                    <ul class="list-inline">
 
-        echo '</ul>     
+                                        <?php
+                                        $talents = new talentBDD($bdd);
+
+                                        $talentTab = $talents->selectTalentByUser($usercode);
+
+
+                                        if (!empty($talentTab)) {
+
+                                            foreach ($talentTab as $value) {
+
+
+
+                                                if ($value['talent']->getVisibiliteT() == 1) {
+
+                                                    echo('<li class="list-inline-item">');
+                                                    if ($value['talent']->getReponseT() > 0) {  // si il y a des réponses non traitées, affichir "nouvelle message"
+                                                        echo ('<span class="badge badge-danger">Nouvelle réponse</span>');
+                                                    }
+                                                    echo ('<div class="card" style="width: 12rem;">');
+                                                    echo ('<div class="card-header">');
+                                                    echo ('<center><input type="radio" name="codeT" value="' . $value['talent']->getCodeT() . '"/><center>');
+                                                    echo ('</div>');
+                                                    echo ('<img src="' . $value['photo'] . '" class="card-img-top" alt="...">');
+                                                    echo ('<div class="card-body card text-center">');
+                                                    echo ('<h5 class="card-title">' . $value['talent']->getTitreT() . '</h5>');
+                                                    echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['talent']->getDatePublicationT())) . '</p>');
+                                                    echo ('<a href="../TALENT/TalentX.php?t=' . $value['talent']->getCodeT() . '" class="btn btn-outline-dark">Voir le détail</a>');
+                                                    echo ('<p></p><a href="TalentModification.php?t=' . $value['talent']->getCodeT() . '" class="btn btn-outline-dark">Modifier</a>');
+                                                    if ($value['talent']->getReponseT() > 0) { // si il y a des réponses non traitées, affichir le button "Voir la réponse"
+                                                        echo ('<p></p><a href="ReponseTalent.php?code=' . $value['talent']->getCodeT() . '" class="btn btn-outline-dark">Voir la réponse</a>');    //prendre les titres pour les besoins pour regrouper les réponses d'un besoin
+                                                    }
+                                                    echo ('</div>');
+                                                    echo ('</div></li>');
+                                                } else {
+
+                                                    echo('<h5>Aucun résultat</h5>');
+                                                }
+                                            }
+                                        } else {
+
+                                            echo('<h5>Aucun résultat  VO</h5>');
+                                        }
+
+
+                                        /* $query = " select t.ReponseT, t.VisibiliteT, t.CodeT, t.TitreT, t.DatePublicationT, c.PhotoC from categories c, talents t, proposer p where p.CodeT = t.CodeT and c.CodeC = t.CodeC and p.CodeU = {$usercode} order by t.CodeT DESC";
+
+                                          $result = mysqli_query($session, $query);
+
+                                          if ($result == false) {
+                                          die("ereur requête : " . mysqli_error($session));
+                                          } */
+
+
+
+                                        /* if (mysqli_num_rows($result) > 0) {
+                                          while ($talent = mysqli_fetch_array($result)) {
+                                          if ($talent["VisibiliteT"] == 1) {  //si la carte n'a pas été caché
+                                          echo('<li class="list-inline-item">');
+                                          if ($talent["ReponseT"] > 0) {  // si il y a des réponses non traitées, affichir "nouvelle message"
+                                          echo ('<span class="badge badge-danger">Nouvelle réponse</span>');
+                                          }
+                                          echo ('<div class="card" style="width: 12rem;">');
+                                          echo ('<div class="card-header">');
+                                          echo ('<center><input type="radio" name="codeT" value="' . $talent["CodeT"] . '"/><center>');
+                                          echo ('</div>');
+                                          echo ('<img src="' . $talent["PhotoC"] . '" class="card-img-top" alt="...">');
+                                          echo ('<div class="card-body card text-center">');
+                                          echo ('<h5 class="card-title">' . $talent["TitreT"] . '</h5>');
+                                          echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($talent["DatePublicationT"])) . '</p>');
+                                          echo ('<a href="../TALENT/TalentX.php?t=' . $talent["CodeT"] . '" class="btn btn-outline-dark">Voir le détail</a>');
+                                          echo ('<p></p><a href="TalentModification.php?t=' . $talent["CodeT"] . '" class="btn btn-outline-dark">Modifier</a>');
+                                          if ($talent["ReponseT"] > 0) { // si il y a des réponses non traitées, affichir le button "Voir la réponse"
+                                          echo ('<p></p><a href="ReponseTalent.php?code=' . $talent["CodeT"] . '" class="btn btn-outline-dark">Voir la réponse</a>');    //prendre les titres pour les besoins pour regrouper les réponses d'un besoin
+                                          }
+                                          echo ('</div>');
+                                          echo ('</div></li>');
+                                          }
+                                          }
+                                          } else {
+                                          echo ("Vous n'avez pas encore saisi un talent");
+                                          } */
+
+                                        echo '</ul>     
                    </div>
                    <div class="col-2">
                      <!-- Button trigger modal -->
@@ -298,54 +406,97 @@ if (isset($_SESSION['email'])) {
             </form>        
           </div>
         <br><br>';
-        ?>
-<!--------------------------------------------------------------------------------------------------------------------------------------------->     
-        <div class="container" id="MesAteliers">
-           
-            <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
-              <h1> Mes ateliers </h1>
-              <?php is_login_new_atelier(); ?>
-            </div>
-            <hr>
-  
-            <form method="POST" action="Desactiver1Atelier.php">
-                <div class="row">
-                <div class="col-10">
-                <ul class="list-inline">
+                                        ?>
+                                        <!--------------------------------------------------------------------------------------------------------------------------------------------->     
+                                        <div class="container" id="MesAteliers">
 
-        <?php
-            $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from categories c, ateliers a, participera p where p.CodeA = a.CodeA and c.CodeC = a.CodeC and p.CodeU = {$usercode} order by a.CodeA DESC ";
+                                            <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
+                                                <h1> Mes ateliers </h1>
+                                                <?php is_login_new_atelier(); ?>
+                                            </div>
+                                            <hr>
 
-            $result = mysqli_query ($session, $query);
+                                            <form method="POST" action="Desactiver1Atelier.php">
+                                                <div class="row">
+                                                    <div class="col-10">
+                                                        <ul class="list-inline">
 
-            if ($result == false) {
-                die("ereur requête : ". mysqli_error($session) );
-            }
-         
-            if (mysqli_num_rows($result)>0) {
-                 while ($atelier = mysqli_fetch_array($result)) {            
-                    if ($atelier["VisibiliteA"] == 1) {  
-                        echo('<li class="list-inline-item">');
-                        echo ('<div class="card" style="width: 12rem;">');
-                        echo ('<div class="card-header">');    
-                        echo ('<center><input type="radio" name="codeA" value="'.$atelier["CodeA"].'"/><center>');
-                        echo ('</div>');
-                        echo ('<img src="'.$atelier["PhotoC"].'" class="card-img-top" alt="...">');   
-                        echo ('<div class="card-body card text-center">');
-                        echo ('<h5 class="card-title">'.$atelier["TitreA"].'</h5>');
-                        echo ('<p class="card-text">Date de publication: '.date("d-m-yy", strtotime($atelier["DatePublicationA"])).'</p>');
-                        echo ('<p class="card-text">Date & Créneau : '.$atelier["DateA"].'</p>');
-                        echo ('<a href="../ATELIER/AtelierX.php?t='.$atelier["CodeA"].'" class="btn btn-outline-dark">Voir le détail</a>'); 
-                        echo ('<p></p><a href="AtelierModification.php?t='.$atelier["CodeA"].'" class="btn btn-outline-dark">Modifier</a>');               
-                        echo ('</div>');  
-                        echo ('</div></li>');       
-                       }
-                } 
-            } else {
-                    echo ("Vous n'avez pas encore créé un atelier");
-            }             
+                                                            <?php
+                                                            $ateliers = new atelierBDD($bdd);
 
-            echo '</ul>
+                                                            $atelierTab = $ateliers->selectAtelierByUser($usercode);
+
+
+                                                            if (!empty($atelierTab)) {
+
+                                                                foreach ($atelierTab as $value) {
+
+                                                                    if ($value['atelier']->getVisibiliteA() == 1) {
+
+                                                                        echo('<li class="list-inline-item">');
+                                                                        echo ('<div class="card" style="width: 12rem;">');
+                                                                        echo ('<div class="card-header">');
+                                                                        echo ('<center><input type="radio" name="codeA" value="' . $value['atelier']->getCodeA() . '"/><center>');
+                                                                        echo ('</div>');
+                                                                        echo ('<img src="' . $value["photo"] . '" class="card-img-top" alt="...">');
+                                                                        echo ('<div class="card-body card text-center">');
+                                                                        echo ('<h5 class="card-title">' . $value['atelier']->getTitreA() . '</h5>');
+                                                                        echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
+                                                                        echo ('<p class="card-text">Date & Créneau : ' . $value['atelier']->getDateA() . '</p>');
+                                                                        echo ('<a href="../ATELIER/AtelierX.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir le détail</a>');
+                                                                        echo ('<p></p><a href="AtelierModification.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Modifier</a>');
+                                                                        echo ('</div>');
+                                                                        echo ('</div></li>');
+                                                                        
+                                                                    } else {
+
+                                                                        echo('<h5>Aucun résultat</h5>');
+                                                                    }
+                                                                }
+                                                            } else {
+
+                                                                echo('<h5>Aucun résultat  VO</h5>');
+                                                            }
+
+
+
+
+
+
+
+
+                                                            /* $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from categories c, ateliers a, participera p where p.CodeA = a.CodeA and c.CodeC = a.CodeC and p.CodeU = {$usercode} order by a.CodeA DESC ";
+
+                                                              $result = mysqli_query($session, $query);
+
+                                                              if ($result == false) {
+                                                              die("ereur requête : " . mysqli_error($session));
+                                                              }
+
+                                                              if (mysqli_num_rows($result) > 0) {
+                                                              while ($atelier = mysqli_fetch_array($result)) {
+                                                              if ($atelier["VisibiliteA"] == 1) {
+                                                              echo('<li class="list-inline-item">');
+                                                              echo ('<div class="card" style="width: 12rem;">');
+                                                              echo ('<div class="card-header">');
+                                                              echo ('<center><input type="radio" name="codeA" value="' . $atelier["CodeA"] . '"/><center>');
+                                                              echo ('</div>');
+                                                              echo ('<img src="' . $atelier["PhotoC"] . '" class="card-img-top" alt="...">');
+                                                              echo ('<div class="card-body card text-center">');
+                                                              echo ('<h5 class="card-title">' . $atelier["TitreA"] . '</h5>');
+                                                              echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($atelier["DatePublicationA"])) . '</p>');
+                                                              echo ('<p class="card-text">Date & Créneau : ' . $atelier["DateA"] . '</p>');
+                                                              echo ('<a href="../ATELIER/AtelierX.php?t=' . $atelier["CodeA"] . '" class="btn btn-outline-dark">Voir le détail</a>');
+                                                              echo ('<p></p><a href="AtelierModification.php?t=' . $atelier["CodeA"] . '" class="btn btn-outline-dark">Modifier</a>');
+                                                              echo ('</div>');
+                                                              echo ('</div></li>');
+                                                              }
+                                                              }
+                                                              } else {
+                                                              echo ("Vous n'avez pas encore créé un atelier");
+                                                              } */
+
+                                                            echo '</ul>
                      </div>
                 <div class="col-2">
                      <!-- Button trigger modal -->
@@ -377,15 +528,16 @@ if (isset($_SESSION['email'])) {
           </div>  
        
         <br><br>';
-    } else {
-        echo ('<center><p><br><br>Veuillez d\'abord <a href="../INSCRIPTION/Login.php">se connecter</a></p></center>');
-    }?>
-    </div>
- </div>                 
-       
-<!-- footer -->
- <?php require "../../FONCTIONNALITE/footer.php"; ?>
-<!-- Fin footer -->
+                                                        } else {
+                                                            echo ('<center><p><br><br>Veuillez d\'abord <a href="../INSCRIPTION/Login.php">se connecter</a></p></center>');
+                                                        }
+                                                        ?>
+                                                </div>
+                                            </div>                 
 
-</body>
-</html>
+                                            <!-- footer -->
+                                            <?php require "../../FONCTIONNALITE/footer.php"; ?>
+                                            <!-- Fin footer -->
+
+                                            </body>
+                                            </html>
