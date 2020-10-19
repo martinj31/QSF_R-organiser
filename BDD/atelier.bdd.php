@@ -17,18 +17,7 @@ class atelierBDD {
 
     private $_bdd;
 
-    /*
-     * private $_CodeB;
-      private $_TitreB;
-      private $_DescriptionB;
-      private $_DateButoireB;
-      private $_DatePubicationB;
-      private $_TypeB;
-      private $_CodeC;
-      private $_VisibiliteB;
-      private $_ReponseB;
-      private $_Nombre;
-     */
+   
 
     /*
      * Méthode de construction
@@ -105,6 +94,60 @@ class atelierBDD {
 
             return $vide;
         }
+        
+
+        return $ateliers;
+
+        $req->closeCursor();
+    }
+    
+    
+    
+    
+    public function selectAllAteliers() {
+
+        $vide = '';
+        $ateliers = [];
+
+        $req = $this->_bdd->query("select * from ateliers ");
+
+        $datas = $req->fetch(PDO::FETCH_ASSOC);
+
+        if ($req) {
+            while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
+                $ateliers[] = new atelier($datas);
+            }
+        } else {
+            return $vide;
+        }
+
+
+
+
+        return $ateliers;
+
+        $req->closeCursor();
+    }
+    
+    
+    
+     public function selectAtelierSearch($cartea) {
+
+        $vide = '';
+        $ateliers = [];
+
+        $req = $this->_bdd->query("select * from ateliers where ( TitreA LIKE '%$cartea%' or DescriptionA LIKE '%$cartea%' ) order by CodeA DESC");
+
+        $datas = $req->fetch(PDO::FETCH_ASSOC);
+
+        if ($req) {
+           
+                $ateliers[] = new atelier($datas);
+            
+        } else {
+            return $vide;
+        }
+
 
 
 

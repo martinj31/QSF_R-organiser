@@ -234,7 +234,7 @@ class talentBDD {
         $vide = '';
         $talents = [];
 
-        $req = $this->_bdd->query("select * from talents where VisibiliteB = 1 and ( TitreB LIKE '%$cartet%' or DescriptionB LIKE '%$cartet%' ) order by CodeB DESC");
+        $req = $this->_bdd->query("select * from talents where ( TitreT LIKE '%$cartet%' or DescriptionT LIKE '%$cartet%' ) order by CodeT DESC");
 
         $datas = $req->fetch(PDO::FETCH_ASSOC);
 

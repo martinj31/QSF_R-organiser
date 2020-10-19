@@ -106,6 +106,60 @@ class utilisateurBDD {
 
         $req->closeCursor();
     }
+    
+    
+    public function selectAllUtilisateurs() {
+
+        $vide = '';
+        $utilisateurs = [];
+
+        $req = $this->_bdd->query("select * from utilisateurs where  NomU <> 'XXXXX'");
+
+        $datas = $req->fetch(PDO::FETCH_ASSOC);
+
+        if ($req) {
+            while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
+                $utilisateurs[] = new utilisateur($datas);
+            }
+        } else {
+            return $vide;
+        }
+
+
+
+
+        return $utilisateurs;
+
+        $req->closeCursor();
+    }
+    
+    
+    
+     public function selectUtilisateurSearch($cartea) {
+
+        $vide = '';
+        $utilisateurs = [];
+
+        $req = $this->_bdd->query("select * from utilisateurs where NomU <> 'XXXXX' and ( NomU LIKE '%$user%' or PrenomU LIKE '%$user%' or Email LIKE '%$user%' ) order by CodeU DESC");
+
+        $datas = $req->fetch(PDO::FETCH_ASSOC);
+
+        if ($req) {
+           
+                $utilisateurs[] = new utilisateur($datas);
+            
+        } else {
+            return $vide;
+        }
+
+
+
+
+        return $utilisateurs;
+
+        $req->closeCursor();
+    }
+    
 
     public function un_User($usercode) {  //fonction pour afficher les information d'un carte besoin
         $vide = '';
