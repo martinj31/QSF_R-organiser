@@ -1,38 +1,56 @@
-<?php 
-require_once('Fonctions.php');
+<?php
+
+require_once('../../FONCTIONCOMMUNE/Fonctions.php');
+require_once('../../BDD/connexion.bdd.php');
+require_once('../../BDD/besoin.bdd.php');
+require_once('../../BDD/utilisateur.bdd.php');
+require_once('../../PHPMailer/src/Exception.php');
+require_once('../../PHPMailer/src/PHPMailer.php');
+require_once('../../PHPMailer/src/SMTP.php');
+require_once('../../PHPMailer/src/PHPMailerAutoload.php');
+
+
+$db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
+$bdd = $db->connect();
+
+$besoinBDD = new besoinBDD($bdd);
+$userBDD = new utilisateurBDD($bdd);
 
 //Désactiver une carte qui contient des contenus inappropriés
-$CodeB = $_POST['desactiverb'];
-
 //cacher la carte
 if (isset($_POST['desactiverb'])) {
-    $stmt1 = mysqli_prepare($session, "UPDATE besoins SET VisibiliteB = 0 WHERE CodeB = ?");
-    mysqli_stmt_bind_param($stmt1, 'i', $CodeB);
-    mysqli_stmt_execute($stmt1);
+    $CodeB = $_POST['desactiverb'];
+
+    $besoinBDD->userUpdateBesoinVisible($CodeB, 0);
+
+    /* $stmt1 = mysqli_prepare($session, "UPDATE besoins SET VisibiliteB = 0 WHERE CodeB = ?");
+      mysqli_stmt_bind_param($stmt1, 'i', $CodeB);
+      mysqli_stmt_execute($stmt1); */
 }
 
-$CodeBC = $_POST['activerb'];
+
 
 //réactiver la carte
 if (isset($_POST['activerb'])) {
-    $stmt2 = mysqli_prepare($session, "UPDATE besoins SET VisibiliteB = 1 WHERE CodeB = ?");
-    mysqli_stmt_bind_param($stmt2, 'i', $CodeBC);
-    mysqli_stmt_execute($stmt2);
+    $CodeBC = $_POST['activerb'];
+    $besoinBDD->userUpdateBesoinVisible($CodeBC, 1);
+    /* $stmt2 = mysqli_prepare($session, "UPDATE besoins SET VisibiliteB = 1 WHERE CodeB = ?");
+      mysqli_stmt_bind_param($stmt2, 'i', $CodeBC);
+      mysqli_stmt_execute($stmt2); */
 }
 
-header("Location: Admin.php");
-
+//header("Location: Admin.php");
 //Envoyer un mail pour informer cette personne
 
-        $sql = "SELECT u.Email, b.TitreB FROM utilisateurs u, saisir s, besoins b WHERE u.CodeU = s.CodeU and s.CodeB = b.CodeB and s.CodeB = $CodeB";
-        $result = mysqli_query ($session, $sql);
-    
-        if ($email = mysqli_fetch_array($result)) {   
-            $Email = $email['Email'];
-            
-            $destinataire = "$Email"; // adresse mail du destinataire
-            $sujet = "Votre besoin «{$email['TitreB']}» a été supprimé par l'administrateur"; // sujet du mail
-             $message = '<!DOCTYPE html>
+/* $sql = "SELECT u.Email, b.TitreB FROM utilisateurs u, saisir s, besoins b WHERE u.CodeU = s.CodeU and s.CodeB = b.CodeB and s.CodeB = $CodeB";
+  $result = mysqli_query ($session, $sql); */
+$titreEtEmail = $besoinBDD->saisirEmailEtTitreBesoin($CodeB);
+if ($titreEtEmail[0]['Email'] != NULL) {
+    $Email = $titreEtEmail[0]['Email'];
+
+    $destinataire = "$Email"; // adresse mail du destinataire
+    $sujet = "Votre besoin «{$email['TitreB']}» a été supprimé par l'administrateur"; // sujet du mail
+    $message = '<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 
 <head>
@@ -347,7 +365,7 @@ href="https://www.twitter.com/" target="_blank"><img width="24" border="0" heigh
 
 </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
 
-</span><p style="padding: 0; margin: 0;">Votre besoin « '.$email['TitreB'].'» a été supprimé par l\'administrateur</p><span class="mso-font-fix-tahoma">
+</span><p style="padding: 0; margin: 0;">Votre besoin « ' . $titreEtEmail[0]['Titre'] . '» a été supprimé par l\'administrateur</p><span class="mso-font-fix-tahoma">
 
 </span><p style="padding: 0; margin: 0;"> à cause des contenus inappropriés.</p><span class="mso-font-fix-tahoma">
 
@@ -440,29 +458,41 @@ href="https://www.twitter.com/" target="_blank"><img width="24" border="0" heigh
 </div>
 </body>
 </html>'; // message qui dira que le destinataire a bien lu votre mail
-        // maintenant, l'en-tête du mail
-        /*$header = "From: [Plateforme]\r\n"; 
-        $headers = 'Content-Type: text/plain; charset=utf-8' . "\r\n";
-        $header .= "Disposition-Notification-To:l'email d'un administrateur"; // c'est ici que l'on ajoute la directive*/
-        
-           // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
-     $headers[] = 'MIME-Version: 1.0';
-     $headers[] = 'Content-type: text/html; charset=iso-8859-1';
+    // maintenant, l'en-tête du mail
+    /* $header = "From: [Plateforme]\r\n"; 
+      $headers = 'Content-Type: text/plain; charset=utf-8' . "\r\n";
+      $header .= "Disposition-Notification-To:l'email d'un administrateur"; // c'est ici que l'on ajoute la directive */
 
-     // En-têtes additionnels
+    // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
+   /* $headers[] = 'MIME-Version: 1.0';
+    $headers[] = 'Content-type: text/html; charset=iso-8859-1';
+
+    // En-têtes additionnels
+
+    $headers[] = 'From: [COUP DE MAIN, COUP DE POUCE]<admincmcp@assurance-maladie.fr>';
+
+
+
+    mail($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail */
     
-     $headers[] = 'From: [COUP DE MAIN, COUP DE POUCE]<admincmcp@assurance-maladie.fr>';
+    $Mailer = new PHPMailer\PHPMailer\PHPMailer(true);
+    $Mailer->SMTPDebug = 0;
+    $Mailer->isSMTP();
 
-     
-     
-     mail ($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  
-        
-            
-            
-        }
-        
-    
- 
-       
+    //$Mailer->SMTPAuth = true;
+    $Mailer->Timeout = 10000;
+    $Mailer->Host = 'smtp.cpam-toulouse.cnamts.fr';
+    $Mailer->Port = 25;
+    $Mailer->isHTML(true);
+    $Mailer->CharSet = "UTF-8";
+    $Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
+    $Mailer->Subject = $sujet;
+    $Mailer->Body = $message;
+    $Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
+    $Mailer->AddAddress($destinataire);
 
+    if ($Mailer->send()) {
+        header("Location:../MONESPACE/MonProfil.php");
+    }
+}
 ?>

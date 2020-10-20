@@ -358,11 +358,49 @@ class atelierBDD {
     }
     
     
-    //le user veut que cette carte soit visible 
+    //le user veut que cette carte ne soit plus visible 
     public function userUpdateAtelierVisible($CodeA) {  //fonction pour l'affichage des cartes besoins
-        $req = $this->_bdd->prepare('UPDATE ateliers SET VisibiliteB = 0 WHERE CodeA = :CodeA ');
+        $req = $this->_bdd->prepare('UPDATE ateliers 
+                                        SET VisibiliteA = :VisibiliteA 
+                                    WHERE CodeA = :CodeA');
+
+        
+        $req->bindValue(':CodeA', (int)$CodeA, PDO::PARAM_INT);
+        $req->bindValue(':VisibiliteA', 0, PDO::PARAM_INT);
+
+       
+        return $req->execute();
+
+
+
+        $req->closeCursor();
+    }
+    
+    
+    //Select l'email et le titre en fonction de l'id de l'atelier
+    public function saisirEmailEtTitreAtelier($CodeA) {
+
+        $atelierTab = [];
+        $req = $this->_bdd->query("SELECT u.Email, a.TitreA FROM utilisateurs u, participera p, ateliers a WHERE u.CodeU = p.CodeU and p.CodeA = a.CodeA and p.CodeA = $CodeA");
+
+
+        while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
+
+            $atelierTab[] = ['Email' => $datas['Email'], 'Titre' => $datas['TitreA']];
+        }
+        return $atelierTab;
+
+        $req->closeCursor();
+    }
+    
+    
+    //le user veut que cette carte  soit  visible 
+    public function userUpdateAtelierVisibleAndURL($CodeA, $URL) {  //fonction pour l'affichage des cartes besoins
+        $req = $this->_bdd->prepare('UPDATE ateliers SET VisibiliteA = :VisibiliteA WHERE CodeA = :CodeA ans URL = :URL');
 
         $req->bindValue(':CodeA', $CodeA, PDO::PARAM_INT);
+        $req->bindValue(':VisibiliteA', 0, PDO::PARAM_INT);
+        $req->bindValue(':URL', $URL, PDO::PARAM_STR);
 
 
         return $req->execute();

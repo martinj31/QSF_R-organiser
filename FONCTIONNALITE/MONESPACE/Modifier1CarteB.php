@@ -12,7 +12,7 @@ $Type = $_POST['type'];
 $Categorie = $_POST['categorie'];
 $CodeB = $_POST['codeB'];
 
-var_dump($Categorie);
+
 $besoin = new besoin([]);
 $besoin->setCodeB($CodeB);
 $besoin->setCodeC($Categorie);

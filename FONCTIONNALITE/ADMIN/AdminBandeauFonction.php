@@ -1,77 +1,90 @@
 <?php
-  require_once 'Fonctions.php';
-  
-  if (!empty($_POST['slide1_1'])) {
-        $query1 = "UPDATE slides SET TitreS = '{$_POST['slide1_1']}' WHERE NumSlide = 1 ";
-        mysqli_query ($session, $query1);
-  }
-  
-  if (!empty($_POST['slide1_2'])) {
-        $query2 = "UPDATE slides SET PhotoS = '{$_POST['slide1_2']}' WHERE NumSlide = 1 ";
-        mysqli_query ($session, $query2);
-  } 
-  
-  if (!empty($_POST['slide1_3'])) {
-        $query3 = "UPDATE slides SET TextS1 = '{$_POST['slide1_3']}' WHERE NumSlide = 1 ";
-        mysqli_query ($session, $query3);
-  } 
-  
-  if (!empty($_POST['slide1_4'])) {
-        $query4 = "UPDATE slides SET TextS2 = '{$_POST['slide1_4']}' WHERE NumSlide = 1 ";
-        mysqli_query ($session, $query4);
-  } 
-  
-  if (!empty($_POST['slide2_1'])) {
-        $query5 = "UPDATE slides SET TitreS = '{$_POST['slide2_1']}' WHERE NumSlide = 2 ";
-        mysqli_query ($session, $query5);
-  } 
-  
-  if (!empty($_POST['slide2_2'])) {
-        $query6 = "UPDATE slides SET PhotoS = '{$_POST['slide2_2']}' WHERE NumSlide = 2 ";
-        mysqli_query ($session, $query6);
-  } 
-  
-  if (!empty($_POST['slide3_1'])) {
-        $query7 = "UPDATE slides SET TitreS = '{$_POST['slide3_1']}' WHERE NumSlide = 3 ";
-        mysqli_query ($session, $query7);
-  } 
-  
-  if (!empty($_POST['slide3_2'])) {
-        $query8 = "UPDATE slides SET PhotoS = '{$_POST['slide3_2']}' WHERE NumSlide = 3 ";
-        mysqli_query ($session, $query8);
-  } 
-  
-  if (!empty($_POST['slide3_3'])) {
-        $query9 = "UPDATE slides SET TextS1 = '{$_POST['slide3_3']}' WHERE NumSlide = 3 ";
-        mysqli_query ($session, $query9);
-  } 
-  
-  if (!empty($_POST['slide4_1'])) {
-        $query10 = "UPDATE slides SET TitreS = '{$_POST['slide4_1']}' WHERE NumSlide = 4 ";
-        mysqli_query ($session, $query10);
-  } 
-  
-  if (!empty($_POST['slide4_2'])) {
-        $query11 = "UPDATE slides SET PhotoS = '{$_POST['slide4_2']}' WHERE NumSlide = 4 ";
-        mysqli_query ($session, $query11);
-  } 
-  
-  if (!empty($_POST['slide4_3'])) {
-        $query12 = "UPDATE slides SET TextS1 = '{$_POST['slide4_3']}' WHERE NumSlide = 4 ";
-        mysqli_query ($session, $query12);
-  } 
-  
-  if (!empty($_POST['slide4_4'])) {
-        $query13 = "UPDATE slides SET TextS2 = '{$_POST['slide4_4']}' WHERE NumSlide = 4 ";
-        mysqli_query ($session, $query13);
-  }
-  
-  if (!empty($_POST['slide4_5'])) {
-        $query14 = "UPDATE slides SET TextS3 = '{$_POST['slide4_5']}' WHERE NumSlide = 4 ";
-        mysqli_query ($session, $query14);
-  } 
-   
-  header("Location: Admin.php");
- 
+
+require_once '../../FONCTIONCOMMUNE/Fonctions.php';
+require_once('../../BDD/connexion.bdd.php');
+require_once('../../BDD/slide.bdd.php');
+
+
+$db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
+$bdd = $db->connect();
+
+$slideBDD = new slideBDD($bdd);
+$slide1 = $slideBDD->un_slide(1);
+$slide2 = $slideBDD->un_slide(2);
+$slide3 = $slideBDD->un_slide(3);
+$slide4 = $slideBDD->un_slide(4);
+
+
+if (!empty($_POST['slide1_1'])) {
+    $slide1->setTitreS($_POST['slide1_1']);
+    $slideBDD->updateSlide($slide1);
+}
+
+if (!empty($_POST['slide1_2'])) {
+    $slide1->setPhotoS($_POST['slide1_2']);
+    $slideBDD->updateSlide($slide1);
+}
+
+if (!empty($_POST['slide1_3'])) {
+    $slide1->setTextS1($_POST['slide1_3']);
+    $slideBDD->updateSlide($slide1);
+}
+
+if (!empty($_POST['slide1_4'])) {
+    $slide1->setTextS2($_POST['slide1_4']);
+    $slideBDD->updateSlide($slide1);
+}
+
+if (!empty($_POST['slide2_1'])) {
+    $slide2->setTitreS($_POST['slide2_1']);
+    $slideBDD->updateSlide($slide2);
+}
+
+if (!empty($_POST['slide2_2'])) {
+    $slide2->setPhotoS($_POST['slide2_2']);
+    $slideBDD->updateSlide($slide2);
+}
+
+if (!empty($_POST['slide3_1'])) {
+    $slide3->setTitreS($_POST['slide3_1']);
+    $slideBDD->updateSlide($slide3);
+}
+
+if (!empty($_POST['slide3_2'])) {
+    $slide3->setPhotoS($_POST['slide3_2']);
+    $slideBDD->updateSlide($slide3);
+}
+
+if (!empty($_POST['slide3_3'])) {
+    $slide3->setTextS1($_POST['slide3_3']);
+    $slideBDD->updateSlide($slide3);
+}
+
+if (!empty($_POST['slide4_1'])) {
+    $slide4->setTitreS($_POST['slide4_1']);
+    $slideBDD->updateSlide($slide4);
+}
+
+if (!empty($_POST['slide4_2'])) {
+    $slide4->setPhotoS($_POST['slide4_2']);
+    $slideBDD->updateSlide($slide4);
+}
+
+if (!empty($_POST['slide4_3'])) {
+    $slide4->setTextS1($_POST['slide4_3']);
+    $slideBDD->updateSlide($slide4);
+}
+
+if (!empty($_POST['slide4_4'])) {
+    $slide4->setTextS2($_POST['slide4_4']);
+    $slideBDD->updateSlide($slide4);
+}
+
+if (!empty($_POST['slide4_5'])) {
+    $slide4->setTextS3($_POST['slide4_5']);
+    $slideBDD->updateSlide($slide4);
+}
+
+header("Location: Admin.php");
 ?>
 

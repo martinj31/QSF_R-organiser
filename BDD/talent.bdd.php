@@ -98,9 +98,10 @@ class talentBDD {
     }
 
     public function selectTalentByUser($usercode) {
-
+        
         $vide = '';
         $test = "";
+        $talents = [];
         $query = " select t.ReponseT, t.VisibiliteT, t.CodeT, t.TitreT, t.DatePublicationT, c.PhotoC from categories c, talents t, proposer p where p.CodeT = t.CodeT and c.CodeC = t.CodeC and p.CodeU = {$usercode} order by t.CodeT DESC";
         $req = $this->_bdd->query($query);
 

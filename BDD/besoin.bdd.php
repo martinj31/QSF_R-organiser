@@ -72,14 +72,14 @@ class besoinBDD {
 
         $req->closeCursor();
     }
-    
-    
+
     //le user veut que cette carte soit visible 
-    public function userUpdateBesoinVisible($CodeB) {  //fonction pour l'affichage des cartes besoins
-        $req = $this->_bdd->prepare('UPDATE besoins SET VisibiliteB = 0 WHERE CodeB = :CodeB ');
+    public function userUpdateBesoinVisible($CodeB, $VisibiliteB) {  //fonction pour l'affichage des cartes besoins
+        
+        $req = $this->_bdd->prepare('UPDATE besoins SET VisibiliteB = :VisibiliteB WHERE CodeB = :CodeB ');
 
         $req->bindValue(':CodeB', $CodeB, PDO::PARAM_INT);
-
+        $req->bindValue(':VisibiliteB', $VisibiliteB, PDO::PARAM_INT);
 
         return $req->execute();
 
@@ -90,7 +90,6 @@ class besoinBDD {
 
     //Liaison User / Besoin dans a table saisir
     public function saisirBesoinEtUser($usercode, $codeb) {  //fonction pour l'affichage des cartes besoins
-        
         $req = $this->_bdd->prepare('INSERT INTO saisir
                                              SET CodeU = :CodeU,
                                                  CodeB = :CodeB
@@ -107,9 +106,8 @@ class besoinBDD {
 
         $req->closeCursor();
     }
-    
-    
-     public function selectBesoinSearch($carteb) {
+
+    public function selectBesoinSearch($carteb) {
 
         $vide = '';
         $besoins = [];
@@ -119,9 +117,8 @@ class besoinBDD {
         $datas = $req->fetch(PDO::FETCH_ASSOC);
 
         if ($req) {
-           
-                $besoins[] = new besoin($datas);
-            
+
+            $besoins[] = new besoin($datas);
         } else {
             return $vide;
         }
@@ -176,11 +173,10 @@ class besoinBDD {
 
         $req->execute();
 
-       
+
         $req->closeCursor();
     }
-    
-    
+
     //UPDATE besoins INNER JOIN saisir ON besoins.CodeB = saisir.CodeB SET besoins.VisibiliteB = 0 WHERE saisir.CodeU = ?
     public function updateBesoinUserDeleting($id) {
         $req = $this->_bdd->prepare('UPDATE besoins
@@ -189,19 +185,19 @@ class besoinBDD {
                                     WHERE saisir.CodeU =:id
                                     ');
 
-        
+
         $req->bindValue(':id', $id, PDO::PARAM_INT);
 
         $req->execute();
 
-       
+
         $req->closeCursor();
     }
 
     //T = ID de besoin
     public function un_besoinx($T) {  //fonction pour afficher les information d'un carte besoin
         $vide = '';
-        $T = (int)$T;
+        $T = (int) $T;
 
         $req = $this->_bdd->query("select b.CodeB, b.TypeB, b.VisibiliteB, b.TitreB, c.CodeC, c.PhotoC, c.NomC, b.DatePublicationB, b.DescriptionB, b.DateButoireB from besoins b, categories c where b.CodeC = c.CodeC and b.CodeB = '$T' ");
         //$query = "select b.CodeB, b.TypeB, b.VisibiliteB, b.TitreB, c.PhotoC, b.DatePublicationB, b.DescriptionB, b.DateButoireB from besoins b, categories c where b.CodeC = c.CodeC and b.CodeB = '$T' ";
@@ -243,8 +239,6 @@ class besoinBDD {
 
             return $datas['CodeB'];
         }
-
-
 
         $req->closeCursor();
     }
@@ -373,11 +367,27 @@ class besoinBDD {
     }
     
     
-    
+    //Select l'email et le titre en fonction de l'id de l'atelier
+    public function saisirEmailEtTitreBesoin($CodeB) {
+
+        $besoinTab = [];
+        $req = $this->_bdd->query("SELECT u.Email, b.TitreB FROM utilisateurs u, saisir s, besoins b WHERE u.CodeU = s.CodeU and s.CodeB = b.CodeB and s.CodeB = $CodeB");
+
+        var_dump($req);
+        while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
+
+            $besoinTab[] = ['Email' => $datas['Email'], 'Titre' => $datas['TitreB']];
+        }
+        return $besoinTab;
+
+        $req->closeCursor();
+    }
+
     public function selectBesoinsByUser($usercode) {
 
         $vide = '';
         $test = "";
+        $besoins = [];
         $query = "select b.ReponseB, b.VisibiliteB, b.CodeB, b.TitreB, b.DescriptionB, b.DatePublicationB, b.DateButoireB, c.PhotoC from categories c, besoins b, saisir s where s.CodeB = b.CodeB and c.CodeC = b.CodeC and s.CodeU = {$usercode} order by b.CodeB DESC ";
 
         $req = $this->_bdd->query($query);
@@ -393,7 +403,7 @@ class besoinBDD {
                 $besoin->setTitreB($datas['TitreB']);
                 $besoin->setDateButoireB($datas['DateButoireB']);
                 $besoin->setDescriptionB($datas['DescriptionB']);
-               // $besoin->setTypeB($datas['TypeB']);
+                // $besoin->setTypeB($datas['TypeB']);
                 $besoin->setDatePublicationB($datas['DatePublicationB']);
 
                 $besoins[] = ['besoin' => $besoin, 'photo' => $datas['PhotoC']];

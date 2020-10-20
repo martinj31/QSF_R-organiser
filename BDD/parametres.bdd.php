@@ -42,7 +42,23 @@ class parametresBDD {
             return $vide;
         }
 
-      
+        $req->closeCursor();
+    }
+    
+    
+    public function updateUser( $Interval) {
+        $req = $this->_bdd->prepare('UPDATE parametres
+                                        SET  Interval = :Interval
+                                    ');
+
+        // var_dump($utilisateur);
+       
+        $req->bindValue(':Interval', $Interval, PDO::PARAM_INT);
+        
+
+
+
+        $req->execute();
 
         $req->closeCursor();
     }

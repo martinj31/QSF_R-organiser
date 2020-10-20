@@ -29,7 +29,6 @@ class utilisateurBDD {
 
     public function addUser(utilisateur $utilisateur) {  //fonction pour l'affichage des cartes besoins
         if ($Type != Null) {                            // Type est de Pro et Perso
-            
             $query = "INSERT INTO utilisateurs SET NomU = :NomU, PrenomU = :PrenomU, Email = :Email, MotDePasse = :MotDePasse, TypeU = :TypeU";
             $req = $this->_bdd->prepare($query);
             $req->bindValue(':NomU', $utilisateur->getNomU(), PDO::PARAM_STR);
@@ -37,7 +36,6 @@ class utilisateurBDD {
             $req->bindValue(':Email', $utilisateur->getEmail(), PDO::PARAM_STR);
             $req->bindValue(':MotDePasse', $utilisateur->getMotDePasse(), PDO::PARAM_STR);
             $req->bindValue(':TypeU', $utilisateur->getTypeU(), PDO::PARAM_INT);
-            
         } else {
             $query = "INSERT INTO utilisateurs SET NomU = :NomU, PrenomU = :PrenomU, Email = :Email, MotDePasse = :MotDePasse";
             $req = $this->_bdd->prepare($query);
@@ -59,7 +57,7 @@ class utilisateurBDD {
     //Pour le mail en créant un besoin
     public function saisirEmailEtTitreBesoin($usercode) {
 
-
+        $besoinsTab = [];
         $req = $this->_bdd->query("select u.Email, b.TitreB from utilisateurs u, besoins b, saisir s where u.CodeU = $usercode and u.CodeU = s.CodeU and s.CodeB = b.CodeB order by b.CodeB DESC limit 1");
         //$query = "select b.CodeB, b.TypeB, b.VisibiliteB, b.TitreB, c.PhotoC, b.DatePublicationB, b.DescriptionB, b.DateButoireB from besoins b, categories c where b.CodeC = c.CodeC and b.CodeB = '$T' ";
         //$datas = $req->fetch(PDO::FETCH_ASSOC);
@@ -68,8 +66,8 @@ class utilisateurBDD {
 
             $besoinsTab[] = ['Email' => $datas['Email'], 'Titre' => $datas['TitreB']];
         }
-        
-        
+
+
         return $besoinsTab;
 
         $req->closeCursor();
@@ -78,9 +76,8 @@ class utilisateurBDD {
     //Pour le mail en créant un atelier
     public function saisirEmailEtTitreAtelier($usercode) {
 
-
+        $atelierTab = [];
         $req = $this->_bdd->query("select u.Email, a.TitreA from utilisateurs u, ateliers a, participera p where u.CodeU = " . $usercode . " and u.CodeU = p.CodeU and p.CodeA = a.CodeA order by a.CodeA DESC limit 1");
-
 
         while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
 
@@ -94,10 +91,10 @@ class utilisateurBDD {
     //Pour le mail en créant un talent
     public function saisirEmailEtTitreTalent($usercode) {
 
-
+        $talentTab = [];
         $req = $this->_bdd->query("select u.Email, t.TitreT from utilisateurs u, talents t, proposer p where u.CodeU = " . $usercode . " and u.CodeU = p.CodeU and p.CodeT = t.CodeT order by t.CodeT DESC limit 1");
 
-        
+
         while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
 
             $talentTab[] = ['Email' => $datas['Email'], 'Titre' => $datas['TitreT']];
@@ -106,8 +103,7 @@ class utilisateurBDD {
 
         $req->closeCursor();
     }
-    
-    
+
     public function selectAllUtilisateurs() {
 
         $vide = '';
@@ -132,10 +128,8 @@ class utilisateurBDD {
 
         $req->closeCursor();
     }
-    
-    
-    
-     public function selectUtilisateurSearch($cartea) {
+
+    public function selectUtilisateurSearch($cartea) {
 
         $vide = '';
         $utilisateurs = [];
@@ -145,9 +139,8 @@ class utilisateurBDD {
         $datas = $req->fetch(PDO::FETCH_ASSOC);
 
         if ($req) {
-           
-                $utilisateurs[] = new utilisateur($datas);
-            
+
+            $utilisateurs[] = new utilisateur($datas);
         } else {
             return $vide;
         }
@@ -159,13 +152,12 @@ class utilisateurBDD {
 
         $req->closeCursor();
     }
-    
 
     public function un_User($usercode) {  //fonction pour afficher les information d'un carte besoin
         $vide = '';
         // $usercode = (int)$usercode;
 
-        $req = $this->_bdd->query(" select * from utilisateurs where CodeU = {$usercode} ");
+        $req = $this->_bdd->query("select * from utilisateurs where CodeU = {$usercode} ");
         //$query = "select b.CodeB, b.TypeB, b.VisibiliteB, b.TitreB, c.PhotoC, b.DatePublicationB, b.DescriptionB, b.DateButoireB from besoins b, categories c where b.CodeC = c.CodeC and b.CodeB = '$T' ";
         //$datas = $req->fetch(PDO::FETCH_ASSOC);
 
@@ -192,13 +184,11 @@ class utilisateurBDD {
 
         $req->closeCursor();
     }
-    
-    
-    
-     //T = ID de besoin
+
+    //T = ID de besoin
     public function un_userLog($Email) {  //fonction pour afficher les information d'un carte besoin
         $vide = '';
-        
+
 
         $req = $this->_bdd->query("select * from utilisateurs where Email = '$Email' ");
         //$query = "select b.CodeB, b.TypeB, b.VisibiliteB, b.TitreB, c.PhotoC, b.DatePublicationB, b.DescriptionB, b.DateButoireB from besoins b, categories c where b.CodeC = c.CodeC and b.CodeB = '$T' ";
@@ -208,17 +198,15 @@ class utilisateurBDD {
 
             while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
 
-            $utilisateur = new utilisateur([]);
+                $utilisateur = new utilisateur([]);
 
 
-            $utilisateur->setEmail($datas['Email']);
-            $utilisateur->setNomU($datas['NomU']);
-            $utilisateur->setPrenomU($datas['PrenomU']);
-            $utilisateur->setTypeU($datas['TypeU']);
-            $utilisateur->setRoleU($datas['RoleU']);
-            $utilisateur->setMotDePasse($datas['MotDePasse']);
-
-                
+                $utilisateur->setEmail($datas['Email']);
+                $utilisateur->setNomU($datas['NomU']);
+                $utilisateur->setPrenomU($datas['PrenomU']);
+                $utilisateur->setTypeU($datas['TypeU']);
+                $utilisateur->setRoleU($datas['RoleU']);
+                $utilisateur->setMotDePasse($datas['MotDePasse']);
             }
         } else {
             return $vide;
@@ -240,7 +228,7 @@ class utilisateurBDD {
                                     ');
 
         // var_dump($utilisateur);
-       
+
         $req->bindValue(':Email', $utilisateur->getEmail(), PDO::PARAM_STR);
         $req->bindValue(':NomU', $utilisateur->getNomU(), PDO::PARAM_STR);
         $req->bindValue(':PrenomU', $utilisateur->getPrenomU(), PDO::PARAM_INT);

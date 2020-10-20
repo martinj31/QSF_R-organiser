@@ -1,18 +1,36 @@
-<?php 
-    require_once('Fonctions.php');
+<?php
 
-    //Envoyer le mail notification, avant de rendre anonyme
-    if (isset($_POST['codeu'])) {
-        
-        $sql = "SELECT Email FROM utilisateurs WHERE CodeU = {$_POST['codeu']}";
-        $result = mysqli_query ($session, $sql);
-    
-        if ($email = mysqli_fetch_array($result)) {   
-            $Email = $email['Email'];
-            
-            $destinataire = "$Email"; // adresse mail du destinataire
-            $sujet = "Votre compte a &eacute;t&eacute; bloqu&eacute; par l'administrateur"; // sujet du mail
-             $message = '<!DOCTYPE html>
+require_once('../../FONCTIONCOMMUNE/Fonctions.php');
+require_once('../../BDD/connexion.bdd.php');
+require_once('../../BDD/utilisateur.bdd.php');
+require_once('../../BDD/abonner.bdd.php');
+require_once('../../BDD/besoin.bdd.php');
+require_once('../../BDD/talent.bdd.php');
+require_once('../../PHPMailer/src/Exception.php');
+require_once('../../PHPMailer/src/PHPMailer.php');
+require_once('../../PHPMailer/src/SMTP.php');
+require_once('../../PHPMailer/src/PHPMailerAutoload.php');
+
+$db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
+$bdd = $db->connect();
+
+$utilisateurs = new utilisateurBDD($bdd);
+$abonners = new abonnerBDD($bdd);
+$besoins = new besoinBDD($bdd);
+$talents = new talentBDD($bdd);
+$utilisateur = $utilisateurs->un_User($_POST['codeu']);
+//Envoyer le mail notification, avant de rendre anonyme
+if (isset($_POST['codeu'])) {
+
+    $sql = "SELECT Email FROM utilisateurs WHERE CodeU = {$_POST['codeu']}";
+    $result = mysqli_query($session, $sql);
+
+    if ($utilisateur->getEmail() != null) {
+       $Email = $utilisateur->getEmail();
+
+        $destinataire = "$Email"; // adresse mail du destinataire
+        $sujet = "Votre compte a était bloqué par l'administrateur"; // sujet du mail
+        $message = '<!DOCTYPE html>
             <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
             <head>
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -340,63 +358,96 @@
             </body>
             </html>'; // message qui dira que le destinataire a bien lu votre mail
         // maintenant, l'en-tête du mail
-        /*$header = "From: [Plateforme]\r\n"; 
-        $headers = 'Content-Type: text/plain; charset=utf-8' . "\r\n";
-        $header .= "Disposition-Notification-To:l'email d'un administrateur"; // c'est ici que l'on ajoute la directive*/
-        
-           // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
-     $headers[] = 'MIME-Version: 1.0';
-     $headers[] = 'Content-type: text/html; charset=iso-8859-1';
+        /* $header = "From: [Plateforme]\r\n"; 
+          $headers = 'Content-Type: text/plain; charset=utf-8' . "\r\n";
+          $header .= "Disposition-Notification-To:l'email d'un administrateur"; // c'est ici que l'on ajoute la directive */
 
-     // En-têtes additionnels
+        // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
+       /* $headers[] = 'MIME-Version: 1.0';
+        $headers[] = 'Content-type: text/html; charset=iso-8859-1';
+
+        // En-têtes additionnels
+
+        $headers[] = 'From: [COUP DE MAIN, COUP DE POUCE]<admincmcp@assurance-maladie.fr>';
+
+
+
+        mail($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  
+         */
+        
+        
+         $Mailer = new PHPMailer\PHPMailer\PHPMailer(true);
+        $Mailer->SMTPDebug = 0;
+        $Mailer->isSMTP();
+
+        //$Mailer->SMTPAuth = true;
+        $Mailer->Timeout = 10000;
+        $Mailer->Host = 'smtp.cpam-toulouse.cnamts.fr';
+        $Mailer->Port = 25;
+        $Mailer->isHTML(true);
+        $Mailer->CharSet = "UTF-8";
+        $Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
+        $Mailer->Subject = $sujet;
+        $Mailer->Body = $message;
+        $Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
+        $Mailer->AddAddress($destinataire);
+        if ($Mailer->send()) {
+            header("Location:../MONESPACE/MonProfil.php");
+        }
     
-     $headers[] = 'From: [COUP DE MAIN, COUP DE POUCE]<admincmcp@assurance-maladie.fr>';
-
-     
-     
-     mail ($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  
-        
-            
-            
         }
         
-        /* Rendre l'utilisateur et tous ses cartes, catégories en anonyme */
-        /* tous ses cartes */
-        $S1 = mysqli_prepare($session, "UPDATE besoins INNER JOIN saisir ON besoins.CodeB = saisir.CodeB SET besoins.VisibiliteB = 0 WHERE saisir.CodeU = ?");
-        mysqli_stmt_bind_param($S1, 'i', $_POST['codeu']);
-        mysqli_stmt_execute($S1);
 
-        $S2 = mysqli_prepare($session, "UPDATE talents INNER JOIN proposer ON talents.CodeT = proposer.CodeT SET talents.VisibiliteT = 0 WHERE proposer.CodeU = ?");
-        mysqli_stmt_bind_param($S2, 'i', $_POST['codeu']);
-        mysqli_stmt_execute($S2);
+    $utilisateur->setCodeU($usercode);
+    $utilisateur->setEmail('XXXXX');
+//$utilisateur->setAnonyme(0);
+    $utilisateur->setNomU('XXXXX');
+    $utilisateur->setPrenomU('XXXXX');
 
-        /* tous ses categories */
 
-        $S3 = mysqli_prepare($session, "DELETE FROM `abonner` WHERE `CodeU` = ? ");
-        mysqli_stmt_bind_param($S3, 'i', $_POST['codeu']);
-        mysqli_stmt_execute($S3);
 
-         /* le compte */
+    $besoins->updateBesoinUserDeleting($usercode);
+    $talents->updateTalentUserDeleting($usercode);
+    $abonners->deleteAbonner($usercode);
+    $utilisateurs->updateUser($utilisateur);
+    
+    
+    
 
-        $S4 = mysqli_prepare($session, "UPDATE utilisateurs SET Anonyme = 0 WHERE CodeU = ?");
-        mysqli_stmt_bind_param($S4, 'i', $_POST['codeu']);
-        mysqli_stmt_execute($S4);
+    /* Rendre l'utilisateur et tous ses cartes, catégories en anonyme */
+    /* tous ses cartes */
+    /*   $S1 = mysqli_prepare($session, "UPDATE besoins INNER JOIN saisir ON besoins.CodeB = saisir.CodeB SET besoins.VisibiliteB = 0 WHERE saisir.CodeU = ?");
+      mysqli_stmt_bind_param($S1, 'i', $_POST['codeu']);
+      mysqli_stmt_execute($S1);
 
-        $S5 = mysqli_prepare($session, "UPDATE utilisateurs SET Email = 'XXXXX' WHERE CodeU = ?");
-        mysqli_stmt_bind_param($S5, 'i', $_POST['codeu']);
-        mysqli_stmt_execute($S5);
+      $S2 = mysqli_prepare($session, "UPDATE talents INNER JOIN proposer ON talents.CodeT = proposer.CodeT SET talents.VisibiliteT = 0 WHERE proposer.CodeU = ?");
+      mysqli_stmt_bind_param($S2, 'i', $_POST['codeu']);
+      mysqli_stmt_execute($S2);
 
-        $S6 = mysqli_prepare($session, "UPDATE utilisateurs SET NomU = 'XXXXX' WHERE CodeU = ?");
-        mysqli_stmt_bind_param($S6, 'i', $_POST['codeu']);
-        mysqli_stmt_execute($S6);
+      /* tous ses categories */
 
-        $S7 = mysqli_prepare($session, "UPDATE utilisateurs SET PrenomU = 'XXXXX' WHERE CodeU = ?");
-        mysqli_stmt_bind_param($S7, 'i', $_POST['codeu']);
-        mysqli_stmt_execute($S7);
+    /* $S3 = mysqli_prepare($session, "DELETE FROM `abonner` WHERE `CodeU` = ? ");
+      mysqli_stmt_bind_param($S3, 'i', $_POST['codeu']);
+      mysqli_stmt_execute($S3);
 
-      }
+      /* le compte */
 
-    header("Location: Admin.php")
- 
-     
+    /* $S4 = mysqli_prepare($session, "UPDATE utilisateurs SET Anonyme = 0 WHERE CodeU = ?");
+      mysqli_stmt_bind_param($S4, 'i', $_POST['codeu']);
+      mysqli_stmt_execute($S4);
+
+      $S5 = mysqli_prepare($session, "UPDATE utilisateurs SET Email = 'XXXXX' WHERE CodeU = ?");
+      mysqli_stmt_bind_param($S5, 'i', $_POST['codeu']);
+      mysqli_stmt_execute($S5);
+
+      $S6 = mysqli_prepare($session, "UPDATE utilisateurs SET NomU = 'XXXXX' WHERE CodeU = ?");
+      mysqli_stmt_bind_param($S6, 'i', $_POST['codeu']);
+      mysqli_stmt_execute($S6);
+
+      $S7 = mysqli_prepare($session, "UPDATE utilisateurs SET PrenomU = 'XXXXX' WHERE CodeU = ?");
+      mysqli_stmt_bind_param($S7, 'i', $_POST['codeu']);
+      mysqli_stmt_execute($S7); */
+}
+
+header("Location: Admin.php")
 ?>

@@ -423,7 +423,7 @@ if ($besoinTab = $besoins->addBesoins($besoin)) {
         $Mailer->Subject = $sujet;
         $Mailer->Body = $message;
         $Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
-
+        $Mailer->AddAddress($destinataire);
         if ($Mailer->send()) {
             header("Location:../MONESPACE/MonProfil.php");
         }

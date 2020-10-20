@@ -263,18 +263,19 @@
                     if (!empty($besoinTab)) {
 
                         foreach ($besoinTab as $value) {
-
-                            echo ('<tr>');
-                            echo ('<th scope="row">' . $value->getCodeB() . '</th>');
-                            echo ('<td>' . $value->getTitreB() . '</td>');
-                            echo ('<td>' . $value->getDescriptionB() . '</td>');
-                            echo ('<td>');
-                            echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
-                            echo ('<a href="AdminBesoinX.php?t=' . $value->getCodeB() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
-                            echo ('<button type="submit" name="desactiverb" value="' . $value->getCodeB() . '" class="btn "><img src="img/trash.png" alt="Désactiver" width="30" height="30"></button>');
-                            echo ('</div>');
-                            echo ('</td>');
-                            echo ('</tr>');
+                            if ($value->getVisibiliteB() == 1) {
+                                echo ('<tr>');
+                                echo ('<th scope="row">' . $value->getCodeB() . '</th>');
+                                echo ('<td>' . $value->getTitreB() . '</td>');
+                                echo ('<td>' . $value->getDescriptionB() . '</td>');
+                                echo ('<td>');
+                                echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
+                                echo ('<a href="AdminBesoinX.php?t=' . $value->getCodeB() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
+                                echo ('<button type="submit" name="desactiverb" value="' . $value->getCodeB() . '" class="btn "><img src="img/trash.png" alt="Désactiver" width="30" height="30"></button>');
+                                echo ('</div>');
+                                echo ('</td>');
+                                echo ('</tr>');
+                            }
                         }
                     } else {
 
@@ -303,12 +304,12 @@
                     echo ('</table>');
 
 
-                    /* echo('<br><h3>Besoins cachés</h3><br>');
+                    echo('<br><h3>Besoins cachés</h3><br>');
 
-                      $query2 = "select CodeB, TitreB, DescriptionB from besoins where VisibiliteB = 0 order by CodeB DESC";
+                    /* $query2 = "select CodeB, TitreB, DescriptionB from besoins where VisibiliteB = 0 order by CodeB DESC";
 
                       if (isset($_GET['carteb']) AND!empty($_GET['carteb'])) { /* Recherche par mot clé dans le titre et description */
-                    /*   $carteb = htmlspecialchars($_GET['carteb']);
+                    /*  $carteb = htmlspecialchars($_GET['carteb']);
                       $query2 = "select CodeB, TitreB, DescriptionB from besoins where VisibiliteB = 0 and ( TitreB LIKE '%$carteb%' or DescriptionB LIKE '%$carteb%' ) order by CodeB DESC";
                       }
 
@@ -316,36 +317,39 @@
 
                       if ($result == false) {
                       die("ereur requête : " . mysqli_error($session));
-                      }
+                      } */
 
-                      echo ('<table class="table table-striped">');      /* Tableau pour afficher les besoins cachés */
-                    /*  echo ('<thead>');
-                      echo ('<tr>');
-                      echo ('<th scope="col">#</th>');
-                      echo ('<th scope="col">Titre</th>');
-                      echo ('<th scope="col">Description</th>');
-                      echo ('<th scope="col">Modification</th>');
-                      echo ('</tr>');
-                      echo ('</thead>');
-                      echo ('<tbody>');
-                      if (mysqli_num_rows($result) > 0) {
-                      while ($ligne = mysqli_fetch_array($result)) {
-                      echo ('<tr>');
-                      echo ('<th scope="row">' . $ligne["CodeB"] . '</th>');
-                      echo ('<td>' . $ligne["TitreB"] . '</td>');
-                      echo ('<td>' . $ligne["DescriptionB"] . '</td>');
-                      echo ('<td>');
-                      echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
-                      echo ('<a href="AdminBesoinX.php?t=' . $ligne["CodeB"] . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
-                      echo ('<button type="submit" name="activerb" value="' . $ligne["CodeB"] . '" class="btn "><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS82pYv9wgxfx27dUrgTr8zaGjZ6O3O2CONHA&usqp=CAU" alt="Activer" width="30" height="30"></button>');
-                      echo ('</div>');
-                      echo ('</td>');
-                      echo ('</tr>');
-                      }
-                      }
-                      echo ('</tbody>');
-                      echo ('</table>');
-                     */
+                    echo ('<table class="table table-striped">');      /* Tableau pour afficher les besoins cachés */
+                    echo ('<thead>');
+                    echo ('<tr>');
+                    echo ('<th scope="col">#</th>');
+                    echo ('<th scope="col">Titre</th>');
+                    echo ('<th scope="col">Description</th>');
+                    echo ('<th scope="col">Modification</th>');
+                    echo ('</tr>');
+                    echo ('</thead>');
+                    echo ('<tbody>');
+                    if (!empty($besoinTab)) {
+
+                        foreach ($besoinTab as $value) {
+                            if ($value->getVisibiliteB() == 0) {
+                                echo ('<tr>');
+                                echo ('<th scope="row">' . $value->getCodeB() . '</th>');
+                                echo ('<td>' . $value->getTitreB() . '</td>');
+                                echo ('<td>' . $value->getDescriptionB() . '</td>');
+                                echo ('<td>');
+                                echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
+                                echo ('<a href="AdminBesoinX.php?t=' . $value->getCodeB() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
+                                echo ('<button type="submit" name="activerb" value="' . $value->getCodeB() . '" class="btn "><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS82pYv9wgxfx27dUrgTr8zaGjZ6O3O2CONHA&usqp=CAU" alt="Activer" width="30" height="30"></button>');
+                                echo ('</div>');
+                                echo ('</td>');
+                                echo ('</tr>');
+                            }
+                        }
+                    }
+                    echo ('</tbody>');
+                    echo ('</table>');
+
 
                     echo '</form>
                 </div>
@@ -395,18 +399,19 @@
                     if (!empty($talentTab)) {
 
                         foreach ($talentTab as $value) {
-
-                            echo ('<tr>');
-                            echo ('<th scope="row">' . $value->getCodeT() . '</th>');
-                            echo ('<td>' . $value->getTitreT() . '</td>');
-                            echo ('<td>' . $value->getDescriptionT() . '</td>');
-                            echo ('<td>');
-                            echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
-                            echo ('<a href="AdminTalentX.php?t=' . $value->getCodeT() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
-                            echo ('<button type="submit" name="desactiverb" value="' . $value->getCodeT() . '" class="btn "><img src="img/trash.png" alt="Désactiver" width="30" height="30"></button>');
-                            echo ('</div>');
-                            echo ('</td>');
-                            echo ('</tr>');
+                            if ($value->getVisibiliteT() == 1) {
+                                echo ('<tr>');
+                                echo ('<th scope="row">' . $value->getCodeT() . '</th>');
+                                echo ('<td>' . $value->getTitreT() . '</td>');
+                                echo ('<td>' . $value->getDescriptionT() . '</td>');
+                                echo ('<td>');
+                                echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
+                                echo ('<a href="AdminTalentX.php?t=' . $value->getCodeT() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
+                                echo ('<button type="submit" name="desactiverb" value="' . $value->getCodeT() . '" class="btn "><img src="img/trash.png" alt="Désactiver" width="30" height="30"></button>');
+                                echo ('</div>');
+                                echo ('</td>');
+                                echo ('</tr>');
+                            }
                         }
                     } else {
 
@@ -431,12 +436,12 @@
                     echo ('</tbody>');
                     echo ('</table>');
 
-                    /* echo('<br><h3>Talents cachés</h3><br>');
+                    echo('<br><h3>Talents cachés</h3><br>');
 
-                      $query2 = "select CodeT, TitreT, DescriptionT from talents where VisibiliteT = 0 order by CodeT DESC";
+                    /* $query2 = "select CodeT, TitreT, DescriptionT from talents where VisibiliteT = 0 order by CodeT DESC";
 
                       if (isset($_GET['cartet']) AND!empty($_GET['cartet'])) { /* Recherche par mot clé dans le titre et description */
-                    /*    $cartet = htmlspecialchars($_GET['cartet']);
+                    /* $cartet = htmlspecialchars($_GET['cartet']);
                       $query2 = "select CodeT, TitreT, DescriptionT from talents where VisibiliteT = 0 and ( TitreT LIKE '%$cartet%' or DescriptionT LIKE '%$cartet%' ) order by CodeT DESC";
                       }
 
@@ -444,35 +449,38 @@
 
                       if ($result == false) {
                       die("ereur requête : " . mysqli_error($session));
-                      }
+                      } */
 
-                      echo ('<table class="table table-striped">');      /* Tableau pour afficher les talents cachés */
-                    /* echo ('<thead>');
-                      echo ('<tr>');
-                      echo ('<th scope="col">#</th>');
-                      echo ('<th scope="col">Titre</th>');
-                      echo ('<th scope="col">Description</th>');
-                      echo ('<th scope="col">Modification</th>');
-                      echo ('</tr>');
-                      echo ('</thead>');
-                      echo ('<tbody>');
-                      if (mysqli_num_rows($result) > 0) {
-                      while ($ligne = mysqli_fetch_array($result)) {
-                      echo ('<tr>');
-                      echo ('<th scope="row">' . $ligne["CodeT"] . '</th>');
-                      echo ('<td>' . $ligne["TitreT"] . '</td>');
-                      echo ('<td>' . $ligne["DescriptionT"] . '</td>');
-                      echo ('<td>');
-                      echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
-                      echo ('<a href="AdminTalentX.php?t=' . $ligne["CodeT"] . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
-                      echo ('<button type="submit" name="activert" value="' . $ligne["CodeT"] . '" class="btn "><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS82pYv9wgxfx27dUrgTr8zaGjZ6O3O2CONHA&usqp=CAU" alt="Activer" width="30" height="30"></button>');
-                      echo ('</div>');
-                      echo ('</td>');
-                      echo ('</tr>');
-                      }
-                      }
-                      echo ('</tbody>');
-                      echo ('</table>'); */
+                    echo ('<table class="table table-striped">');      /* Tableau pour afficher les talents cachés */
+                    echo ('<thead>');
+                    echo ('<tr>');
+                    echo ('<th scope="col">#</th>');
+                    echo ('<th scope="col">Titre</th>');
+                    echo ('<th scope="col">Description</th>');
+                    echo ('<th scope="col">Modification</th>');
+                    echo ('</tr>');
+                    echo ('</thead>');
+                    echo ('<tbody>');
+                    if (!empty($talentTab)) {
+
+                        foreach ($talentTab as $value) {
+                            if ($value->getVisibiliteT() == 0) {
+                                echo ('<tr>');
+                                echo ('<th scope="row">' . $value->getCodeT() . '</th>');
+                                echo ('<td>' . $value->getTitreT() . '</td>');
+                                echo ('<td>' . $value->getDescriptionT() . '</td>');
+                                echo ('<td>');
+                                echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
+                                echo ('<a href="AdminTalentX.php?t=' . $value->getCodeT() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
+                                echo ('<button type="submit" name="activert" value="' . $value->getCodeT() . '" class="btn "><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS82pYv9wgxfx27dUrgTr8zaGjZ6O3O2CONHA&usqp=CAU" alt="Activer" width="30" height="30"></button>');
+                                echo ('</div>');
+                                echo ('</td>');
+                                echo ('</tr>');
+                            }
+                        }
+                    }
+                    echo ('</tbody>');
+                    echo ('</table>');
 
                     echo '</form>
             </div>
@@ -524,18 +532,19 @@
                     if (!empty($atelierTab)) {
 
                         foreach ($atelierTab as $value) {
-
-                            echo ('<tr>');
-                            echo ('<th scope="row">' . $value->getCodeA() . '</th>');
-                            echo ('<td>' . $value->getTitreA() . '</td>');
-                            echo ('<td>' . $value->getDescriptionA() . '</td>');
-                            echo ('<td>');
-                            echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
-                            echo ('<a href="AdminAtelierX.php?t=' . $value->getCodeA() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
-                            echo ('<button type="submit" name="desactiverb" value="' . $value->getCodeA() . '" class="btn "><img src="img/trash.png" alt="Désactiver" width="30" height="30"></button>');
-                            echo ('</div>');
-                            echo ('</td>');
-                            echo ('</tr>');
+                            if ($value->getVisibiliteA() == 1) {
+                                echo ('<tr>');
+                                echo ('<th scope="row">' . $value->getCodeA() . '</th>');
+                                echo ('<td>' . $value->getTitreA() . '</td>');
+                                echo ('<td>' . $value->getDescriptionA() . '</td>');
+                                echo ('<td>');
+                                echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
+                                echo ('<a href="AdminAtelierX.php?t=' . $value->getCodeA() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
+                                echo ('<button type="submit" name="desactivera" value="' . $value->getCodeA() . '" class="btn "><img src="img/trash.png" alt="Désactiver" width="30" height="30"></button>');
+                                echo ('</div>');
+                                echo ('</td>');
+                                echo ('</tr>');
+                            }
                         }
                     } else {
 
@@ -561,49 +570,52 @@
                     echo ('</tbody>');
                     echo ('</table>');
 
-                    /*   echo('<br><h3>Ateliers cachés</h3><br>');
+                    echo('<br><h3>Ateliers cachés</h3><br>');
 
-                      $query2 = "select CodeA, TitreA, DescriptionA from ateliers where VisibiliteA = 0 order by CodeA DESC";
+                   /* $query2 = "select CodeA, TitreA, DescriptionA from ateliers where VisibiliteA = 0 order by CodeA DESC";
 
-                      if (isset($_GET['cartea']) AND!empty($_GET['cartea'])) { /* Recherche par mot clé dans le titre et description */
-                    /*     $cartet = htmlspecialchars($_GET['cartea']);
-                      $query2 = "select CodeA, TitreA, DescriptionA from ateliers where VisibiliteA = 0 and ( TitreA LIKE '%$cartea%' or DescriptionA LIKE '%$cartea%' ) order by CodeA DESC";
-                      }
+                    if (isset($_GET['cartea']) AND!empty($_GET['cartea'])) { /* Recherche par mot clé dans le titre et description */
+                     /*   $cartet = htmlspecialchars($_GET['cartea']);
+                        $query2 = "select CodeA, TitreA, DescriptionA from ateliers where VisibiliteA = 0 and ( TitreA LIKE '%$cartea%' or DescriptionA LIKE '%$cartea%' ) order by CodeA DESC";
+                    }
 
-                      /* $result = mysqli_query($session, $query2);
+                    $result = mysqli_query($session, $query2);
 
-                      if ($result == false) {
-                      die("ereur requête : " . mysqli_error($session));
-                      } */
+                    if ($result == false) {
+                        die("ereur requête : " . mysqli_error($session));
+                    }*/
 
-                    /*  echo ('<table class="table table-striped">');      /* Tableau pour afficher les talents cachés */
-                    /*     echo ('<thead>');
-                      echo ('<tr>');
-                      echo ('<th scope="col"></th>');
-                      echo ('<th scope="col">#</th>');
-                      echo ('<th scope="col">Titre</th>');
-                      echo ('<th scope="col">Description</th>');
-                      echo ('<th scope="col">Modification</th>');
-                      echo ('</tr>');
-                      echo ('</thead>');
-                      echo ('<tbody>');
-                      if (mysqli_num_rows($result) > 0) {
-                      while ($ligne = mysqli_fetch_array($result)) {
-                      echo ('<tr>');
-                      echo ('<th scope="row"><input type="radio" name="codea" value="' . $ligne["CodeA"] . '"/></th>');
-                      echo ('<th scope="row">' . $ligne["CodeA"] . '</th>');
-                      echo ('<td>' . $ligne["TitreA"] . '</td>');
-                      echo ('<td>' . $ligne["DescriptionA"] . '</td>');
-                      echo ('<td>');
-                      echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
-                      echo ('<a href="AdminAtelierX.php?t=' . $ligne["CodeA"] . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
-                      echo ('</div>');
-                      echo ('</td>');
-                      echo ('</tr>');
-                      }
-                      }
-                      echo ('</tbody>');
-                      echo ('</table>'); */
+                    echo ('<table class="table table-striped">');      /* Tableau pour afficher les talents cachés */
+                    echo ('<thead>');
+                    echo ('<tr>');
+                    echo ('<th scope="col"></th>');
+                    echo ('<th scope="col">#</th>');
+                    echo ('<th scope="col">Titre</th>');
+                    echo ('<th scope="col">Description</th>');
+                    echo ('<th scope="col">Modification</th>');
+                    echo ('</tr>');
+                    echo ('</thead>');
+                    echo ('<tbody>');
+                     if (!empty($atelierTab)) {
+
+                        foreach ($atelierTab as $value) {
+                            if ($value->getVisibiliteA() == 0) {
+                            echo ('<tr>');
+                            echo ('<th scope="row"><input type="radio" name="codea" value="' . $value->getCodeA() . '"/></th>');
+                            echo ('<th scope="row">' . $value->getCodeA() . '</th>');
+                            echo ('<td>' . $value->getTitreA() . '</td>');
+                            echo ('<td>' . $value->getDescriptionA() . '</td>');
+                            echo ('<td>');
+                            echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
+                            echo ('<a href="AdminAtelierX.php?t=' . $value->getCodeA() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
+                            echo ('</div>');
+                            echo ('</td>');
+                            echo ('</tr>');
+                            }
+                        }
+                    }
+                    echo ('</tbody>');
+                    echo ('</table>');
                     echo ('<p>Veuillez choisir un atelier puis saisir un URL pour l\'activer</p>');
                     echo ('<input name="url" type="text"/>');
                     echo ('<button type="submit" name="activera" class="btn btn-secondary"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS82pYv9wgxfx27dUrgTr8zaGjZ6O3O2CONHA&usqp=CAU" alt="Activer" width="30" height="30"></button>');
@@ -1033,14 +1045,13 @@
                 <form method="GET" action="AdminParametresFonction.php">';
 
                     $parametresBDD = new parametresBDD($bdd);
-                  
 
-                    if (!empty( $parametresBDD->selectParamtre())) {
 
-                       
+                    if (!empty($parametresBDD->selectParamtre())) {
 
-                              echo '<p>Le délai actuel est de ' .  $parametresBDD->selectParamtre() . ' jours</p>';
-                        
+
+
+                        echo '<p>Le délai actuel est de ' . $parametresBDD->selectParamtre() . ' jours</p>';
                     }
 
                     /* $query = "select p.Interval from parametres as p";

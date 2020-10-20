@@ -67,12 +67,12 @@ if ($atelierTest === true) {
       mysqli_stmt_execute($stmt2);
       } */
 
-   
+
 
 
 
     $emailEtTitre = $user->saisirEmailEtTitreAtelier($usercode);
-    var_dump($emailEtTitre[0]['Email']);
+   
     /* $sql = "select u.Email, a.TitreA from utilisateurs u, ateliers a, participera p where u.CodeU = $usercode and u.CodeU = p.CodeU and p.CodeA = a.CodeA order by a.CodeA DESC limit 1";
       $result = mysqli_query($session, $sql); */
     if ($emailEtTitre[0]['Email'] != NULL) {
@@ -430,10 +430,10 @@ if ($atelierTest === true) {
         $Mailer->Subject = $sujet;
         $Mailer->Body = $message;
         $Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
-
+        $Mailer->AddAddress($destinataire);
 
         if ($Mailer->send()) {
-           header("Location:../MONESPACE/MonProfil.php");
+            header("Location:../MONESPACE/MonProfil.php");
         }
         // mail($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  
     }

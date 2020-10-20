@@ -12,16 +12,14 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/QSF/QSF/CLASS/CompteurBClass.php</file>
-            <file>file:/C:/xampp/htdocs/QSF/QSF/BDD/evaluerB.bdd.php</file>
-            <file>file:/C:/xampp/htdocs/QSF/QSF/BDD/compteurB.bdd.php</file>
-            <file>file:/C:/xampp/htdocs/QSF/QSF/BDD/compteurT.bdd.php</file>
-            <file>file:/C:/xampp/htdocs/QSF/QSF/CLASS/BesoinClass.php</file>
-            <file>file:/C:/xampp/htdocs/QSF/QSF/BDD/evaluerT.bdd.php</file>
-            <file>file:/C:/xampp/htdocs/QSF/QSF/CLASS/CompteurTClass.php</file>
-            <file>file:/C:/xampp/htdocs/QSF/QSF/CLASS/EvaluerTClass.php</file>
-            <file>file:/C:/xampp/htdocs/QSF/QSF/CLASS/EvaluerBClass.php</file>
-            <file>file:/C:/xampp/htdocs/QSF/QSF/BDD/talent.bdd.php</file>
+            <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/ACCUEIL/index.php</file>
+            <file>file:/C:/xampp/htdocs/QSF/QSF/BDD/utilisateur.bdd.php</file>
+            <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/ATELIER/Saisir1Atelier.php</file>
+            <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/slide.html.php</file>
+            <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/ADMIN/Admin.php</file>
+            <file>file:/C:/xampp/htdocs/QSF/QSF/BDD/parametres.bdd.php</file>
+            <file>file:/C:/xampp/htdocs/QSF/QSF/BDD/atelier.bdd.php</file>
+            <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/ADMIN/AdminCarteInapproprieA.php</file>
         </group>
     </open-files>
 </project-private>

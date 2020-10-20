@@ -182,7 +182,7 @@
                             // echo '<br><br>';
                             //var_dump($value['besoin']->getDateButoireB());
 
-                            if ($value['besoin']->getVisibiliteB() == 1) {
+                            if (strtotime($besoin["DateButoireB"]) > strtotime(date("yy/m/d")) && $value['besoin']->getVisibiliteB() == 1) {
 
                                 echo('<li class="list-inline-item">');
                                 if ($value['besoin']->getReponseB() > 0) {  // si il y a des réponses non traitées, affichir le badge rouge
@@ -210,15 +210,15 @@
 
                         echo('<h5>Aucun résultat</h5>');
                     }
-                    /* $query = "select b.ReponseB, b.VisibiliteB, b.CodeB, b.TitreB, b.DescriptionB, b.DatePublicationB, b.DateButoireB, c.PhotoC from categories c, besoins b, saisir s where s.CodeB = b.CodeB and c.CodeC = b.CodeC and s.CodeU = {$usercode} order by b.CodeB DESC ";
+                   /* $query = "select b.ReponseB, b.VisibiliteB, b.CodeB, b.TitreB, b.DescriptionB, b.DatePublicationB, b.DateButoireB, c.PhotoC from categories c, besoins b, saisir s where s.CodeB = b.CodeB and c.CodeC = b.CodeC and s.CodeU = {$usercode} order by b.CodeB DESC ";
 
                       $result = mysqli_query ($session, $query);
 
                       if ($result == false) {
                       die("ereur requête : ". mysqli_error($session) );
-                      } */
+                      } 
 
-                    /* if (mysqli_num_rows($result)>0) {
+                    if (mysqli_num_rows($result)>0) {
                       while ($besoin = mysqli_fetch_array($result)) {
                       if (strtotime($besoin["DateButoireB"]) > strtotime(date("yy/m/d")) && $besoin["VisibiliteB"] == 1) {
                       echo('<li class="list-inline-item">');
@@ -295,7 +295,7 @@
                                     <ul class="list-inline">
 
                                         <?php
-                                        $talents = new talentBDD($bdd);
+                                       $talents = new talentBDD($bdd);
 
                                         $talentTab = $talents->selectTalentByUser($usercode);
 
@@ -344,11 +344,11 @@
 
                                           if ($result == false) {
                                           die("ereur requête : " . mysqli_error($session));
-                                          } */
+                                          } 
 
 
 
-                                        /* if (mysqli_num_rows($result) > 0) {
+                                         if (mysqli_num_rows($result) > 0) {
                                           while ($talent = mysqli_fetch_array($result)) {
                                           if ($talent["VisibiliteT"] == 1) {  //si la carte n'a pas été caché
                                           echo('<li class="list-inline-item">');

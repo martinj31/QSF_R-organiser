@@ -8,9 +8,7 @@
 
 <title>Modifier le mot de passe</title>
 
-    <!-- Custom styles for this template -->
-    <link rel="stylesheet" type="text/css" href="../../STYLE/style.css">
-    <script src="jquery.js"></script>
+   
   </head>
   <body>
 

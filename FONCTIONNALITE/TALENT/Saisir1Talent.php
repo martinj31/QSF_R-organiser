@@ -33,9 +33,6 @@ $bdd = $db->connect();
 $user = new utilisateurBDD($bdd);
 $talents = new talentBDD($bdd);
 //$besoins = new besoin();
-
-
-
 //ajouter un nouveau talent
 /* $stmt = mysqli_prepare($session, "INSERT INTO talents(TitreT,DescriptionT,DatePublicationT,TypeT,CodeC) VALUES(?,?,?,?,?)");  //insérer un nouveau talet dans le table talents
   mysqli_stmt_bind_param($stmt, 'ssssi', $TitreT, $DescriptionT, $DatePublicationT, $TypeT, $Categorie); */
@@ -45,9 +42,9 @@ if ($talents->addTalent($talent)) {
     echo "Votre talent a bien été enregistré";
 
     $talentLastID = $talents->idLastTalent();
-    
-    
-    
+
+
+
     $talents->proposerTalentEtUser($usercode, $talentLastID);
 
 
@@ -62,14 +59,14 @@ if ($talents->addTalent($talent)) {
       mysqli_stmt_execute($stmt2);
       } */
 
-   // header("Location: ../MONESPACE/MonProfil.php");
-    
+    // header("Location: ../MONESPACE/MonProfil.php");
+
     var_dump($usercode);
-    
+
     $emailEtTitre = $user->saisirEmailEtTitreTalent($usercode);
 
-    /*$sql = "select u.Email, t.TitreT from utilisateurs u, talents t, proposer p where u.CodeU = $usercode and u.CodeU = p.CodeU and p.CodeT = t.CodeT order by t.CodeT DESC limit 1";
-    $result = mysqli_query($session, $sql);*/
+    /* $sql = "select u.Email, t.TitreT from utilisateurs u, talents t, proposer p where u.CodeU = $usercode and u.CodeU = p.CodeU and p.CodeT = t.CodeT order by t.CodeT DESC limit 1";
+      $result = mysqli_query($session, $sql); */
     if ($emailEtTitre[0]['Email'] != NULL) {
         $Email = $emailEtTitre[0]['Email'];
 
@@ -403,14 +400,14 @@ if ($talents->addTalent($talent)) {
           $header .= "Disposition-Notification-To:l'email d'un administrateur"; // c'est ici que l'on ajoute la directive */
 
         // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
-        /*$headers[0] = 'MIME-Version: 1.0';
-        $headers[1] = 'Content-type: text/html; charset=iso-8859-1';
+        /* $headers[0] = 'MIME-Version: 1.0';
+          $headers[1] = 'Content-type: text/html; charset=iso-8859-1';
 
-        // En-têtes additionnels
+          // En-têtes additionnels
 
-        $headers[2] = 'From: COUP DE MAIN, COUP DE POUCE<admincmcp@assurance-maladie.fr>';
-         
-*/
+          $headers[2] = 'From: COUP DE MAIN, COUP DE POUCE<admincmcp@assurance-maladie.fr>';
+
+         */
         $Mailer = new PHPMailer\PHPMailer\PHPMailer(true);
         $Mailer->SMTPDebug = 0;
         $Mailer->isSMTP();
@@ -425,14 +422,14 @@ if ($talents->addTalent($talent)) {
         $Mailer->Subject = $sujet;
         $Mailer->Body = $message;
         $Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
-
+        $Mailer->AddAddress($destinataire);
         if ($Mailer->send()) {
             header("Location:../MONESPACE/MonProfil.php");
         }
-        
 
 
-       // mail($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  
+
+        // mail($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  
     }
 } else {
     ?>
