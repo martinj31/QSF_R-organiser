@@ -14,12 +14,13 @@
         <group>
             <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/ACCUEIL/index.php</file>
             <file>file:/C:/xampp/htdocs/QSF/QSF/BDD/utilisateur.bdd.php</file>
-            <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/ATELIER/Saisir1Atelier.php</file>
             <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/slide.html.php</file>
             <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/ADMIN/Admin.php</file>
             <file>file:/C:/xampp/htdocs/QSF/QSF/BDD/parametres.bdd.php</file>
+            <file>file:/C:/xampp/htdocs/QSF/QSF/BDD/besoin.bdd.php</file>
             <file>file:/C:/xampp/htdocs/QSF/QSF/BDD/atelier.bdd.php</file>
             <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/ADMIN/AdminCarteInapproprieA.php</file>
+            <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/ADMIN/AdminCarteInapproprieB.php</file>
         </group>
     </open-files>
 </project-private>

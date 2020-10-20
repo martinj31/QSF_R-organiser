@@ -8,7 +8,7 @@ $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
 $bdd = $db->connect();
 
 $parametres = new parametresBDD($bdd);
-$parametres->updateUser($_GET['interval']);
+$parametres->updateParam($_GET['interval']);
 // modifier le délais d'évaluation
 /* query = "UPDATE `parametres` SET `Interval` = {$_GET['interval']}";
   mysqli_query($session, $query); */

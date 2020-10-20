@@ -46,16 +46,16 @@ class parametresBDD {
     }
     
     
-    public function updateUser( $Interval) {
+    public function updateParam( $Interval) {
         $req = $this->_bdd->prepare('UPDATE parametres
-                                        SET  Interval = :Interval
+                                        SET `Interval` = :Interval
                                     ');
 
         // var_dump($utilisateur);
        
         $req->bindValue(':Interval', $Interval, PDO::PARAM_INT);
         
-
+var_dump($req);
 
 
         $req->execute();

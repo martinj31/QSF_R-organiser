@@ -11,7 +11,7 @@ require_once('../../PHPMailer/src/PHPMailerAutoload.php');
 
 //Désactiver une carte qui contient des contenus inappropriés
 
-
+$result = "";
 
 $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
 $bdd = $db->connect();
@@ -21,35 +21,35 @@ $userBDD = new utilisateurBDD($bdd);
 
 // désactiver la carte
 if (isset($_POST['desactivera'])) {
-
+    $result = "supprimé";
     $CodeA = $_POST['desactivera'];
     $atelierBDD->userUpdateAtelierVisible($CodeA);
     /* $stmt1 = mysqli_prepare($session, "UPDATE ateliers SET VisibiliteA = 0 WHERE CodeA = ?");
       mysqli_stmt_bind_param($stmt1, 'i', $CodeA);
       mysqli_stmt_execute($stmt1); */
+    $titreEtEmail = $atelierBDD->saisirEmailEtTitreAtelier($CodeA);
 }
 
-if (isset($_POST['codea'])) {
-    $CodeAC = $_POST['codea'];
-}
-if (isset($_POST['url'])) {
-    $URL = $_POST['url'];
-}
+
 // réactiver la carte 
 if (isset($_POST['activera']) && isset($_POST['url'])) {
+    $result = "activé";
+    $CodeAC = $_POST['$CodeAC'];
 
+    $URL = $_POST['url'];
     $atelierBDD->userUpdateAtelierVisibleAndURL($CodeAC, $URL);
     /* $stmt2 = mysqli_prepare($session, "UPDATE ateliers SET VisibiliteA = 1, URL = ? WHERE CodeA = ?");
       mysqli_stmt_bind_param($stmt2, 'si', $URL, $CodeAC);
       mysqli_stmt_execute($stmt2); */
+    $titreEtEmail = $atelierBDD->saisirEmailEtTitreAtelier($CodeAC);
 }
 
-header("Location: Admin.php");
+//header("Location: Admin.php");
 //Envoyer un mail pour informer cette personne
 
 
 
-$titreEtEmail = $atelierBDD->saisirEmailEtTitreAtelier($CodeA);
+
 /* $sql = "SELECT u.Email, a.TitreA FROM utilisateurs u, participera p, ateliers a WHERE u.CodeU = p.CodeU and p.CodeA = a.CodeA and p.CodeA = $CodeA";
   $result = mysqli_query($session, $sql); */
 
@@ -57,7 +57,7 @@ if ($titreEtEmail[0]['Email'] != NULL) {
     $Email = $titreEtEmail[0]['Email'];
 
     $destinataire = "$Email"; // adresse mail du destinataire
-    $sujet = "Votre atelier «{$Email}» a été supprimé par l'administrateur"; // sujet du mail
+    $sujet = "Votre atelier «{$titreEtEmail[0]['Titre']}» a été {$result} par l'administrateur"; // sujet du mail
     $message = '<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
@@ -313,7 +313,7 @@ href="https://www.twitter.com/" target="_blank"><img width="24" border="0" heigh
 <td valign="top" style="padding-top:5px;padding-right:10px;padding-bottom:5px;padding-left:10px"><div style="font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:15px;color:#114b5f;line-height:25px;text-align:left"></span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
 <p style="padding: 0; margin: 0;">Bonjour,</p><span class="mso-font-fix-tahoma">
 </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
-</span><p style="padding: 0; margin: 0;">Votre atelier « ' . $titreEtEmail[0]['Titre'] . '» a &eacute;t&eacute; supprim&eacute; par l\'administrateur.</p><span class="mso-font-fix-tahoma">
+</span><p style="padding: 0; margin: 0;">Votre atelier « ' . $titreEtEmail[0]['Titre'] . '» a été ' . $result . ' par l\'administrateur.</p><span class="mso-font-fix-tahoma">
 </span><p style="padding: 0; margin: 0;"> &agrave; cause des contenus inappropri&eacute;s.</p><span class="mso-font-fix-tahoma">
 </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
 </span></div>
@@ -420,7 +420,7 @@ href="https://www.twitter.com/" target="_blank"><img width="24" border="0" heigh
     $Mailer->AddAddress($destinataire);
 
     if ($Mailer->send()) {
-        header("Location:../MONESPACE/MonProfil.php");
+        header("Location: Admin.php");
     }
 }
 ?>

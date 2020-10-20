@@ -383,7 +383,7 @@ class atelierBDD {
         $atelierTab = [];
         $req = $this->_bdd->query("SELECT u.Email, a.TitreA FROM utilisateurs u, participera p, ateliers a WHERE u.CodeU = p.CodeU and p.CodeA = a.CodeA and p.CodeA = $CodeA");
 
-
+       
         while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
 
             $atelierTab[] = ['Email' => $datas['Email'], 'Titre' => $datas['TitreA']];
@@ -396,10 +396,13 @@ class atelierBDD {
     
     //le user veut que cette carte  soit  visible 
     public function userUpdateAtelierVisibleAndURL($CodeA, $URL) {  //fonction pour l'affichage des cartes besoins
-        $req = $this->_bdd->prepare('UPDATE ateliers SET VisibiliteA = :VisibiliteA WHERE CodeA = :CodeA ans URL = :URL');
+        $req = $this->_bdd->prepare('UPDATE ateliers 
+                                        SET VisibiliteA = :VisibiliteA,
+                                            URL = :URL
+                                    WHERE CodeA = :CodeA');
 
         $req->bindValue(':CodeA', $CodeA, PDO::PARAM_INT);
-        $req->bindValue(':VisibiliteA', 0, PDO::PARAM_INT);
+        $req->bindValue(':VisibiliteA', 1, PDO::PARAM_INT);
         $req->bindValue(':URL', $URL, PDO::PARAM_STR);
 
 

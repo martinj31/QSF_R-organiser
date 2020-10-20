@@ -373,9 +373,9 @@ class besoinBDD {
         $besoinTab = [];
         $req = $this->_bdd->query("SELECT u.Email, b.TitreB FROM utilisateurs u, saisir s, besoins b WHERE u.CodeU = s.CodeU and s.CodeB = b.CodeB and s.CodeB = $CodeB");
 
-        var_dump($req);
+        
         while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
-
+var_dump($datas);
             $besoinTab[] = ['Email' => $datas['Email'], 'Titre' => $datas['TitreB']];
         }
         return $besoinTab;

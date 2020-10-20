@@ -407,7 +407,7 @@
                                 echo ('<td>');
                                 echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
                                 echo ('<a href="AdminTalentX.php?t=' . $value->getCodeT() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
-                                echo ('<button type="submit" name="desactiverb" value="' . $value->getCodeT() . '" class="btn "><img src="img/trash.png" alt="Désactiver" width="30" height="30"></button>');
+                                echo ('<button type="submit" name="desactivert" value="' . $value->getCodeT() . '" class="btn "><img src="img/trash.png" alt="Désactiver" width="30" height="30"></button>');
                                 echo ('</div>');
                                 echo ('</td>');
                                 echo ('</tr>');
@@ -601,13 +601,13 @@
                         foreach ($atelierTab as $value) {
                             if ($value->getVisibiliteA() == 0) {
                             echo ('<tr>');
-                            echo ('<th scope="row"><input type="radio" name="codea" value="' . $value->getCodeA() . '"/></th>');
+                            echo ('<th scope="row"><input type="radio" name="$CodeAC" value="' . $value->getCodeA() . '"/></th>');
                             echo ('<th scope="row">' . $value->getCodeA() . '</th>');
                             echo ('<td>' . $value->getTitreA() . '</td>');
                             echo ('<td>' . $value->getDescriptionA() . '</td>');
                             echo ('<td>');
                             echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
-                            echo ('<a href="AdminAtelierX.php?t=' . $value->getCodeA() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
+                            echo ('<a href="AdminAtelierX.php?t=' . $value->getCodeA() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');                          
                             echo ('</div>');
                             echo ('</td>');
                             echo ('</tr>');
@@ -618,7 +618,7 @@
                     echo ('</table>');
                     echo ('<p>Veuillez choisir un atelier puis saisir un URL pour l\'activer</p>');
                     echo ('<input name="url" type="text"/>');
-                    echo ('<button type="submit" name="activera" class="btn btn-secondary"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS82pYv9wgxfx27dUrgTr8zaGjZ6O3O2CONHA&usqp=CAU" alt="Activer" width="30" height="30"></button>');
+                    echo ('<button type="submit" name="activera"  class="btn btn-secondary"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS82pYv9wgxfx27dUrgTr8zaGjZ6O3O2CONHA&usqp=CAU" alt="Activer" width="30" height="30"></button>');
                     echo ('</form>');
                     echo ('</div>');
                     ?>         

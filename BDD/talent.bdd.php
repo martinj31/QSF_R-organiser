@@ -326,9 +326,9 @@ class talentBDD {
     }
     
     
-    //le user veut que cette carte soit visible 
-    public function userUpdateTalentVisible($CodeT) {  //fonction pour l'affichage des cartes besoins
-        $req = $this->_bdd->prepare('UPDATE talents SET VisibiliteB = 0 WHERE CodeT = :CodeT ');
+    //le (user ou admin) veut que cette carte ne soit plus visible 
+    public function userUpdateTalentNotVisible($CodeT) {  //fonction pour l'affichage des cartes besoins
+        $req = $this->_bdd->prepare('UPDATE talents SET VisibiliteT = 0 WHERE CodeT = :CodeT ');
 
         $req->bindValue(':CodeT', $CodeT, PDO::PARAM_INT);
 
@@ -336,6 +336,39 @@ class talentBDD {
         return $req->execute();
 
 
+
+        $req->closeCursor();
+    }
+    
+    
+    //le (user ou admin) veut que cette carte ne soit plus visible 
+    public function userUpdateTalentVisible($CodeT) {  //fonction pour l'affichage des cartes besoins
+        $req = $this->_bdd->prepare('UPDATE talents 
+                                        SET VisibiliteT = 1 
+                                    WHERE CodeT = :CodeT ');
+
+        $req->bindValue(':CodeT', $CodeT, PDO::PARAM_INT);
+
+
+        return $req->execute();
+
+
+        $req->closeCursor();
+    }
+    
+    
+    //Select l'email et le titre en fonction de l'id du talent
+    public function saisirEmailEtTitreTalent($CodeT) {
+
+        $talentTab = [];
+        $req = $this->_bdd->query("SELECT u.Email, t.TitreT FROM utilisateurs u, proposer p, talents t WHERE u.CodeU = p.CodeU and p.CodeT = t.CodeT and p.CodeT = $CodeT");
+
+        var_dump($req);
+        while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
+
+            $talentTab[] = ['Email' => $datas['Email'], 'Titre' => $datas['TitreT']];
+        }
+        return $talentTab;
 
         $req->closeCursor();
     }

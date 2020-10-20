@@ -65,6 +65,98 @@ class categorieBDD {
 
         $req->closeCursor();
     }
+    
+    
+    public function une_Categorie($CodeC) {  //fonction pour afficher les information d'un carte besoin
+        $vide = '';
+        // $usercode = (int)$usercode;
+
+        $req = $this->_bdd->query("select * from categories where CodeC = {$CodeC} ");
+        //$query = "select b.CodeB, b.TypeB, b.VisibiliteB, b.TitreB, c.PhotoC, b.DatePublicationB, b.DescriptionB, b.DateButoireB from besoins b, categories c where b.CodeC = c.CodeC and b.CodeB = '$T' ";
+        //$datas = $req->fetch(PDO::FETCH_ASSOC);
+
+        if ($req) {
+
+            while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
+
+                $categorie = new categorie([]);
+                $categorie->setCodeC($datas['CodeC']);
+                $categorie->setNomC($datas['NomC']);
+                $categorie->setDescriptionC($datas['DescriptionC']);
+                $categorie->setPhotoC($datas['PhotoC']);
+                $categorie->setVisibiliteC($datas['VisibiliteC']);
+                
+            }
+        } else {
+            return $vide;
+        }
+
+
+
+        return $categorie;
+
+        $req->closeCursor();
+    }
+    
+    
+    //le (user ou admin) veut que cette carte ne soit plus visible 
+    public function userUpdateCategorieNotVisible($CodeC) {  //fonction pour l'affichage des cartes besoins
+        $req = $this->_bdd->prepare('UPDATE categories SET VisibiliteC = 0 WHERE CodeC = :CodeC ');
+
+        $req->bindValue(':CodeC', $CodeC, PDO::PARAM_INT);
+
+
+        return $req->execute();
+
+
+
+        $req->closeCursor();
+    }
+    
+    
+    public function updateCategorie(categorie $categorie) {
+        $req = $this->_bdd->prepare('UPDATE categories
+                                        SET NomC = :NomC,
+                                            DescriptionC = :DescriptionC,
+                                            PhotoC = :PhotoC
+                                        WHERE CodeC = :CodeC
+                                    ');
+
+        // var_dump($talent);
+        $req->bindValue(':NomC', $categorie->getNomC(), PDO::PARAM_STR);
+        $req->bindValue(':DescriptionC', $categorie->getDescriptionC(), PDO::PARAM_STR);
+        $req->bindValue(':PhotoC', $categorie->getPhotoC(), PDO::PARAM_STR);
+        $req->bindValue(':CodeC', $categorie->getCodeC(), PDO::PARAM_STR);
+
+
+
+
+        $req->execute();
+
+        $req->closeCursor();
+    }
+    
+    
+    
+    public function addCategorie(categorie $categorie) {  //fonction pour l'affichage des cartes besoins
+        $req = $this->_bdd->prepare('INSERT INTO categories
+                                             SET NomC = :NomC,
+                                                 DescriptionC = :DescriptionC,
+                                                 PhotoC     = :PhotoC,
+                                                 VisibiliteC     = :VisibiliteC
+                                    ');
+
+        $req->bindValue(':NomC', $categorie->getNomC(), PDO::PARAM_STR);
+        $req->bindValue(':DescriptionC', $categorie->getDescriptionC(), PDO::PARAM_STR);
+        $req->bindValue(':PhotoC', $categorie->getPhotoC(), PDO::PARAM_STR);
+        $req->bindValue(':VisibiliteC', $categorie->getVisibiliteC(), PDO::PARAM_INT);
+
+        return $req->execute();
+
+
+
+        $req->closeCursor();
+    }
 
     // $query = "select VisibiliteC, NomC, PhotoC, CodeC, DescriptionC from categories where codeC not in ( select c.codeC from categories c, abonner a where c.CodeC = a.CodeC and a.CodeU = $usercode )";
     //return les categories abonné

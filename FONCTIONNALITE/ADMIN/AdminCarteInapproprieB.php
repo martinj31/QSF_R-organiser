@@ -9,7 +9,7 @@ require_once('../../PHPMailer/src/PHPMailer.php');
 require_once('../../PHPMailer/src/SMTP.php');
 require_once('../../PHPMailer/src/PHPMailerAutoload.php');
 
-
+$result= "";
 $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
 $bdd = $db->connect();
 
@@ -20,36 +20,39 @@ $userBDD = new utilisateurBDD($bdd);
 //cacher la carte
 if (isset($_POST['desactiverb'])) {
     $CodeB = $_POST['desactiverb'];
-
+$result = "supprimé";
     $besoinBDD->userUpdateBesoinVisible($CodeB, 0);
 
     /* $stmt1 = mysqli_prepare($session, "UPDATE besoins SET VisibiliteB = 0 WHERE CodeB = ?");
       mysqli_stmt_bind_param($stmt1, 'i', $CodeB);
       mysqli_stmt_execute($stmt1); */
+    $titreEtEmail = $besoinBDD->saisirEmailEtTitreBesoin($CodeB);
 }
 
 
 
 //réactiver la carte
 if (isset($_POST['activerb'])) {
+    $result = "activé";
     $CodeBC = $_POST['activerb'];
     $besoinBDD->userUpdateBesoinVisible($CodeBC, 1);
     /* $stmt2 = mysqli_prepare($session, "UPDATE besoins SET VisibiliteB = 1 WHERE CodeB = ?");
       mysqli_stmt_bind_param($stmt2, 'i', $CodeBC);
       mysqli_stmt_execute($stmt2); */
+    $titreEtEmail = $besoinBDD->saisirEmailEtTitreBesoin($CodeBC);
 }
 
-//header("Location: Admin.php");
+header("Location: Admin.php");
 //Envoyer un mail pour informer cette personne
 
 /* $sql = "SELECT u.Email, b.TitreB FROM utilisateurs u, saisir s, besoins b WHERE u.CodeU = s.CodeU and s.CodeB = b.CodeB and s.CodeB = $CodeB";
   $result = mysqli_query ($session, $sql); */
-$titreEtEmail = $besoinBDD->saisirEmailEtTitreBesoin($CodeB);
+
 if ($titreEtEmail[0]['Email'] != NULL) {
     $Email = $titreEtEmail[0]['Email'];
 
     $destinataire = "$Email"; // adresse mail du destinataire
-    $sujet = "Votre besoin «{$email['TitreB']}» a été supprimé par l'administrateur"; // sujet du mail
+    $sujet = "Votre besoin «{$titreEtEmail[0]['Titre']}» a été {$result} par l'administrateur"; // sujet du mail
     $message = '<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 
@@ -365,7 +368,7 @@ href="https://www.twitter.com/" target="_blank"><img width="24" border="0" heigh
 
 </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
 
-</span><p style="padding: 0; margin: 0;">Votre besoin « ' . $titreEtEmail[0]['Titre'] . '» a été supprimé par l\'administrateur</p><span class="mso-font-fix-tahoma">
+</span><p style="padding: 0; margin: 0;">Votre besoin « ' . $titreEtEmail[0]['Titre'] . '» a été '.$result. ' par l\'administrateur</p><span class="mso-font-fix-tahoma">
 
 </span><p style="padding: 0; margin: 0;"> à cause des contenus inappropriés.</p><span class="mso-font-fix-tahoma">
 
@@ -492,7 +495,7 @@ href="https://www.twitter.com/" target="_blank"><img width="24" border="0" heigh
     $Mailer->AddAddress($destinataire);
 
     if ($Mailer->send()) {
-        header("Location:../MONESPACE/MonProfil.php");
+        header("Location: Admin.php");
     }
 }
 ?>

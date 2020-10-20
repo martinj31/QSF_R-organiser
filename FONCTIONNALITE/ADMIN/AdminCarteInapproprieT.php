@@ -1,34 +1,68 @@
-<?php 
-require_once('Fonctions.php');
+<?php
 
-$CodeT = $_POST['desactivert'];
+
+
+require_once('../../FONCTIONCOMMUNE/Fonctions.php');
+require_once('../../BDD/connexion.bdd.php');
+require_once('../../BDD/talent.bdd.php');
+require_once('../../BDD/utilisateur.bdd.php');
+require_once('../../PHPMailer/src/Exception.php');
+require_once('../../PHPMailer/src/PHPMailer.php');
+require_once('../../PHPMailer/src/SMTP.php');
+require_once('../../PHPMailer/src/PHPMailerAutoload.php');
+
+
+$result = "";
+
+$db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
+$bdd = $db->connect();
+
+$talentBDD = new talentBDD($bdd);
+$userBDD = new utilisateurBDD($bdd);
+
+
+
+
+
 
 if (isset($_POST['desactivert'])) {
-    $stmt3 = mysqli_prepare($session, "UPDATE talents SET VisibiliteT = 0 WHERE CodeT = ?");  //cacher la carte
-    mysqli_stmt_bind_param($stmt3, 'i', $CodeT);
-    mysqli_stmt_execute($stmt3);
+    $result = "supprimé";
+    $CodeT = $_POST['desactivert'];
+    
+    $talentBDD->userUpdateTalentNotVisible($CodeT);
+    $titreEtEmail = $talentBDD->saisirEmailEtTitreTalent($CodeT);
+    var_dump($titreEtEmail);
+    /* $stmt3 = mysqli_prepare($session, "UPDATE talents SET VisibiliteT = 0 WHERE CodeT = ?");  //cacher la carte
+      mysqli_stmt_bind_param($stmt3, 'i', $CodeT);
+      mysqli_stmt_execute($stmt3); */
 }
 
-$CodeTC = $_POST['activert'];
+
 
 if (isset($_POST['activert'])) {
-    $stmt4 = mysqli_prepare($session, "UPDATE talents SET VisibiliteT = 1 WHERE CodeT = ?");  //réactiver la carte
-    mysqli_stmt_bind_param($stmt4, 'i', $CodeTC);
-    mysqli_stmt_execute($stmt4);
+    $result = "activé";
+    
+    $CodeTC = $_POST['activert'];
+  
+    $talentBDD->userUpdateTalentVisible($CodeTC);
+    $titreEtEmail = $talentBDD->saisirEmailEtTitreTalent($CodeTC);
+
+    /* $stmt4 = mysqli_prepare($session, "UPDATE talents SET VisibiliteT = 1 WHERE CodeT = ?");  //réactiver la carte
+      mysqli_stmt_bind_param($stmt4, 'i', $CodeTC);
+      mysqli_stmt_execute($stmt4); */
 }
 
 header("Location: Admin.php");
-
 //Envoyer un mail pour informer cette personne
 
-        $sql = "SELECT u.Email, t.TitreT FROM utilisateurs u, proposer p, talents t WHERE u.CodeU = p.CodeU and p.CodeT = t.CodeT and p.CodeT = $CodeT";
-        $result = mysqli_query ($session, $sql);      
-        
-        if ($email = mysqli_fetch_array($result)) {   
-            $Email = $email['Email'];
-             $destinataire = "$Email"; // adresse mail du destinataire
-            $sujet = "Votre talent «{$email['TitreT']}» a été supprimé par l'administrateur"; // sujet du mail
-             $message = '<!DOCTYPE html>
+/* $sql = "SELECT u.Email, t.TitreT FROM utilisateurs u, proposer p, talents t WHERE u.CodeU = p.CodeU and p.CodeT = t.CodeT and p.CodeT = $CodeT";
+  $result = mysqli_query ($session, $sql);
+ */
+if ($titreEtEmail[0]['Email'] != NULL) {
+    $Email = $titreEtEmail[0]['Email'];
+    $destinataire = "$Email"; // adresse mail du destinataire
+    $sujet = "Votre talent «{$titreEtEmail[0]['Titre']}» a été  {$result} par l'administrateur"; // sujet du mail
+    $message = '<!DOCTYPE html>
             <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
             <head>
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -283,7 +317,7 @@ header("Location: Admin.php");
             <td valign="top" style="padding-top:5px;padding-right:10px;padding-bottom:5px;padding-left:10px"><div style="font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:15px;color:#114b5f;line-height:25px;text-align:left"></span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
             <p style="padding: 0; margin: 0;">Bonjour,</p><span class="mso-font-fix-tahoma">
             </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
-            </span><p style="padding: 0; margin: 0;">Votre talent « '.$email['TitreT'].'» a &eacute;t&eacute; supprim&eacute; par l\'administrateur.</p><span class="mso-font-fix-tahoma">
+            </span><p style="padding: 0; margin: 0;">Votre talent « ' . $titreEtEmail[0]['Titre'] . '» a été ' . $result . ' par l\'administrateur.</p><span class="mso-font-fix-tahoma">
             </span><p style="padding: 0; margin: 0;"> &agrave; cause des contenus inappropri&eacute;s.</p><span class="mso-font-fix-tahoma">
             </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
             </span></div>
@@ -357,25 +391,41 @@ header("Location: Admin.php");
             </div>
             </body>
             </html>'; // message qui dira que le destinataire a bien lu votre mail
-        // maintenant, l'en-tête du mail
-        /*$header = "From: [Plateforme]\r\n"; 
-        $headers = 'Content-Type: text/plain; charset=utf-8' . "\r\n";
-        $header .= "Disposition-Notification-To:l'email d'un administrateur"; // c'est ici que l'on ajoute la directive*/
-        
-           // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
-     $headers[] = 'MIME-Version: 1.0';
-     $headers[] = 'Content-type: text/html; charset=iso-8859-1';
+    // maintenant, l'en-tête du mail
+    /* $header = "From: [Plateforme]\r\n"; 
+      $headers = 'Content-Type: text/plain; charset=utf-8' . "\r\n";
+      $header .= "Disposition-Notification-To:l'email d'un administrateur"; // c'est ici que l'on ajoute la directive */
 
-     // En-têtes additionnels
-    
-     $headers[] = 'From: [COUP DE MAIN, COUP DE POUCE]<admincmcp@assurance-maladie.fr>';
+    // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
+    /* $headers[] = 'MIME-Version: 1.0';
+      $headers[] = 'Content-type: text/html; charset=iso-8859-1';
 
-     
-     
-     mail ($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  
-        
-        
-        }
+      // En-têtes additionnels
 
- 
+      $headers[] = 'From: [COUP DE MAIN, COUP DE POUCE]<admincmcp@assurance-maladie.fr>';
+
+
+
+      mail ($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail */
+
+    $Mailer = new PHPMailer\PHPMailer\PHPMailer(true);
+    $Mailer->SMTPDebug = 0;
+    $Mailer->isSMTP();
+
+    //$Mailer->SMTPAuth = true;
+    $Mailer->Timeout = 10000;
+    $Mailer->Host = 'smtp.cpam-toulouse.cnamts.fr';
+    $Mailer->Port = 25;
+    $Mailer->isHTML(true);
+    $Mailer->CharSet = "UTF-8";
+    $Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
+    $Mailer->Subject = $sujet;
+    $Mailer->Body = $message;
+    $Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
+    $Mailer->AddAddress($destinataire);
+
+    if ($Mailer->send()) {
+        header("Location: Admin.php");
+    }
+}
 ?>
