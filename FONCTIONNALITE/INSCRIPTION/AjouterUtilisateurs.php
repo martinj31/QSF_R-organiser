@@ -3,6 +3,10 @@
 require_once('../../FONCTIONCOMMUNE/Fonctions.php');
 require_once('../../BDD/connexion.bdd.php');
 require_once('../../BDD/utilisateur.bdd.php');
+require_once('../../PHPMailer/src/Exception.php');
+require_once('../../PHPMailer/src/PHPMailer.php');
+require_once('../../PHPMailer/src/SMTP.php');
+require_once('../../PHPMailer/src/PHPMailerAutoload.php');
 
 if (isset($_POST['email'])) {
     //Ajouter le nouveau utilisateur dans la base de donnée
@@ -777,7 +781,7 @@ if (isset($_POST['email'])) {
             </html>'; // message qui dira que le destinataire a bien lu votre mail
                 // maintenant, l'en-tête du mail
                 // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
-                $headers[0] = 'MIME-Version: 1.0';
+               /* $headers[0] = 'MIME-Version: 1.0';
                 $headers[1] = 'Content-type: text/html; charset=iso-8859-1';
 
                 // En-têtes additionnels
@@ -786,7 +790,32 @@ if (isset($_POST['email'])) {
 
 
 
-                mail($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  
+                mail($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  */
+                
+                
+                $Mailer = new PHPMailer\PHPMailer\PHPMailer(true);
+        $Mailer->SMTPDebug = 0;
+        $Mailer->isSMTP();
+
+        //$Mailer->SMTPAuth = true;
+        $Mailer->Timeout = 10000;
+        $Mailer->Host = 'smtp.cpam-toulouse.cnamts.fr';
+        $Mailer->Port = 25;
+        $Mailer->isHTML(true);
+        $Mailer->CharSet = "UTF-8";
+        $Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
+        $Mailer->Subject = $sujet;
+        $Mailer->Body = $message;
+        $Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
+       // $Mailer->AddAddress($destinataire);
+        //comme $Mailer->AddAddress($destinataire); ne marche pas cela bloque la redirection (header("Location:../MONESPACE/MonProfil.php");)
+        if ($Mailer->send()) {
+           //header("Location:Inscription.php");
+        }
+
+                
+                
+                
             } else {
                 echo 'Inscription échoué';
                 echo $Password;

@@ -422,7 +422,8 @@ if ($talents->addTalent($talent)) {
         $Mailer->Subject = $sujet;
         $Mailer->Body = $message;
         $Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
-        $Mailer->AddAddress($destinataire);
+        //$Mailer->AddAddress($destinataire);
+        //comme $Mailer->AddAddress($destinataire); ne marche pas cela bloque la redirection (header("Location:../MONESPACE/MonProfil.php");)
         if ($Mailer->send()) {
             header("Location:../MONESPACE/MonProfil.php");
         }

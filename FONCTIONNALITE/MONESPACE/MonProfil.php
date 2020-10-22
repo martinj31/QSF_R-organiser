@@ -180,9 +180,8 @@
 
                         foreach ($besoinTab as $value) {
                             // echo '<br><br>';
-                            //var_dump($value['besoin']->getDateButoireB());
-
-                            if (strtotime($besoin["DateButoireB"]) > strtotime(date("yy/m/d")) && $value['besoin']->getVisibiliteB() == 1) {
+                           
+                            if (strtotime($value['besoin']->getDateButoireB()) > strtotime(date("yy/m/d")) && $value['besoin']->getVisibiliteB() == 1) {
 
                                 echo('<li class="list-inline-item">');
                                 if ($value['besoin']->getReponseB() > 0) {  // si il y a des réponses non traitées, affichir le badge rouge
@@ -200,7 +199,7 @@
                                 echo ('<a href="../BESOIN/BesoinX.php?t=' . $value['besoin']->getCodeB() . '" class="btn btn-outline-dark">Voir la demande</a>');
                                 echo ('<p></p><a href="BesoinModification.php?t=' . $value['besoin']->getCodeB() . '" class="btn btn-outline-dark">Modifier</a>');
                                 if ($value['besoin']->getReponseB() > 0) {       // si il y a des réponses non traitées, affichir le button "Voir la réponse"             
-                                    echo ('<p></p><a href="ReponseBesoin.php?code=' . $value['besoin']->getCodeB() . '" class="btn btn-outline-dark">Voir la réponse</a>');    //prendre les titres pour les besoins pour regrouper les réponses d'un besoin 
+                                    echo ('<p></p><a href="../Besoin/ReponseBesoin.php?code=' . $value['besoin']->getCodeB() . '" class="btn btn-outline-dark">Voir la réponse</a>');    //prendre les titres pour les besoins pour regrouper les réponses d'un besoin 
                                 }
                                 echo ('</div>');
                                 echo ('</div></li>');
@@ -210,15 +209,15 @@
 
                         echo('<h5>Aucun résultat</h5>');
                     }
-                   /* $query = "select b.ReponseB, b.VisibiliteB, b.CodeB, b.TitreB, b.DescriptionB, b.DatePublicationB, b.DateButoireB, c.PhotoC from categories c, besoins b, saisir s where s.CodeB = b.CodeB and c.CodeC = b.CodeC and s.CodeU = {$usercode} order by b.CodeB DESC ";
+                    /* $query = "select b.ReponseB, b.VisibiliteB, b.CodeB, b.TitreB, b.DescriptionB, b.DatePublicationB, b.DateButoireB, c.PhotoC from categories c, besoins b, saisir s where s.CodeB = b.CodeB and c.CodeC = b.CodeC and s.CodeU = {$usercode} order by b.CodeB DESC ";
 
                       $result = mysqli_query ($session, $query);
 
                       if ($result == false) {
                       die("ereur requête : ". mysqli_error($session) );
-                      } 
+                      }
 
-                    if (mysqli_num_rows($result)>0) {
+                      if (mysqli_num_rows($result)>0) {
                       while ($besoin = mysqli_fetch_array($result)) {
                       if (strtotime($besoin["DateButoireB"]) > strtotime(date("yy/m/d")) && $besoin["VisibiliteB"] == 1) {
                       echo('<li class="list-inline-item">');
@@ -295,7 +294,7 @@
                                     <ul class="list-inline">
 
                                         <?php
-                                       $talents = new talentBDD($bdd);
+                                        $talents = new talentBDD($bdd);
 
                                         $talentTab = $talents->selectTalentByUser($usercode);
 
@@ -344,11 +343,11 @@
 
                                           if ($result == false) {
                                           die("ereur requête : " . mysqli_error($session));
-                                          } 
+                                          }
 
 
 
-                                         if (mysqli_num_rows($result) > 0) {
+                                          if (mysqli_num_rows($result) > 0) {
                                           while ($talent = mysqli_fetch_array($result)) {
                                           if ($talent["VisibiliteT"] == 1) {  //si la carte n'a pas été caché
                                           echo('<li class="list-inline-item">');
@@ -447,7 +446,6 @@
                                                                         echo ('<p></p><a href="AtelierModification.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Modifier</a>');
                                                                         echo ('</div>');
                                                                         echo ('</div></li>');
-                                                                        
                                                                     } else {
 
                                                                         echo('<h5>Aucun résultat</h5>');

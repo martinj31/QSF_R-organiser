@@ -159,10 +159,10 @@ class categorieBDD {
     }
 
     // $query = "select VisibiliteC, NomC, PhotoC, CodeC, DescriptionC from categories where codeC not in ( select c.codeC from categories c, abonner a where c.CodeC = a.CodeC and a.CodeU = $usercode )";
-    //return les categories abonné
+    //return les categories non abonnées
     public function allCategorieByUser($usercode) {  //fonction pour l'affichage des cartes besoins
         $vide = '';
-        $req = $this->_bdd->query("select * from categories where codeC not in ( select c.codeC from categories c, abonner a where c.CodeC = a.CodeC and a.CodeU = " . $usercode . ")");
+        $req = $this->_bdd->query("SELECT c.CodeC, c.NomC, c.DescriptionC, c.PhotoC, c.VisibiliteC FROM categories c, abonner a  WHERE c.CodeC = a.CodeC and a.CodeU = {$usercode}");
 
         // $categories[] = [];
 
@@ -179,6 +179,43 @@ class categorieBDD {
         } else {
             return $vide;
         }
+
+
+        return $categories;
+
+        $req->closeCursor();
+    }
+    
+    
+    
+    //return les categories non abonnées
+    public function allCategorieNotOnUser($usercode) {  //fonction pour l'affichage des cartes besoins
+        $vide = '';
+        $req = $this->_bdd->query("select VisibiliteC, NomC, PhotoC, CodeC, DescriptionC from categories where codeC not in ( select c.codeC from categories c, abonner a where c.CodeC = a.CodeC and a.CodeU = $usercode )");
+//SELECT * FROM categories c, abonner a  WHERE c.CodeC = a.CodeC and a.CodeU = 2
+//SELECT * FROM categories c, abonner a WHERE c.CodeC = a.CodeC and a.CodeU = 2
+        // $categories[] = [];
+        
+        
+        
+        if ($req) {
+            while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
+               
+                
+                $categorie = new categorie($datas);
+                
+                    $categories[] = ['categorie' => $categorie];
+                
+                
+                /* $categorie->setCodeC($datas['CodeC']);
+                  $categorie->setNomC($datas['NomC']); */
+
+                
+            }
+        } else {
+            return $vide;
+        }
+
 
 
         return $categories;

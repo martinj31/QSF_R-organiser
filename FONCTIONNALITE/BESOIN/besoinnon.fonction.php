@@ -1,33 +1,54 @@
 <?php
-require_once '../../FONCTIONCOMMUNE/Fonctions.php';
 
+require_once '../../FONCTIONCOMMUNE/Fonctions.php';
+require_once('../../BDD/connexion.bdd.php');
+require_once('../../BDD/compteurB.bdd.php');
+require_once('../../BDD/besoin.bdd.php');
+require_once('../../BDD/email.bdd.php');
+require_once('../../PHPMailer/src/Exception.php');
+require_once('../../PHPMailer/src/PHPMailer.php');
+require_once('../../PHPMailer/src/SMTP.php');
+require_once('../../PHPMailer/src/PHPMailerAutoload.php');
+
+$db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
+$bdd = $db->connect();
+
+$compteurBBDD = new compteurBBDD($bdd);
+$besoinBDD = new besoinBDD($bdd);
+$emailBDD = new emailBDD($bdd);
 //la raison de refuse
-$raisonB = $_GET['raison_non_besoin']. $_GET['autre_raison'].$_GET['datedispo'];
+$raisonB = $_GET['raison_non_besoin'] . $_GET['autre_raison'] . $_GET['datedispo'];
 
 //Compter comme une mise en relation échoué
 if (isset($raisonB)) {
-    $sql = "insert into compteurb (NumOuiB, NumNonB, RaisonB) VALUES(0, 1, '{$raisonB}')";
-    mysqli_query ($session, $sql);  
+    $compteurb = new $compteurb([]);
+    $compteurb->setNumNonB(1);
+    $compteurb->setNumOuiB(0);
+    $compteurb->setRaisonB($_RaisonB);
+    $compteurBBDD->addCompteur($compteurb);
+    /* $sql = "insert into compteurb (NumOuiB, NumNonB, RaisonB) VALUES(0, 1, '{$raisonB}')";
+      mysqli_query($session, $sql); */
 }
 
 //Réponse - 1, une réponse a été traité
-$req = "UPDATE besoins SET ReponseB = ReponseB - 1 WHERE CodeB = {$_GET['c']}";
-mysqli_query($session, $req);
+$besoinBDD->UpdateReponseB($_GET['c']);
+/* $req = "UPDATE besoins SET ReponseB = ReponseB - 1 WHERE CodeB = {$_GET['c']}";
+  mysqli_query($session, $req); */
 
 //Cette réponse sera plus visible
-$query = "UPDATE emails SET VisibiliteE = 0 WHERE CodeCarte = {$_GET['c']} AND TypeCarte = 'besoin' AND Provenance = {$_GET['p']}";
-mysqli_query ($session, $query); 
+$emailBDD->UpdateVisibilite($_GET['c'], $_GET['p']);
+/* $query = "UPDATE emails SET VisibiliteE = 0 WHERE CodeCarte = {$_GET['c']} AND TypeCarte = 'besoin' AND Provenance = {$_GET['p']}";
+  mysqli_query($session, $query); */
 
 //Email de refus
-   
 //$sql = "SELECT e.Provenance FROM emails AS e, utilisateurs AS u, besoins AS b WHERE e.TypeCarte = 'besoin' AND e.Destinataire = {$_SESSION['codeu']} AND e.VisibiliteE = 1 AND e.CodeCarte = {$_GET['code']}  AND e.Provenance = u.CodeU AND b.CodeB = e.CodeCarte";
 //$result = mysqli_query ($session, $sql);
 //if ($email = mysqli_fetch_array($result)) {   
-    $Email = $_GET['p']; 
+$Email = $_GET['p'];
 
-    $destinataire = "$Email"; // adresse mail du destinataire 
-    $sujet = "[COUP DE MAIN, COUP DE POUCE] Désolé, votre réponse de besoin a été refusé"; // sujet du mail
-    $message = '<!DOCTYPE html>
+$destinataire = "$Email"; // adresse mail du destinataire 
+$sujet = "[COUP DE MAIN, COUP DE POUCE] Désolé, votre réponse de besoin a été refusé"; // sujet du mail
+$message = '<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 
 <head>
@@ -344,7 +365,7 @@ href="https://www.twitter.com/" target="_blank"><img width="24" border="0" heigh
 
 </span><p style="padding: 0; margin: 0;">Nous sommes au regret de vous informer que votre aide n\'a pas été accepté. Pour la raison suivante:</p><span class="mso-font-fix-tahoma">
 
-</span><p style="padding: 0; margin: 0;">'.$raisonB.'</p><span class="mso-font-fix-tahoma">
+</span><p style="padding: 0; margin: 0;">' . $raisonB . '</p><span class="mso-font-fix-tahoma">
 
 </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
 </span></div>
@@ -461,25 +482,43 @@ href="https://www.twitter.com/" target="_blank"><img width="24" border="0" heigh
 </div>
 </body>
 </html>'; // message qui dira que le destinataire a bien lu votre mail
-        // maintenant, l'en-tête du mail
-        /*$header = "From: [Plateforme]\r\n"; 
-        $headers = 'Content-Type: text/plain; charset=utf-8' . "\r\n";
-        $header .= "Disposition-Notification-To:l'email d'un administrateur"; // c'est ici que l'on ajoute la directive*/
+// maintenant, l'en-tête du mail
+/* $header = "From: [Plateforme]\r\n"; 
+  $headers = 'Content-Type: text/plain; charset=utf-8' . "\r\n";
+  $header .= "Disposition-Notification-To:l'email d'un administrateur"; // c'est ici que l'on ajoute la directive */
 
-           // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
-     $headers[] = 'MIME-Version: 1.0';
-     $headers[] = 'Content-type: text/html; charset=iso-8859-1';
+// Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
+/* $headers[] = 'MIME-Version: 1.0';
+  $headers[] = 'Content-type: text/html; charset=iso-8859-1';
 
-     // En-têtes additionnels
+  // En-têtes additionnels
 
-     $headers[] = 'From: COUP DE MAIN, COUP DE POUCE<admincmcp@assurance-maladie.fr>';
-
-
-
-        mail ($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  
+  $headers[] = 'From: COUP DE MAIN, COUP DE POUCE<admincmcp@assurance-maladie.fr>';
 
 
-         //}  
-         header("location:../MONESPACE/MonProfil.php");
+
+  mail($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  //}
+ */
+
+$Mailer = new PHPMailer\PHPMailer\PHPMailer(true);
+$Mailer->SMTPDebug = 0;
+$Mailer->isSMTP();
+
+//$Mailer->SMTPAuth = true;
+$Mailer->Timeout = 10000;
+$Mailer->Host = 'smtp.cpam-toulouse.cnamts.fr';
+$Mailer->Port = 25;
+$Mailer->isHTML(true);
+$Mailer->CharSet = "UTF-8";
+$Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
+$Mailer->Subject = $sujet;
+$Mailer->Body = $message;
+$Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
+// $Mailer->AddAddress($destinataire);
+//comme $Mailer->AddAddress($destinataire); ne marche pas cela bloque la redirection (header("Location:../MONESPACE/MonProfil.php");)
+if ($Mailer->send()) {
+    header("Location:../MONESPACE/MonProfil.php");
+}
+//header("location:../MONESPACE/MonProfil.php");
 ?>
 

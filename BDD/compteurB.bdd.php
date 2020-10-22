@@ -44,6 +44,39 @@ class compteurBBDD {
         $req->closeCursor();
     }
     
+    public function addCompteur(compteurb $compteurb) {  //fonction pour l'affichage des cartes besoins
+        $req = $this->_bdd->prepare('INSERT INTO compteurb
+                                             SET NumOuiB = :NumOuiB,
+                                                 NumNonB = :NumNonB,
+                                                 RaisonB     = :RaisonB
+                                    ');
+
+        $req->bindValue(':NumOuiB', $compteurb->getNumOuiB(), PDO::PARAM_STR);
+        $req->bindValue(':NumNonB', $compteurb->getNumNonB(), PDO::PARAM_STR);
+        $req->bindValue(':RaisonB', $compteurb->getRaisonB(), PDO::PARAM_STR);
+        return $req->execute();
+
+
+
+        $req->closeCursor();
+    }
+    
+    
+    public function compteurReussi(compteurb $compteurb) {  //fonction pour l'affichage des cartes besoins
+        $req = $this->_bdd->prepare('INSERT INTO compteurb
+                                             SET NumOuiB = :NumOuiB,
+                                                 NumNonB = :NumNonB
+                                    ');
+
+        $req->bindValue(':NumOuiB', $compteurb->getNumOuiB(), PDO::PARAM_STR);
+        $req->bindValue(':NumNonB', $compteurb->getNumNonB(), PDO::PARAM_STR);
+        
+        return $req->execute();
+
+
+
+        $req->closeCursor();
+    }
     
     public function relationBesoinsNBREchoue() {
 
@@ -53,6 +86,8 @@ class compteurBBDD {
 
         $req->closeCursor();
     }
+    
+    
     
 
     

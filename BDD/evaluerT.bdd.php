@@ -67,5 +67,27 @@ class evaluerTBDD {
 
         $req->closeCursor();
     }
+    
+    
+    
+    public function addEvaluerT(evaluerT $evaluert) {  //fonction pour l'affichage des cartes besoins
+        $req = $this->_bdd->prepare('INSERT INTO evaluert
+                                             SET NoteT = :NoteT,
+                                                 AvisT = :AvisT,
+                                                 CodeU = :CodeU,
+                                                 CodeT = :CodeT
+                                    ');
+
+        $req->bindValue(':NoteT', $evaluert->getNoteT(), PDO::PARAM_STR);
+        $req->bindValue(':AvisT', $evaluert->getAvisT(), PDO::PARAM_STR);
+        $req->bindValue(':CodeU', $evaluert->getCodeU(), PDO::PARAM_INT);
+        $req->bindValue(':CodeT', $evaluert->getCodeT(), PDO::PARAM_INT);
+
+        return $req->execute();
+
+
+
+        $req->closeCursor();
+    }
 
 }

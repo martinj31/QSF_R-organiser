@@ -29,11 +29,26 @@ class abonnerBDD {
     
     //DELETE FROM `abonner` WHERE `CodeU` = ? 
      public function deleteAbonner($id) {
-        $this->_bdd->exec('DELETE FROM `abonner` WHERE `CodeU` = ' . $id);
+        $this->_bdd->exec('DELETE FROM `abonner` WHERE `CodeC` = ' . $id);
+        return ;
     }
     
     
-    
+    public function addabonner(abonner $abonner) {  //fonction pour l'affichage des cartes besoins
+        $req = $this->_bdd->prepare('INSERT INTO abonner
+                                             SET CodeU = :CodeU,
+                                                 CodeC = :CodeC
+                                    ');
+
+        $req->bindValue(':CodeU', $abonner->getCodeU(), PDO::PARAM_STR);
+        $req->bindValue(':CodeC', $abonner->getCodeC(), PDO::PARAM_STR);
+
+        return $req->execute();
+
+
+
+        $req->closeCursor();
+    }
     
 
     /*

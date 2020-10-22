@@ -1,53 +1,59 @@
 <!doctype html>
 <html lang="fr">
-<head>
-    
-<!-- Link -->
- <?php require "../../FONCTIONNALITE/link.php"; ?>
-<link rel="stylesheet" type="text/css" href="../../STYLE/evaluation.css">
-<!-- Link -->
+    <head>
 
-<title>Evaluation talent</title>
+        <!-- Link -->
+        <?php require "../../FONCTIONNALITE/link.php"; ?>
+        <link rel="stylesheet" type="text/css" href="../../STYLE/evaluation.css">
+        <!-- Link -->
 
-    <!-- Custom styles for this template -->
-    <link rel="stylesheet" type="text/css" href="../../STYLE/style.css">
-    <script src="jquery.js"></script>
-  </head>
-  <body>
+        <title>Evaluation talent</title>
 
-    
-<!-- Menu -->
- <?php require "../../FONCTIONNALITE/menu.php"; ?>
-<!-- Fin Menu -->
+
+    </head>
+    <body>
+
+
+        <!-- Menu -->
+        <?php
+        require "../../FONCTIONNALITE/menu.php";
+        require_once('../../BDD/connexion.bdd.php');
+        require_once('../../BDD/email.bdd.php');
+        require_once('../../BDD/utilisateur.bdd.php');
+        ?>
+        <!-- Fin Menu -->
 
 
         <div class="jumbotron">
-          
-          <div class="section-title section-title-haut-page" >
+
+            <div class="section-title section-title-haut-page" >
                 <h1 class="text-center">Evaluation talent</h1>
 
-</div>
-          <div class="container">
-      <form method="POST" action="evaluation-talent.fonction.php">
-        <?php
-        require_once '../../FONCTIONCOMMUNE/Fonctions.php';
-        if(isset($_SESSION['email'])) {
+            </div>
+            <div class="container">
+                <form method="POST" action="evaluation-talent.fonction.php">
+                    <?php
+                    require_once '../../FONCTIONCOMMUNE/Fonctions.php';
+                    if (isset($_SESSION['email'])) {
 
-                echo '<h1>Evaluer votre expérience [talent]</h1><hr>';
-                echo '<div class="input-group mb-3">
+                        echo '<h1>Evaluer votre expérience [talent]</h1><hr>';
+                        echo '<div class="input-group mb-3">
                     <div class="input-group-prepend">
                       <label class="input-group-text" for="inputGroupSelect01">Veuillez choisir sur quel talent vous voulez évaluer</label>
                     </div>
                     <select class="custom-select" id="talent" name="talent" required>';
+                        $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
+                        $bdd = $db->connect();
+                        $emailBDD = new emailBDD($bdd);
+                        $email = $emailBDD->selectCodeCarteTalentTitre($_SESSION['codeu']);
+                        /* $query = "SELECT DISTINCT e.CodeCarte, t.TitreT FROM emails as e, talents as t WHERE e.TypeCarte = 'talent' and (e.Provenance = {$_SESSION['codeu']} or e.destinataire = {$_SESSION['codeu']}) and e.CodeCarte = t.CodeT";
+                          $result = mysqli_query ($session, $query); */
+                        foreach ($email as $value) {
+                            echo "<option value=\"{$value['email']}\">{$value['talent']}</option>";
+                        }
+                        echo '</select></div>';
 
-                $query = "SELECT DISTINCT e.CodeCarte, t.TitreT FROM emails as e, talents as t WHERE e.TypeCarte = 'talent' and (e.Provenance = {$_SESSION['codeu']} or e.destinataire = {$_SESSION['codeu']}) and e.CodeCarte = t.CodeT";
-                $result = mysqli_query ($session, $query);
-                while ($ligne = mysqli_fetch_array($result)) {   
-                    echo "<option value=\"{$ligne['CodeCarte']}\">{$ligne['TitreT']}</option>";    
-                }  
-                    echo '</select></div>';
-
-                echo '<fieldset>
+                        echo '<fieldset>
                   <legend>Notation :</legend>
                    <rating>
                      <input type="radio" name="rating" value="1" aria-label="1 star" required/>
@@ -61,36 +67,39 @@
                 <fieldset>
                   <legend>Votre avis nous intéresse :</legend>
                    <rating>
-                       <textarea name="avis" placeholder=""></textarea><br>'; ?>
+                       <textarea name="avis" placeholder=""></textarea><br>';
+                        ?>
                         <script>
                             var editor1 = CKEDITOR.replace('avis', {
                                 extraAllowedContent: 'div',
                                 height: 200
-                              });
+                            });
                         </script>
-                    <?php echo '    
+                        <?php
+                        echo '    
                    </rating>
                 </fieldset>';
-                    
-                $query2 = "select CodeU from utilisateurs WHERE Email = '{$_SESSION['email']}' ";
-                $result2 = mysqli_query ($session, $query2);
-                if ($ligne = mysqli_fetch_array($result2)) {
-                    echo '<input id="codeu" name="codeu" type="hidden" value="'.$ligne['CodeU'].'">';
-                } 
-                
-                echo '<input type="submit" class="btn btn-primary"> <input type="reset" class="btn btn-dark" value="Annuler">'; 
-        } else {
-            echo ('<p>Veuillez d\'abord <a href="login.php">se connecter</a></p>');
-        }           
-        ?>
-               
-      </form>
-  </div>
-</div>
+                        $utilisateurBDD = new utilisateurBDD($bdd);
+                        $user = $utilisateurBDD->un_userLog($_SESSION['email']);
+                        /*$query2 = "select CodeU from utilisateurs WHERE Email = '{$_SESSION['email']}' ";
+                        $result2 = mysqli_query($session, $query2);*/
+                        if ($user != null) {
+                            echo '<input id="codeu" name="codeu" type="hidden" value="' . $user->getCodeU() . '">';
+                        }
 
-<!-- footer -->
- <?php require "../../FONCTIONNALITE/footer.php"; ?>
-<!-- Fin footer -->
+                        echo '<input type="submit" class="btn btn-primary"> <input type="reset" class="btn btn-dark" value="Annuler">';
+                    } else {
+                        echo ('<p>Veuillez d\'abord <a href="login.php">se connecter</a></p>');
+                    }
+                    ?>
 
-</body>
+                </form>
+            </div>
+        </div>
+
+        <!-- footer -->
+        <?php require "../../FONCTIONNALITE/footer.php"; ?>
+        <!-- Fin footer -->
+
+    </body>
 </html>

@@ -61,7 +61,7 @@ class besoinBDD {
 
     //Update Visible
     public function UpdateVisible() {  //fonction pour l'affichage des cartes besoins
-        $req = $this->_bdd->prepare('UPDATE besoins SET VisibiliteB = 0 WHERE CURDATE() > DateButoireB" ');
+        $req = $this->_bdd->prepare('UPDATE besoins SET VisibiliteB = 0 WHERE CURDATE() > DateButoireB');
 
 
 
@@ -73,9 +73,35 @@ class besoinBDD {
         $req->closeCursor();
     }
 
+    //Update Visible
+    public function UpdateReponseB($CodeB) {  //fonction pour l'affichage des cartes besoins
+        $req = $this->_bdd->prepare('UPDATE besoins SET ReponseB = ReponseB - 1 WHERE CodeB = :CodeB');
+
+        $req->bindValue(':CodeB', $CodeB, PDO::PARAM_INT);
+
+
+        return $req->execute();
+
+
+
+        $req->closeCursor();
+    }
+
+    public function UpdateNombre($CodeB) {  //fonction pour l'affichage des cartes besoins
+        $req = $this->_bdd->prepare('update besoins set Nombre = Nombre + 1 where CodeB = :CodeB');
+
+        $req->bindValue(':CodeB', $CodeB, PDO::PARAM_INT);
+
+
+        return $req->execute();
+
+
+
+        $req->closeCursor();
+    }
+
     //le user veut que cette carte soit visible 
     public function userUpdateBesoinVisible($CodeB, $VisibiliteB) {  //fonction pour l'affichage des cartes besoins
-        
         $req = $this->_bdd->prepare('UPDATE besoins SET VisibiliteB = :VisibiliteB WHERE CodeB = :CodeB ');
 
         $req->bindValue(':CodeB', $CodeB, PDO::PARAM_INT);
@@ -95,8 +121,7 @@ class besoinBDD {
                                                  CodeB = :CodeB
                                     ');
 
-        var_dump($usercode);
-        var_dump($codeb);
+
         $req->bindValue(':CodeU', $usercode, PDO::PARAM_INT);
         $req->bindValue(':CodeB', $codeb, PDO::PARAM_INT);
 
@@ -365,17 +390,16 @@ class besoinBDD {
 
         $req->closeCursor();
     }
-    
-    
+
     //Select l'email et le titre en fonction de l'id de l'atelier
     public function saisirEmailEtTitreBesoin($CodeB) {
 
         $besoinTab = [];
         $req = $this->_bdd->query("SELECT u.Email, b.TitreB FROM utilisateurs u, saisir s, besoins b WHERE u.CodeU = s.CodeU and s.CodeB = b.CodeB and s.CodeB = $CodeB");
 
-        
+
         while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
-var_dump($datas);
+            var_dump($datas);
             $besoinTab[] = ['Email' => $datas['Email'], 'Titre' => $datas['TitreB']];
         }
         return $besoinTab;

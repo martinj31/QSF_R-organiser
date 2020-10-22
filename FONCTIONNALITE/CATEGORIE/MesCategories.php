@@ -41,7 +41,7 @@
                                 <?php
                                 $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
                                 $bdd = $db->connect();
-
+                                
                                 $categorieBDD = new categorieBDD($bdd);
 
                                 //$query = "select CodeC, NomC from categories where VisibiliteC = 1";
@@ -56,7 +56,7 @@
 
                                         foreach ($CategorieTab as $value) {
                                             // echo ('<label class="radio-inline"> <input type="checkbox" name="categorie[]" value="' . $value['categorie']->getCodeC() . '"> <strong>' . $value['categorie']->getNomC() . '</strong>  </label> ');
-
+                                             
 
                                             if ($value['categorie']->getVisibiliteC() == 1) {
                                                 if ($value['categorie']->getNomC() == 'Autres') {
@@ -175,19 +175,20 @@
 
                             <div id="categories" class="flex-parent d-flex flex-wrap justify-content-around mt-3">
                                 <?php
-                                $AllCategorieTab = $categorieBDD->allCategorieNameAndId($usercode);
+                                $AllCategorieTab = $categorieBDD->allCategorieNotOnUser($usercode);
 
+                                
+                               // var_dump($AllCategorieTab);
 
+                                if (!empty($AllCategorieTab)) {
 
-
-                                if (!empty($CategorieTab)) {
-
-                                    foreach ($CategorieTab as $value) {
+                                    foreach ($AllCategorieTab as $value) {
                                         // echo ('<label class="radio-inline"> <input type="checkbox" name="categorie[]" value="' . $value['categorie']->getCodeC() . '"> <strong>' . $value['categorie']->getNomC() . '</strong>  </label> ');
 
 
                                         if ($value['categorie']->getVisibiliteC() == 1) {
                                             if ($value['categorie']->getNomC() == 'Autres') {
+                                                 
                                                 echo ('<div class="card" style="width: 12rem;">');
                                                 echo ('<div class="card-header">');
                                                 echo ('<center><input class="card-text" type="checkbox" id="Child_Checkbox1" name="categorie[]" value="' . $value['categorie']->getCodeC() . '"></center>');
@@ -205,6 +206,7 @@
                                                 echo ('</div>');
                                                 echo ('</div>');
                                             } else {
+                                                
                                                 echo ('<div class="card" style="width: 12rem;">');
                                                 echo ('<div class="card-header">');
                                                 echo ('<center><input class="card-text" type="checkbox" id="Child_Checkbox1" name="categorie[]" value="' . $value['categorie']->getCodeC() . '"></center>');

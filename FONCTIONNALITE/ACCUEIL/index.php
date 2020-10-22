@@ -147,10 +147,7 @@
                                     echo ('<a href="BesoinX.php?t=' . $value['besoin']->getCodeB() . '" class="btn btn-outline-dark">Voir la demande</a>');
                                     echo ('</div>');
                                     echo ('</div></div>');
-                                } else {
-
-                                    echo('<h5>Aucun résultat</h5>');
-                                }
+                                } 
                             }
                         }else {
 
@@ -248,10 +245,7 @@
                                     echo ('<a href="BesoinX.php?t=' . $value['talent']->getCodeT() . '" class="btn btn-outline-dark">Voir la demande</a>');
                                     echo ('</div>');
                                     echo ('</div></div>');
-                                } else {
-
-                                    echo('<h5>Aucun résultat</h5>');
-                                }
+                                } 
                             }
                         }else {
 
@@ -352,10 +346,7 @@
                                     echo ('<p></p><a href="' . $value['atelier']->getURL() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
                                     echo ('</div>');
                                     echo ('</div></div>');
-                                } else {
-
-                                    echo('<h5>Aucun résultat</h5>');
-                                }
+                                } 
                             }
                         }else {
 

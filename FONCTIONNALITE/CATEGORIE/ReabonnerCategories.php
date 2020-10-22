@@ -1,25 +1,43 @@
-<?php 
+<?php
+
 require_once('../../FONCTIONCOMMUNE/Fonctions.php');
-     
-        if (isset($_POST['categorie'])) { 
-             foreach ($_POST["categorie"] as $categories) {  //abonner les catégories 
-                if ($categories <> 10) {     
-                    $stmt = mysqli_prepare($session, "INSERT INTO abonner(CodeU,CodeC) VALUES(?,?)");   // insérer le code de l'utilisateur et le code de catégorie dans la table abonner
-                    mysqli_stmt_bind_param($stmt, 'ii', $usercode, $categories);
-                    mysqli_stmt_execute($stmt); 
-                }       
-             }
-        }
-        
-header("Location: MesCategories.php");
+require_once('../../BDD/categorie.bdd.php');
+require_once('../../BDD/connexion.bdd.php');
+require_once('../../BDD/abonner.bdd.php');
+require_once('../../BDD/utilisateur.bdd.php');
+require_once('../../PHPMailer/src/Exception.php');
+require_once('../../PHPMailer/src/PHPMailer.php');
+require_once('../../PHPMailer/src/SMTP.php');
+require_once('../../PHPMailer/src/PHPMailerAutoload.php');
+
+$db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
+$bdd = $db->connect();
+
+$abonnerBDD = new abonnerBDD($bdd);
+$utilisateurBDD = new utilisateurBDD($bdd);
+
+if (isset($_POST['categorie'])) {
+    foreach ($_POST["categorie"] as $categories) {  //abonner les catégories 
+$abonner = new abonner([]);
+$abonner->setCodeC($categories);
+$abonner->setCodeU($usercode);
+        $abonnerBDD->addabonner($abonner);
+        /* $stmt = mysqli_prepare($session, "INSERT INTO abonner(CodeU,CodeC) VALUES(?,?)");   // insérer le code de l'utilisateur et le code de catégorie dans la table abonner
+          mysqli_stmt_bind_param($stmt, 'ii', $usercode, $categories);
+          mysqli_stmt_execute($stmt); */
+    }
+}
+
+//header("Location: MesCategories.php");
 
 if (isset($_POST['nomcp'])) {
-     //Mail à l'admin pour créer une nouvelle catégorie ! 
-    $sql = "select Email from utilisateurs where CodeU = $usercode";
-    $result = mysqli_query ($session, $sql);
-    if ($email = mysqli_fetch_array($result)) {   
-        $Email = $email['Email'];
-       
+    //Mail à l'admin pour créer une nouvelle catégorie ! 
+    $user = $utilisateurBDD->un_User($usercode);
+    /*$sql = "select Email from utilisateurs where CodeU = $usercode";
+    $result = mysqli_query($session, $sql);*/
+    if ($user->getEmail() != null) {
+        $Email = $user->getEmail();
+
         $destinataire = "admincmcp@assurance-maladie.fr"; // adresse mail du destinataire 
         $sujet = "[COUP DE MAIN, COUP DE POUCE] Demande de créer une nouvelle catégorie"; // sujet du mail
         $message = '<!DOCTYPE html>
@@ -278,7 +296,7 @@ if (isset($_POST['nomcp'])) {
         <p style="padding: 0; margin: 0;">Bonjour,</p><span class="mso-font-fix-tahoma">
         </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
         </span><p style="padding: 0; margin: 0;">Un utilisateur voudrait cr&eacute;er une nouvelle cat&eacute;gorie</p><span class="mso-font-fix-tahoma">
-        </span><p style="padding: 0; margin: 0;">Nom : '.$_POST['nomcp'].' ; Description :  '.$_POST['descriptioncp'].' </p><span class="mso-font-fix-tahoma">
+        </span><p style="padding: 0; margin: 0;">Nom : ' . $_POST['nomcp'] . ' ; Description :  ' . $_POST['descriptioncp'] . ' </p><span class="mso-font-fix-tahoma">
         </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
         </span></div>
         </td>
@@ -343,39 +361,59 @@ if (isset($_POST['nomcp'])) {
         </div>
         </body>
         </html>'; // message qui dira que le destinataire a bien lu votre mail
-                // maintenant, l'en-tête du mail
-                /*$header = "From: [Plateforme]\r\n"; 
-                $headers = 'Content-Type: text/plain; charset=utf-8' . "\r\n";
-                $header .= "Disposition-Notification-To:l'email d'un administrateur"; // c'est ici que l'on ajoute la directive*/
+        // maintenant, l'en-tête du mail
+        /* $header = "From: [Plateforme]\r\n"; 
+          $headers = 'Content-Type: text/plain; charset=utf-8' . "\r\n";
+          $header .= "Disposition-Notification-To:l'email d'un administrateur"; // c'est ici que l'on ajoute la directive */
 
-                   // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
-             $headers[] = 'MIME-Version: 1.0';
-             $headers[] = 'Content-type: text/html; charset=iso-8859-1';
+        // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
+        /*$headers[] = 'MIME-Version: 1.0';
+        $headers[] = 'Content-type: text/html; charset=iso-8859-1';
 
-             // En-têtes additionnels
+        // En-têtes additionnels
 
-             $headers[] = 'From: '.$Email.'';
-
-
-
-                mail ($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  
+        $headers[] = 'From: ' . $Email . '';
 
 
-                 }  
+
+        mail($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  
+        
+        */
+        
+        
+         $Mailer = new PHPMailer\PHPMailer\PHPMailer(true);
+        $Mailer->SMTPDebug = 0;
+        $Mailer->isSMTP();
+
+        //$Mailer->SMTPAuth = true;
+        $Mailer->Timeout = 10000;
+        $Mailer->Host = 'smtp.cpam-toulouse.cnamts.fr';
+        $Mailer->Port = 25;
+        $Mailer->isHTML(true);
+        $Mailer->CharSet = "UTF-8";
+        $Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
+        $Mailer->Subject = $sujet;
+        $Mailer->Body = $message;
+        $Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
+        //$Mailer->AddAddress($destinataire);
+        //comme $Mailer->AddAddress($destinataire); ne marche pas cela bloque la redirection (header("Location:../MONESPACE/MonProfil.php");)
+        if ($Mailer->send()) {
+            header("Location:../MONESPACE/MonProfil.php");
         }
+    }
+}
 
 
-        //--------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------
+//Mail de notification
+/*$sql = "select Email from utilisateurs where CodeU = $usercode";
+$result = mysqli_query($session, $sql);
+if ($email = mysqli_fetch_array($result)) {
+    $Email = $email['Email'];
 
-            //Mail de notification
-            $sql = "select Email from utilisateurs where CodeU = $usercode";
-            $result = mysqli_query ($session, $sql);
-            if ($email = mysqli_fetch_array($result)) {   
-                $Email = $email['Email'];
-
-                $destinataire = "$Email"; // adresse mail du destinataire 
-                $sujet = "[COUP DE MAIN, COUP DE POUCE] Abonnement des cat&eacute;gories « {$_POST["categorie"]} » "; // sujet du mail
-                $message = '<!DOCTYPE html>
+    $destinataire = "$Email"; // adresse mail du destinataire 
+    $sujet = "[COUP DE MAIN, COUP DE POUCE] Abonnement des cat&eacute;gories « {$_POST["categorie"]} » "; // sujet du mail
+    $message = '<!DOCTYPE html>
         <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
         <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -427,7 +465,7 @@ if (isset($_POST['nomcp'])) {
         line-height: 100%;
         }
         /* Outermost container in Outlook.com */
-        .ReadMsgBody {
+    /*    .ReadMsgBody {
         width: 100%;
         }
         img {
@@ -630,7 +668,7 @@ if (isset($_POST['nomcp'])) {
         <td valign="top" style="padding-top:5px;padding-right:10px;padding-bottom:5px;padding-left:10px"><div style="font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:15px;color:#114b5f;line-height:25px;text-align:left"></span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
         <p style="padding: 0; margin: 0;">Bonjour,</p><span class="mso-font-fix-tahoma">
         </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
-        </span><p style="padding: 0; margin: 0;">Vous venez de vous abonner des nouvelles cat&eacute;gories « '.$_POST["categorie"].' »</p><span class="mso-font-fix-tahoma">
+        </span><p style="padding: 0; margin: 0;">Vous venez de vous abonner des nouvelles cat&eacute;gories « ' . $_POST["categorie"] . ' »</p><span class="mso-font-fix-tahoma">
         </span><p style="padding: 0; margin: 0;"></p><span class="mso-font-fix-tahoma">
         </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
         </span></div>
@@ -702,28 +740,21 @@ if (isset($_POST['nomcp'])) {
         </div>
         </body>
         </html>'; // message qui dira que le destinataire a bien lu votre mail
-        // maintenant, l'en-tête du mail
-        /*$header = "From: [Plateforme]\r\n"; 
-        $headers = 'Content-Type: text/plain; charset=utf-8' . "\r\n";
-        $header .= "Disposition-Notification-To:l'email d'un administrateur"; // c'est ici que l'on ajoute la directive*/
-        
-           // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
-     $headers[] = 'MIME-Version: 1.0';
-     $headers[] = 'Content-type: text/html; charset=iso-8859-1';
+    // maintenant, l'en-tête du mail
+    /* $header = "From: [Plateforme]\r\n"; 
+      $headers = 'Content-Type: text/plain; charset=utf-8' . "\r\n";
+      $header .= "Disposition-Notification-To:l'email d'un administrateur"; // c'est ici que l'on ajoute la directive */
 
-     // En-têtes additionnels
-    
-     $headers[] = 'From: COUP DE MAIN, COUP DE POUCE<admincmcp@assurance-maladie.fr>';
+    // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
+   /* $headers[] = 'MIME-Version: 1.0';
+    $headers[] = 'Content-type: text/html; charset=iso-8859-1';
 
-     
-     
-        mail ($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  
-        
-        
-         }  
+    // En-têtes additionnels
+
+    $headers[] = 'From: COUP DE MAIN, COUP DE POUCE<admincmcp@assurance-maladie.fr>';
 
 
 
-   
-
+    mail($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  
+}*/
 ?>
