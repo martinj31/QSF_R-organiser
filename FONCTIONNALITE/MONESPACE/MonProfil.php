@@ -322,14 +322,11 @@
                                                     echo ('<a href="../TALENT/TalentX.php?t=' . $value['talent']->getCodeT() . '" class="btn btn-outline-dark">Voir le détail</a>');
                                                     echo ('<p></p><a href="TalentModification.php?t=' . $value['talent']->getCodeT() . '" class="btn btn-outline-dark">Modifier</a>');
                                                     if ($value['talent']->getReponseT() > 0) { // si il y a des réponses non traitées, affichir le button "Voir la réponse"
-                                                        echo ('<p></p><a href="ReponseTalent.php?code=' . $value['talent']->getCodeT() . '" class="btn btn-outline-dark">Voir la réponse</a>');    //prendre les titres pour les besoins pour regrouper les réponses d'un besoin
+                                                        echo ('<p></p><a href="../TALENT/ReponseTalent.php?code=' . $value['talent']->getCodeT() . '" class="btn btn-outline-dark">Voir la réponse</a>');    //prendre les titres pour les besoins pour regrouper les réponses d'un besoin
                                                     }
                                                     echo ('</div>');
                                                     echo ('</div></li>');
-                                                } else {
-
-                                                    echo('<h5>Aucun résultat</h5>');
-                                                }
+                                                } 
                                             }
                                         } else {
 
@@ -446,10 +443,7 @@
                                                                         echo ('<p></p><a href="AtelierModification.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Modifier</a>');
                                                                         echo ('</div>');
                                                                         echo ('</div></li>');
-                                                                    } else {
-
-                                                                        echo('<h5>Aucun résultat</h5>');
-                                                                    }
+                                                                    } 
                                                                 }
                                                             } else {
 

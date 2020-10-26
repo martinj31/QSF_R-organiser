@@ -86,6 +86,20 @@ class besoinBDD {
 
         $req->closeCursor();
     }
+    
+    
+    public function UpdateReponseBAugment($CodeB) {  //fonction pour l'affichage des cartes besoins
+        $req = $this->_bdd->prepare('UPDATE besoins SET ReponseB = ReponseB + 1 WHERE CodeB = :CodeB');
+
+        $req->bindValue(':CodeB', $CodeB, PDO::PARAM_INT);
+
+
+        return $req->execute();
+
+
+
+        $req->closeCursor();
+    }
 
     public function UpdateNombre($CodeB) {  //fonction pour l'affichage des cartes besoins
         $req = $this->_bdd->prepare('update besoins set Nombre = Nombre + 1 where CodeB = :CodeB');
@@ -132,6 +146,7 @@ class besoinBDD {
         $req->closeCursor();
     }
 
+    
     public function selectBesoinSearch($carteb) {
 
         $vide = '';

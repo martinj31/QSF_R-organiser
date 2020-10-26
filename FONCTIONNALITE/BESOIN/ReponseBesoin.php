@@ -39,7 +39,7 @@
                 $bdd = $db->connect();
 
                 $emailBDD = new emailBDD($bdd);
-                $emailTab = $emailBDD->selectMailBesoin($_GET['code'], $_SESSION['codeu']);
+                $emailTab = $emailBDD->selectMailBesoin(65, $_SESSION['codeu']);
                 /* $query = "SELECT e.CodeCarte, e.Sujet, e.Contenu, u.Email, b.DateButoireB, b.VisibiliteB, e.Provenance FROM emails AS e, utilisateurs AS u, besoins AS b WHERE e.TypeCarte = 'besoin' AND e.Destinataire = {$_SESSION['codeu']} AND e.VisibiliteE = 1 AND e.CodeCarte = {$_GET['code']}  AND e.Provenance = u.CodeU AND b.CodeB = e.CodeCarte"; 
 
                   $result = mysqli_query ($session, $query);
@@ -56,8 +56,8 @@
                             echo ('<h6>' . $value["email"]->getSujet() . '</h6>');
                             echo ('<p>' . $value["email"]->getContenu() . '</p><br>');
                             echo ('<a href="mailto:' . $value['EmailU'] . '"><button type="button" onclick="javascript: sendmail();" class="btn btn-primary">Super, je réponds</button></a> '); // envoyer un mail pour les mettre en contact
-                            echo ('<a href="besoinnon.html.php?p=' . $value["email"]->getProvenance() . '&c=' . $value["email"]->getCodeCarte() . '"><button type="button" class="btn btn-secondary">Dommage, car...</button></a><hr>');
-                            //$mail = $ligne["Email"];
+                            echo ('<a href="besoinnon.html.php?p=' . $value["email"]->getProvenance() . '&c=' . $value["email"]->getCodeCarte() .'&cem=' . $value["email"]->getCodeEM() . '"><button type="button" class="btn btn-secondary">Dommage, car...</button></a><hr>');
+                           
                         }
                     }
                 }else{

@@ -203,6 +203,42 @@ class talentBDD {
     
     
     
+    public function selectMailTalent($T) {
+
+        $vide = '';
+        $test = "";
+        $query = "select t.CodeT, p.CodeU, t.TitreT from talents as t, proposer as p where t.CodeT = $T and t.CodeT = p.CodeT";
+
+
+
+        $req = $this->_bdd->query($query);
+
+        if ($req) {
+
+            while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
+
+                $talent = new talent([]);
+
+                $talent->setCodeT($datas['CodeT']);
+               
+                $talent->setTitreT($datas['TitreT']);
+                
+
+                $talents[] = ['talent' => $talent, 'CodeU' => $datas['CodeU']];
+            }
+        } else {
+            return $vide;
+        }
+
+
+
+        return $talents;
+
+        $req->closeCursor();
+    }
+    
+    
+    
     public function selectAllTalents() {
 
         $vide = '';
@@ -254,6 +290,36 @@ class talentBDD {
 
         $req->closeCursor();
     }
+    
+    //Update Visible
+    public function UpdateReponseT($CodeT) {  //fonction pour l'affichage des cartes besoins
+        $req = $this->_bdd->prepare('UPDATE talents SET ReponseT = ReponseT - 1 WHERE CodeT = :CodeT');
+
+        $req->bindValue(':CodeT', $CodeT, PDO::PARAM_INT);
+
+
+        return $req->execute();
+
+
+
+        $req->closeCursor();
+    }
+    
+    
+    public function UpdateReponseTAugment($CodeT) {  //fonction pour l'affichage des cartes besoins
+        $req = $this->_bdd->prepare('UPDATE talents SET ReponseT = ReponseT + 1 WHERE CodeT = :CodeT');
+
+        $req->bindValue(':CodeT', $CodeT, PDO::PARAM_INT);
+
+
+        return $req->execute();
+
+
+
+        $req->closeCursor();
+    }
+
+    
 
     public function addTalent(talent $talent) {  //fonction pour l'affichage des cartes besoins
         $req = $this->_bdd->prepare('INSERT INTO talents

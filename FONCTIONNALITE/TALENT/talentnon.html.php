@@ -54,6 +54,7 @@
                 <?php
                 echo '<input type="hidden" name="c" value="'.$_GET['c'].'">';
                 echo '<input type="hidden" name="p" value="'.$_GET['p'].'">';
+                echo '<input type="hidden" name="cem" value="'.$_GET['cem'].'">';
                 ?>               
                 <button type="submit" class="btn btn-primary">Envoyer</button>
                 

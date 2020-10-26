@@ -3,14 +3,15 @@
 <head>
     
 <!-- Link -->
- <?php require "../../FONCTIONNALITE/link.php"; ?>
+ <?php require "../../FONCTIONNALITE/link.php";
+require_once('../../BDD/talent.bdd.php');
+        require_once('../../BDD/connexion.bdd.php');
+        ?>
 <!-- Link -->
 
 <title>Rédiger votre e-mail</title>
 
-    <!-- Custom styles for this template -->
-    <link rel="stylesheet" type="text/css" href="../../STYLE/style.css">
-    <script src="jquery.js"></script>
+    
   </head>
   <body>
 
@@ -32,13 +33,20 @@
                     <div class="col-sm-10">
                         <form action="talent.email.php" method="POST">
                         <?php 
+                        
+                        
+                         $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
+                            $bdd = $db->connect();
+
+                            $talents = new talentBDD($bdd);
+                            $talentTab = $talents->selectMailTalent($_GET['t']);
                         //requête prendre titre de besoin
-                         $query = "select t.CodeT, p.CodeU, t.TitreT from talents as t, proposer as p where t.CodeT = {$_GET['t']} and t.CodeT = p.CodeT";
-                         $result = mysqli_query ($session, $query);
+                         /*$query = "select t.CodeT, p.CodeU, t.TitreT from talents as t, proposer as p where t.CodeT = {$_GET['t']} and t.CodeT = p.CodeT";
+                         $result = mysqli_query ($session, $query);*/
                          
-                         if (mysqli_num_rows($result)>0) {       
-                              while ($talent = mysqli_fetch_array($result)) {         
-                                echo ('<input type="text" readonly class="form-control-plaintext" id="staticEmail" name="sujet" value="[COUP DE MAIN, COUP DE POUCE] Demande de partager votre talent '.$talent["TitreT"].' " disabled >');                         
+                          if (!empty($talentTab)) {
+                                foreach ($talentTab as $value) {         
+                                echo ('<input type="text" readonly class="form-control-plaintext" id="staticEmail" name="sujet" value="[COUP DE MAIN, COUP DE POUCE] Demande de partager votre talent '.$value['talent']->getTitreT().' " disabled >');                         
                                 echo('</div>');
                                 echo('</div>');
                                 echo('<div class="form-group">');
@@ -47,9 +55,9 @@
                                 echo ('Bonjour,');
                                 echo('</textarea>');     
                                 echo ('</div>');
-                                echo ('<input type="hidden" name="codecarte" value="'.$talent['CodeT'].'">');
-                                echo ('<input type="hidden" name="destinataire" value="'.$talent['CodeU'].'">');
-                                echo ('<input type="hidden" name="titrecarte" value="'.$talent['TitreT'].'">');
+                                echo ('<input type="hidden" name="codecarte" value="'.$value['talent']->getCodeT().'">');
+                                echo ('<input type="hidden" name="destinataire" value="'.$value['CodeU'].'">');
+                                echo ('<input type="hidden" name="titrecarte" value="'.$value['talent']->getTitreT().'">');
                                 echo ('<button type="submit" class="btn btn-primary">Envoyer</button>');                               
                             }
                         }

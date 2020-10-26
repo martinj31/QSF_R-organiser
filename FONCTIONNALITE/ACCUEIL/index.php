@@ -144,7 +144,7 @@
                                     echo ('<div class="card-body card text-center">');
                                     echo ('<h5 class="card-title">' . $value['besoin']->getTitreB() . '</h5>');
                                     echo ('<p class="card-text">Délais souhaité: ' . $value['besoin']->getDateButoireB() . '</p>');
-                                    echo ('<a href="BesoinX.php?t=' . $value['besoin']->getCodeB() . '" class="btn btn-outline-dark">Voir la demande</a>');
+                                    echo ('<a href="../BESOIN/BesoinX.php?t=' . $value['besoin']->getCodeB() . '" class="btn btn-outline-dark">Voir la demande</a>');
                                     echo ('</div>');
                                     echo ('</div></div>');
                                 } 
@@ -242,7 +242,7 @@
                                     echo ('<div class="card-body card text-center">');
                                     echo ('<h5 class="card-title">' . $value['talent']->getTitreT() . '</h5>');
                                     
-                                    echo ('<a href="BesoinX.php?t=' . $value['talent']->getCodeT() . '" class="btn btn-outline-dark">Voir la demande</a>');
+                                    echo ('<a href="../TALENT/TalentX.php?t=' . $value['talent']->getCodeT() . '" class="btn btn-outline-dark">Voir la demande</a>');
                                     echo ('</div>');
                                     echo ('</div></div>');
                                 } 

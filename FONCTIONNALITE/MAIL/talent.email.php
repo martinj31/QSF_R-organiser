@@ -1,30 +1,62 @@
 <?php 
     require_once ('../../FONCTIONCOMMUNE/Fonctions.php');
-    
+    require_once('../../BDD/connexion.bdd.php');
+require_once('../../BDD/parametres.bdd.php');
+require_once('../../BDD/utilisateur.bdd.php');
+require_once('../../BDD/email.bdd.php');
+require_once('../../BDD/talent.bdd.php');
+require_once('../../PHPMailer/src/Exception.php');
+require_once('../../PHPMailer/src/PHPMailer.php');
+require_once('../../PHPMailer/src/SMTP.php');
+require_once('../../PHPMailer/src/PHPMailerAutoload.php');
+
+    $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
+$bdd = $db->connect();
+$parametresBDD = new parametresBDD($bdd);
+$utilisateurBDD = new utilisateurBDD($bdd);
+$emailBDD = new emailBDD($bdd);
+$talentBDD = new talentBDD($bdd);
+$day = $parametresBDD->selectParamtre();
+
+
     //requête pour insérer provenance, destinataire, sujet, contenu et la date d'évaluation dans la bdd    
-    $req1= "SELECT * FROM `parametres` WHERE 1";
+   /* $req1= "SELECT * FROM `parametres` WHERE 1";
     $result1 = mysqli_query ($session, $req1);
     if ($days = mysqli_fetch_array($result1)) { 
         $day = $days['Interval'];
-    }
+    }*/
 
     //date d'aujourd'hui + le délais d'évaluation
     $dateevaluation  = date("Y-m-d",strtotime("+$day day"));
+    $sujet = "[COUP DE MAIN, COUP DE POUCE] Répondre à votre talent ". $_POST['titrecarte'];
     
-    $sql = "insert into emails(Provenance,Destinataire,Sujet,Contenu,DateEvaluation,VisibiliteE,CodeCarte,TypeCarte) values({$_SESSION['codeu']},{$_POST['destinataire']},'[COUP DE MAIN, COUP DE POUCE] Demande de partager votre talent {$_POST["titrecarte"]}','{$_POST['contenu_talent']}','$dateevaluation',1,{$_POST['codecarte']},'talent')";
-    mysqli_query ($session, $sql);
+    
+    $email = new email([]);
+$email->setProvenance($_SESSION['codeu']);
+$email->setDestinataire($_POST['destinataire']);
+$email->setSujet($sujet);
+$email->setContenu($_POST['contenu_talent']);
+
+$email->setVisibiliteE(1);
+$email->setCodeCarte($_POST['codecarte']);
+$email->setTypeCarte('talent');
+    $emailBDD->addEmail($email);
+   /* $sql = "insert into emails(Provenance,Destinataire,Sujet,Contenu,DateEvaluation,VisibiliteE,CodeCarte,TypeCarte) values({$_SESSION['codeu']},{$_POST['destinataire']},'[COUP DE MAIN, COUP DE POUCE] Demande de partager votre talent {$_POST["titrecarte"]}','{$_POST['contenu_talent']}','$dateevaluation',1,{$_POST['codecarte']},'talent')";
+    mysqli_query ($session, $sql);*/
     
     // incrémenter sur talent.ReponseT
-    $query = "UPDATE talents SET ReponseT = ReponseT + 1 WHERE CodeT = {$_POST['codecarte']}";
+     $talentBDD->UpdateReponseTAugment($_POST['codecarte']);
+    /*$query = "UPDATE talents SET ReponseT = ReponseT + 1 WHERE CodeT = {$_POST['codecarte']}";
     mysqli_query ($session, $query);
-    
+    */
     //requête prendre l'email destinataire
-    $query2 = "select Email from utilisateurs where CodeU = {$_POST['destinataire']}";
-    $result2 = mysqli_query ($session, $query2);
-    if ($ligne = mysqli_fetch_array($result2)) {   
+     $user = $utilisateurBDD->un_User($_POST['destinataire']);
+    /*$query2 = "select Email from utilisateurs where CodeU = {$_POST['destinataire']}";
+    $result2 = mysqli_query ($session, $query2);*/
+    if ($user->getEmail() != null) {   
         
         //email pour répondre un besoin
-        $destinataire = "{$ligne['Email']}"; // adresse mail du destinataire
+        $destinataire = "{$user->getEmail()}"; // adresse mail du destinataire
         //$destinataire = "mathilda.cnfr@gmail.com";
         $sujet = "[COUP DE MAIN, COUP DE POUCE] Demande de partage de talent {$_POST['titrecarte']}"; // sujet du mail
         $message = '
@@ -439,10 +471,33 @@
         </body>
         </html>'                
         ; // Contenue du mail 
-        $headers[] = 'MIME-Version: 1.0';
+        /*$headers[] = 'MIME-Version: 1.0';
         $headers[] = 'Content-type:text/html;charset=iso-8859-1';
         $headers[] = 'From: COUP DE MAIN, COUP DE POUCE<admincmcp@assurance-maladie.fr>'; // En-têtes additionnels  
-        mail ($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail
-        header("location:../TALENT/Talent.php");
+        mail ($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail*/
+        
+        
+        
+        
+         $Mailer = new PHPMailer\PHPMailer\PHPMailer(true);
+        $Mailer->SMTPDebug = 0;
+        $Mailer->isSMTP();
+
+        //$Mailer->SMTPAuth = true;
+        $Mailer->Timeout = 10000;
+        $Mailer->Host = 'smtp.cpam-toulouse.cnamts.fr';
+        $Mailer->Port = 25;
+        $Mailer->isHTML(true);
+        $Mailer->CharSet = "UTF-8";
+        $Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
+        $Mailer->Subject = $sujet;
+        $Mailer->Body = $message;
+        $Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
+       // $Mailer->AddAddress($destinataire);
+        //comme $Mailer->AddAddress($destinataire); ne marche pas cela bloque la redirection (header("Location:../MONESPACE/MonProfil.php");)
+        if ($Mailer->send()) {
+         header("location:../TALENT/Talent.php");
+        }
+        //header("location:../TALENT/Talent.php");
     }
 ?>

@@ -1,20 +1,34 @@
-<?php  //script
-// si la date d'aujourd'hui est égale à la date d'évaluation, envoyer le mail 
-    require_once ('../Fonctions.php');
+<?php
 
-    // liste des destinataire qui vont recevoir un mail d'évaluation sur besoin
-    $liste = '';
-    $today = date();
-    $req = "select DISTINCT u.Email from emails as e, utilisateurs as u where e.TypeCarte = 'talent' and e.DateEvaluation = '$today' and ( e.Provenance = u.CodeU or e.Destinataire = u.CodeU ) ";
-    foreach  (mysqli_query ($session, $req) as $ligne) {
-        $liste = $liste.$ligne['Email'].', ';
-    }
-    $liste = rtrim($liste,', ');
-    
-    //email pour evaluation de l'expérience
-    $to = "$liste";
-    $subject = "[COUP DE MAIN, COUP DE POUCE] Evaluation sur votre expérience de la plateforme [talent]"; // sujet du mail
-    $content = '
+// si la date d'aujourd'hui est égale à la date d'évaluation, envoyer le mail 
+require_once ('../Fonctions.php');
+require_once('../../BDD/connexion.bdd.php');
+require_once('../../BDD/utilisateur.bdd.php');
+require_once('../../PHPMailer/src/Exception.php');
+require_once('../../PHPMailer/src/PHPMailer.php');
+require_once('../../PHPMailer/src/SMTP.php');
+require_once('../../PHPMailer/src/PHPMailerAutoload.php');
+
+$db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
+$bdd = $db->connect();
+
+$utilisateurBDD = new utilisateurBDD($bdd);
+
+// liste des destinataire qui vont recevoir un mail d'évaluation sur besoin
+$liste = '';
+$today = date();
+$Mails = $utilisateurBDD->selectUtilisateurEmailBesoinByDate($today);
+//$req = "select DISTINCT u.Email from emails as e, utilisateurs as u where e.TypeCarte = 'besoin' and e.DateEvaluation = '$today' and ( e.Provenance = u.CodeU or e.Destinataire = u.CodeU ) ";
+foreach ($Mails as $ligne) {
+    $liste = $liste . $ligne
+           . ', ';
+}
+$liste = rtrim($liste, ', ');
+
+//email pour evaluation de l'expérience
+$to = "$liste";
+$subject = "[COUP DE MAIN, COUP DE POUCE] Evaluation sur votre expérience de la plateforme [besoin]"; // sujet du mail
+$content = '
     <!DOCTYPE html>
     <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 
@@ -354,7 +368,7 @@
     <td align="center" style="padding-top:10px;padding-right:20px;padding-bottom:10px;padding-left:20px">
     <span style="color:#ffffff !important;font-family:Lato, Helvetica Neue, Helvetica, Arial, sans-serif;font-size:18px;mso-line-height:exactly;line-height:25px;mso-text-raise:3px;">
     <font style="color:#ffffff;" class="button">
-    <span><a href="https://qualif-qsf.cpam31.fr/evaluation-talent.html.php">Oui,&nbsp; &eacute;valuer</a></span>
+    <span><a href="https://qualif-qsf.cpam31.fr/evaluation-besoin.html.php">Oui,&nbsp; &eacute;valuer</a></span>
     </font>
     </span>
     </td>
@@ -374,7 +388,7 @@
 
     <span style="color:#ffffff !important;font-family:Lato, Helvetica Neue, Helvetica, Arial, sans-serif;font-size:18px;mso-line-height:exactly;line-height:25px;mso-text-raise:3px;">
     <font style="color:#ffffff;" class="button">
-    <span><a href="https://qualif-qsf.cpam31.fr/evaluation-talent.html.php">Oui,&nbsp; &eacute;valuer</a></span>
+    <span><a href="https://qualif-qsf.cpam31.fr/evaluation-besoin.html.php">Oui,&nbsp; &eacute;valuer</a></span>
     </font>
     </span>
     </a>
@@ -496,9 +510,29 @@
     </div>
     </body>
     </html> ';
-    $from = 'MIME-Version: 1.0' . "\r\n";
-    $from .= "Content-type:text/html;charset=iso-8859-1" . "\r\n";
-    $from .= 'From: COUP DE MAIN, COUP DE POUCE<cmcp@cpam31.fr>' . "\r\n"; // En-têtes additionnels  
-    mail ($to, $subject, $content, $from); // on envois le mail  
-?>
+/* $from = 'MIME-Version: 1.0' . "\r\n";
+  $from .= "Content-type:text/html;charset=iso-8859-1" . "\r\n";
+  $from .= 'From: COUP DE MAIN, COUP DE POUCE<cmcp@cpam31.fr>' . "\r\n"; // En-têtes additionnels
+  mail($to, $subject, $content, $from); // on envois le mail */
 
+
+$Mailer = new PHPMailer\PHPMailer\PHPMailer(true);
+$Mailer->SMTPDebug = 0;
+$Mailer->isSMTP();
+
+//$Mailer->SMTPAuth = true;
+$Mailer->Timeout = 10000;
+$Mailer->Host = 'smtp.cpam-toulouse.cnamts.fr';
+$Mailer->Port = 25;
+$Mailer->isHTML(true);
+$Mailer->CharSet = "UTF-8";
+$Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
+$Mailer->Subject = $sujet;
+$Mailer->Body = $message;
+$Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
+// $Mailer->AddAddress($destinataire);
+//comme $Mailer->AddAddress($destinataire); ne marche pas cela bloque la redirection (header("Location:../MONESPACE/MonProfil.php");)
+if ($Mailer->send()) {
+    //header("Location:../MONESPACE/MonProfil.php");
+}
+?>

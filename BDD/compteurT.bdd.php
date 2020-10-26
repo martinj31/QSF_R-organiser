@@ -55,4 +55,22 @@ class compteurTBDD {
         $req->closeCursor();
     }
     
+    
+    public function addCompteur(compteurt $compteurt) {  //fonction pour l'affichage des cartes besoins
+        $req = $this->_bdd->prepare('INSERT INTO compteurt
+                                             SET NumOuiT = :NumOuiT,
+                                                 NumNonT = :NumNonT,
+                                                 RaisonT     = :RaisonT
+                                    ');
+
+        $req->bindValue(':NumOuiT', $compteurt->getNumOuiT(), PDO::PARAM_STR);
+        $req->bindValue(':NumNonT', $compteurt->getNumNonT(), PDO::PARAM_STR);
+        $req->bindValue(':RaisonT', $compteurt->getRaisonT(), PDO::PARAM_STR);
+        return $req->execute();
+
+
+
+        $req->closeCursor();
+    }
+    
 }

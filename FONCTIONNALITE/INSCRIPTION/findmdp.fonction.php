@@ -1,24 +1,34 @@
 <?php
+
 require_once '../../FONCTIONCOMMUNE/Fonctions.php';
+require_once('../../BDD/connexion.bdd.php');
+require_once('../../BDD/utilisateur.bdd.php');
+require_once('../../PHPMailer/src/Exception.php');
+require_once('../../PHPMailer/src/PHPMailer.php');
+require_once('../../PHPMailer/src/SMTP.php');
+require_once('../../PHPMailer/src/PHPMailerAutoload.php');
+
+$db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
+$bdd = $db->connect();
+$utilisateur = new utilisateurBDD($bdd);
 
 $mail = $_POST['adressemail'];
 if (is_unique_login($session, $mail) == false) {       //si cette adresse mail existe
-    
     //Génerer un mot de passe aléatoire
-    $mdp = generate_password( $length = 8 );
-    
-    // masqué ce mot de passe
-    $ResetPassword = password_hash($mdp,PASSWORD_DEFAULT);
-    
-    //insérer le mot de passe masqué dans le bdd
-    $stmt = mysqli_prepare($session, "UPDATE utilisateurs SET MotDePasse = ? WHERE Email = '$mail'");   
-    mysqli_stmt_bind_param($stmt, 's', $ResetPassword); 
+    $mdp = generate_password($length = 8);
 
-    if (mysqli_stmt_execute($stmt) == true) {   
+    // masqué ce mot de passe
+    $ResetPassword = password_hash($mdp, PASSWORD_DEFAULT);
+
+    //insérer le mot de passe masqué dans le bdd
+    $stmt = mysqli_prepare($session, "UPDATE utilisateurs SET MotDePasse = ? WHERE Email = '$mail'");
+    mysqli_stmt_bind_param($stmt, 's', $ResetPassword);
+
+    if ($utilisateur->updateMDP($ResetPassword, $mail)) {
         // l'envoie par mail le nouveau mot de passe
-            $destinataire = "$mail"; // adresse mail du destinataire
-            $sujet = "[COUP DE MAIN, COUP DE POUCE] Nouveau mot de passe"; // sujet du mail
-            $message = '
+        $destinataire = "$mail"; // adresse mail du destinataire
+        $sujet = "[COUP DE MAIN, COUP DE POUCE] Nouveau mot de passe"; // sujet du mail
+        $message = '
             <!DOCTYPE html>
             <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 
@@ -338,7 +348,7 @@ if (is_unique_login($session, $mail) == false) {       //si cette adresse mail e
 
             </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
 
-            </span><p style="padding: 0; margin: 0;">Votre nouveau mot de passe est : '.$mdp.'</p><span class="mso-font-fix-tahoma">
+            </span><p style="padding: 0; margin: 0;">Votre nouveau mot de passe est : ' . $mdp . '</p><span class="mso-font-fix-tahoma">
 
             </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
 
@@ -458,21 +468,41 @@ if (is_unique_login($session, $mail) == false) {       //si cette adresse mail e
             </div>
             </body>
             </html>'; // message qui dira que le destinataire a bien lu votre mail
-            // maintenant, l'en-tête du mail
-             // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
-     $headers[] = 'MIME-Version: 1.0';
-     $headers[] = 'Content-type: text/html; charset=iso-8859-1';
-     // En-têtes additionnels
-     $headers[] = 'From: COUP DE MAIN, COUP DE POUCE<admincmcp@assurance-maladie.fr>';
+        // maintenant, l'en-tête du mail
+        // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
+        /* $headers[] = 'MIME-Version: 1.0';
+          $headers[] = 'Content-type: text/html; charset=iso-8859-1';
+          // En-têtes additionnels
+          $headers[] = 'From: COUP DE MAIN, COUP DE POUCE<admincmcp@assurance-maladie.fr>';
 
-     mail ($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  
- 
+          mail ($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail */
+
+        $Mailer = new PHPMailer\PHPMailer\PHPMailer(true);
+        $Mailer->SMTPDebug = 0;
+        $Mailer->isSMTP();
+
+//$Mailer->SMTPAuth = true;
+        $Mailer->Timeout = 10000;
+        $Mailer->Host = 'smtp.cpam-toulouse.cnamts.fr';
+        $Mailer->Port = 25;
+        $Mailer->isHTML(true);
+        $Mailer->CharSet = "UTF-8";
+        $Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
+        $Mailer->Subject = $sujet;
+        $Mailer->Body = $message;
+        $Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
+// $Mailer->AddAddress($destinataire);
+//comme $Mailer->AddAddress($destinataire); ne marche pas cela bloque la redirection (header("Location:../MONESPACE/MonProfil.php");)
+        if ($Mailer->send()) {
+            //header("Location:../MONESPACE/MonProfil.php");
+        }
         ?>
         <script type="text/javascript">
             alert("Nous allons vous envoyer votre nouveau mot de passe par mail, merci de consulter vos emails . ");
             document.location.href = "Login.php";
         </script>
-        <?php          
+        <?php
+
     } else {
         ?>
         <script type="text/javascript">
@@ -480,15 +510,15 @@ if (is_unique_login($session, $mail) == false) {       //si cette adresse mail e
             document.location.href = "Login.php";
         </script>    
         <?php
-    }    
-      
+
+    }
 } else {                                                //si cette adresse mail existe
     ?>
     <script type="text/javascript">
         alert("Cette adresse mail n'existe pas, veuillez réessayer !");
         document.location.href = "Login.php";
     </script>
-    <?php     
-}
+    <?php
 
+}
 ?>

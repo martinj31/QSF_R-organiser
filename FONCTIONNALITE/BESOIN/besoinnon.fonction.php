@@ -21,10 +21,10 @@ $raisonB = $_GET['raison_non_besoin'] . $_GET['autre_raison'] . $_GET['datedispo
 
 //Compter comme une mise en relation échoué
 if (isset($raisonB)) {
-    $compteurb = new $compteurb([]);
+    $compteurb = new compteurb([]);
     $compteurb->setNumNonB(1);
     $compteurb->setNumOuiB(0);
-    $compteurb->setRaisonB($_RaisonB);
+    $compteurb->setRaisonB($raisonB);
     $compteurBBDD->addCompteur($compteurb);
     /* $sql = "insert into compteurb (NumOuiB, NumNonB, RaisonB) VALUES(0, 1, '{$raisonB}')";
       mysqli_query($session, $sql); */
@@ -34,9 +34,8 @@ if (isset($raisonB)) {
 $besoinBDD->UpdateReponseB($_GET['c']);
 /* $req = "UPDATE besoins SET ReponseB = ReponseB - 1 WHERE CodeB = {$_GET['c']}";
   mysqli_query($session, $req); */
-
 //Cette réponse sera plus visible
-$emailBDD->UpdateVisibilite($_GET['c'], $_GET['p']);
+$emailBDD->UpdateVisibiliteB($_GET['c'], $_GET['p'], $_GET['cem']);
 /* $query = "UPDATE emails SET VisibiliteE = 0 WHERE CodeCarte = {$_GET['c']} AND TypeCarte = 'besoin' AND Provenance = {$_GET['p']}";
   mysqli_query($session, $query); */
 

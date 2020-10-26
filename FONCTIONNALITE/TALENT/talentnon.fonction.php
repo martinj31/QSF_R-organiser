@@ -1,24 +1,49 @@
 <?php
-require_once '../../FONCTIONCOMMUNE/Fonctions.php';
 
+require_once '../../FONCTIONCOMMUNE/Fonctions.php';
+require_once('../../BDD/connexion.bdd.php');
+require_once('../../BDD/compteurT.bdd.php');
+require_once('../../BDD/talent.bdd.php');
+require_once('../../BDD/email.bdd.php');
+require_once('../../PHPMailer/src/Exception.php');
+require_once('../../PHPMailer/src/PHPMailer.php');
+require_once('../../PHPMailer/src/SMTP.php');
+require_once('../../PHPMailer/src/PHPMailerAutoload.php');
+
+
+$db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
+$bdd = $db->connect();
+
+$compteurTBDD = new compteurTBDD($bdd);
+$talentBDD = new talentBDD($bdd);
+$emailBDD = new emailBDD($bdd);
 //la raison de refuse
-$raisonT = $_GET['raison_non_talent'].$_GET['autre_raison'].$_GET['datedispo'];
+$raisonT = $_GET['raison_non_talent'] . $_GET['autre_raison'] . $_GET['datedispo'];
 
 //Compter comme une mise en relation échoué
 if (isset($raisonT)) {
-    $sql = mysqli_prepare($session, "insert into compteurt (NumOuiT, NumNonT, RaisonT) VALUES(0, 1, ?)");   
-    mysqli_stmt_bind_param($sql, 's', $raisonT);
-    mysqli_stmt_execute($sql); 
+
+    $compteurt = new CompteurT([]);
+    $compteurt->setNumNonT(1);
+    $compteurt->setNumOuiT(0);
+    $compteurt->setRaisonT($raisonT);
+    $compteurTBDD->addCompteur($compteurt);
+    /* $sql = mysqli_prepare($session, "insert into compteurt (NumOuiT, NumNonT, RaisonT) VALUES(0, 1, ?)");   
+      mysqli_stmt_bind_param($sql, 's', $raisonT);
+      mysqli_stmt_execute($sql); */
 }
 
 //Réponse - 1, une réponse a été traité
-$req = "UPDATE talents SET ReponseT = ReponseT - 1 WHERE CodeT = {$_GET['c']}";
-mysqli_query($session, $req);
-
+$talentBDD->UpdateReponseT($_GET['c']);
+/* $req = "UPDATE talents SET ReponseT = ReponseT - 1 WHERE CodeT = {$_GET['c']}";
+  mysqli_query($session, $req);
+ */
 //Cette réponse ne sera plus visible
-$query = "UPDATE emails SET VisibiliteE = 0 WHERE CodeCarte = {$_GET['c']} AND TypeCarte = 'talent' AND Provenance = {$_GET['p']}";
-mysqli_query ($session, $query); 
+$emailBDD->UpdateVisibiliteT($_GET['c'], $_GET['p'], $_GET['cem']);
 
+/* $query = "UPDATE emails SET VisibiliteE = 0 WHERE CodeCarte = {$_GET['c']} AND TypeCarte = 'talent' AND Provenance = {$_GET['p']}";
+  mysqli_query ($session, $query);
+ */
 // envoyer email au provenance et préciser la raison de refuse
 $to = $_GET['p'];
 $destinataire = "$to"; // adresse mail du destinataire
@@ -280,7 +305,7 @@ href="https://www.twitter.com/" target="_blank"><img width="24" border="0" heigh
 </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
 <p style="padding: 0; margin: 0;">Bonjour,</p><span class="mso-font-fix-tahoma">
 </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
-</span><p style="padding: 0; margin: 0;">Nous sommes au regret de vous informer que votre demande de partage de talent a &eacute;t&eacute; refus&eacute; pour la raison suivante: '.$raisonT.'.</p><span class="mso-font-fix-tahoma">
+</span><p style="padding: 0; margin: 0;">Nous sommes au regret de vous informer que votre demande de partage de talent a &eacute;t&eacute; refus&eacute; pour la raison suivante: ' . $raisonT . '.</p><span class="mso-font-fix-tahoma">
 </span><p style="padding: 0; margin: 0;">Vous pouvez retrouver plus d\'informations sur la plateforme.</p><span class="mso-font-fix-tahoma">
 </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
 </span></div>
@@ -351,12 +376,32 @@ href="https://www.twitter.com/" target="_blank"><img width="24" border="0" heigh
 </table>
 </div>
 </body>
-</html>'                
+</html>'
 ; // Contenu du mail 
-$headers = "MIME-Version: 1.0" . "\r\n";
-$headers .= "Content-type:text/html;charset=iso-8859-1" . "\r\n";
-$headers .= 'From: COUP DE MAIN, COUP DE POUCE<admincmcp@assurance-maladie.fr>' . "\r\n"; // En-têtes additionnels  
-mail ($destinataire, $sujet, $message, $headers); // on envois le mail  
+/* $headers = "MIME-Version: 1.0" . "\r\n";
+  $headers .= "Content-type:text/html;charset=iso-8859-1" . "\r\n";
+  $headers .= 'From: COUP DE MAIN, COUP DE POUCE<admincmcp@assurance-maladie.fr>' . "\r\n"; // En-têtes additionnels
+  mail ($destinataire, $sujet, $message, $headers); // on envois le mail
 
-header("Location: ../MONESPACE/MonProfil.php");
+  header("Location: ../MONESPACE/MonProfil.php"); */
+
+$Mailer = new PHPMailer\PHPMailer\PHPMailer(true);
+$Mailer->SMTPDebug = 0;
+$Mailer->isSMTP();
+
+//$Mailer->SMTPAuth = true;
+$Mailer->Timeout = 10000;
+$Mailer->Host = 'smtp.cpam-toulouse.cnamts.fr';
+$Mailer->Port = 25;
+$Mailer->isHTML(true);
+$Mailer->CharSet = "UTF-8";
+$Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
+$Mailer->Subject = $sujet;
+$Mailer->Body = $message;
+$Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
+// $Mailer->AddAddress($destinataire);
+//comme $Mailer->AddAddress($destinataire); ne marche pas cela bloque la redirection (header("Location:../MONESPACE/MonProfil.php");)
+if ($Mailer->send()) {
+    header("Location:../MONESPACE/MonProfil.php");
+}
 ?>

@@ -1,125 +1,129 @@
 <?php
-        // 1. Connexion à la base de donnée
 
-        /*$nomlogin = "bd_qualif_qsf";                    // Ici, nous connectons avec le serveur local, si vous voulez le tester sur d'autre serveur, vous pouvez changer ces 3 variables
-        $nompasswd = "mYSQLQSF31";
-        $nombase = "bd_qualif_qsf";
-        $serveur = "bm124975-001.privatesql";
-        $port_bdd = "35171";*/
+require_once('../../BDD/connexion.bdd.php');
+require_once('../../BDD/utilisateur.bdd.php');
+// 1. Connexion à la base de donnée
 
-        $nomlogin = "root";                    // Ici, nous connectons avec le serveur local, si vous voulez le tester sur d'autre serveur, vous pouvez changer ces 3 variables
-        $nompasswd = "";
-        $nombase = "qsf";
-        $serveur = "localhost";
-       //$port_bdd = "35171";
+/* $nomlogin = "bd_qualif_qsf";                    // Ici, nous connectons avec le serveur local, si vous voulez le tester sur d'autre serveur, vous pouvez changer ces 3 variables
+  $nompasswd = "mYSQLQSF31";
+  $nombase = "bd_qualif_qsf";
+  $serveur = "bm124975-001.privatesql";
+  $port_bdd = "35171"; */
 
+$nomlogin = "root";                    // Ici, nous connectons avec le serveur local, si vous voulez le tester sur d'autre serveur, vous pouvez changer ces 3 variables
+$nompasswd = "";
+$nombase = "qsf";
+$serveur = "localhost";
+//$port_bdd = "35171";
 
-        $session = mysqli_connect( $serveur, $nomlogin, $nompasswd, $nombase/*, $port_bdd*/); 
+$db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
+$bdd = $db->connect();
 
-        if ($session == NULL) // Test de connexion n'est pas réussié
-          {
-                  echo ("<p>Echec de connection</p>");
-          } 
-        else 
-         {
-                // Sélection de la base de donnée
-                 if (mysqli_select_db($session, $nombase) == TRUE) { 
-                            //echo ("Connection Réussite</br>");
-            }
-                else 
-             {
-                            echo ("Cette base n'existe pas</br>");
-                    }  
-         }
-         
-         
+$utilisateurBDD = new utilisateurBDD($bdd);
 
-        // 2. Fonction vérification l'existnce d'email       
-            
-            function is_unique_login($session, $Email){
-                $stmt = mysqli_prepare($session, "SELECT Email from utilisateurs where Email = ?");
-                mysqli_stmt_bind_param($stmt, "s", $Email);
-                mysqli_stmt_execute($stmt);
-                if(mysqli_stmt_fetch($stmt)==TRUE){
-                    return False;
-                } else {
-                    return True;
-                }
-            }
-        if ( !isset($_SESSION['email']) ) 
-           { 
-               
-             session_start(); 
-                
-               
-           }
-        // 3. Session utilisateur
-       // session_start();
-         
-        // 4. Session actuelle : récuperer le code utilisateur   
-            if (isset($_SESSION['email'])) {
-                $sqlr = "select CodeU from utilisateurs WHERE Email = '{$_SESSION['email']}' ";
-                $result = mysqli_query ($session, $sqlr);
-                if ($code = mysqli_fetch_array($result)) {   
-                    $usercode = $code['CodeU'];
-                }   
-            }
-            
-            if (isset($_SESSION['email'])) {                     
-                 $requete = "select CodeU from utilisateurs WHERE Email = '{$_SESSION['email']}' ";
-                 $resultat = mysqli_query ($session, $requete);
-                 if ($ligne = mysqli_fetch_array($resultat)) {
-                     $_SESSION['codeu'] = $ligne['CodeU'];
-                 }
-            }
-            
-        // 5. récupérer le type d'info d'un utilisateur
-            if (isset($_SESSION['email'])) {
-                $query = "select TypeU from utilisateurs WHERE Email = '{$_SESSION['email']}' ";
-                $result = mysqli_query ($session, $query);
-                if ($type = mysqli_fetch_array($result)) {   
-                    $_SESSION['type'] = $type['TypeU'];
-                }  
-            } 
-  
-      
-         // 6.1 Tester si l'utilisateur est connecté avant saisir un nouveau besoin/talent
-            function is_login_new_besoin() {
-                if (isset($_SESSION['email'])) {
-                    echo ('<a href="../BESOIN/Creer1Besoin.php"><button type="button" class="btn btn-light">Créer un nouveau besoin</button></a>');
-                } else {
-                    echo ('<a href="../INSCRIPTION/Login.php"><button type="button" class="btn btn-light">Créer un nouveau besoin</button></a>');
-                }
-            }
-            
-         // 6.2 Tester si l'utilisateur est connecté avant saisir un nouveau besoin/talent
-            function is_login_new_talent() {
-                if (isset($_SESSION['email'])) {
-                    echo ('<a href="../TALENT/Creer1Talent.php"><button type="button" class="btn btn-light">Créer un nouveau talent</button></a>');
-                } else {
-                    echo ('<a href="../INSCRIPTION/Login.php"><button type="button" class="btn btn-light">Créer un nouveau talent</button></a>');
-                }
-            }
-            
-            // 6.3 Tester si l'utilisateur est connecté avant saisir un nouveau besoin/talent
-            function is_login_new_atelier() {
-                if (isset($_SESSION['email'])) {
-                    echo ('<a href="../ATELIER/Creer1Atelier.php"><button type="button" class="btn btn-light">Créer un nouvel atelier</button></a>');
-                } else {
-                    echo ('<a href="../INSCRIPTION/Login.php"><button type="button" class="btn btn-light">Créer un nouveau atelier</button></a>');
-                }
-            }
+$session = mysqli_connect($serveur, $nomlogin, $nompasswd, $nombase/* , $port_bdd */);
 
-            // 6.4 Génerer un mot de passe aléatoire
-            function generate_password( $length = 8 ) {
+if ($session == NULL) { // Test de connexion n'est pas réussié
+    echo ("<p>Echec de connection</p>");
+} else {
+    // Sélection de la base de donnée
+    if (mysqli_select_db($session, $nombase) == TRUE) {
+        //echo ("Connection Réussite</br>");
+    } else {
+        echo ("Cette base n'existe pas</br>");
+    }
+}
 
-                // un chaîne de caractères avec le quel on récupère les élément de mot de passe
-                $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-                $randpwd = '';
-                for ( $i = 0; $i < $length; $i++ ) {
-                    $randpwd .= $str{mt_rand(0,strlen($chars) - 1)};      // prendre au hasard un élément de $chars
-                    $randpwd .= $chars[ mt_rand(0, strlen($chars) - 1) ];
-                }
-                return $randpwd;
-            }
+// 2. Fonction vérification l'existnce d'email       
+
+function is_unique_login($session, $Email) {
+    
+    $user = $utilisateurBDD->un_userLog($Email);
+    
+    //!empty($user)
+    /*$stmt = mysqli_prepare($session, "SELECT Email from utilisateurs where Email = ?");
+    mysqli_stmt_bind_param($stmt, "s", $Email);
+    mysqli_stmt_execute($stmt);*/
+    if (!empty($user)) {
+        return False;
+    } else {
+        return True;
+    }
+}
+//var_dump($_SESSION['email']);
+if (!isset($_SESSION['email'])) {
+   
+    session_start();
+}
+// 3. Session utilisateur
+// session_start();
+// 4. Session actuelle : récuperer le code utilisateur   
+if (isset($_SESSION['email'])) {
+    $user = $utilisateurBDD->un_userLog($_SESSION['email']);
+    /*$sqlr = "select CodeU from utilisateurs WHERE Email = '{$_SESSION['email']}' ";
+    $result = mysqli_query($session, $sqlr);*/
+    if (!empty($user)) {
+        $usercode = $user->getCodeU();
+    }
+}
+
+if (isset($_SESSION['email'])) {
+    $user = $utilisateurBDD->un_userLog($_SESSION['email']);
+    /*$requete = "select CodeU from utilisateurs WHERE Email = '{$_SESSION['email']}' ";
+    $resultat = mysqli_query($session, $requete);*/
+    if (!empty($user)) {
+        $_SESSION['codeu'] = $user->getCodeU();
+    }
+}
+
+// 5. récupérer le type d'info d'un utilisateur
+if (isset($_SESSION['email'])) {
+    $user = $utilisateurBDD->un_userLog($_SESSION['email']);
+   /* $query = "select TypeU from utilisateurs WHERE Email = '{$_SESSION['email']}' ";
+    $result = mysqli_query($session, $query);*/
+    if (!empty($user)) {
+        $_SESSION['type'] = $user->getTypeU();
+    }
+}
+
+// 6.1 Tester si l'utilisateur est connecté avant saisir un nouveau besoin/talent
+function is_login_new_besoin() {
+    if (isset($_SESSION['email'])) {
+        echo ('<a href="../BESOIN/Creer1Besoin.php"><button type="button" class="btn btn-light">Créer un nouveau besoin</button></a>');
+    } else {
+        echo ('<a href="../INSCRIPTION/Login.php"><button type="button" class="btn btn-light">Créer un nouveau besoin</button></a>');
+    }
+}
+
+// 6.2 Tester si l'utilisateur est connecté avant saisir un nouveau besoin/talent
+function is_login_new_talent() {
+    if (isset($_SESSION['email'])) {
+        echo ('<a href="../TALENT/Creer1Talent.php"><button type="button" class="btn btn-light">Créer un nouveau talent</button></a>');
+    } else {
+        echo ('<a href="../INSCRIPTION/Login.php"><button type="button" class="btn btn-light">Créer un nouveau talent</button></a>');
+    }
+}
+
+// 6.3 Tester si l'utilisateur est connecté avant saisir un nouveau besoin/talent
+function is_login_new_atelier() {
+    if (isset($_SESSION['email'])) {
+        echo ('<a href="../ATELIER/Creer1Atelier.php"><button type="button" class="btn btn-light">Créer un nouvel atelier</button></a>');
+    } else {
+        echo ('<a href="../INSCRIPTION/Login.php"><button type="button" class="btn btn-light">Créer un nouveau atelier</button></a>');
+    }
+}
+
+// 6.4 Génerer un mot de passe aléatoire
+function generate_password($length = 8) {
+
+    // un chaîne de caractères avec le quel on récupère les élément de mot de passe
+    $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    $randpwd = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randpwd .= $str{mt_rand(0, strlen($chars) - 1)};      // prendre au hasard un élément de $chars
+        $randpwd .= $chars[mt_rand(0, strlen($chars) - 1)];
+    }
+    return $randpwd;
+}
+
 ?>

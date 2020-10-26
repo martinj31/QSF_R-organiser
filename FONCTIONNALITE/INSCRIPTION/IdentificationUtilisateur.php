@@ -24,7 +24,7 @@ if (isset($_POST['email'])) {
 
     $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
     $bdd = $db->connect();
-
+    
     $utilisateurs = new utilisateurBDD($bdd);
     $utilisateur = $utilisateurs->un_userLog($Email);
 
@@ -39,12 +39,14 @@ if (isset($_POST['email'])) {
         
         
             if ($utilisateur->getRoleU() != NULL) {
-                $stmt = mysqli_prepare($session, "SELECT MotDePasse FROM utilisateurs WHERE Email=?");   // Connecter et vérification de mot de passe
+                /*$stmt = mysqli_prepare($session, "SELECT MotDePasse FROM utilisateurs WHERE Email=?");   // Connecter et vérification de mot de passe
                 mysqli_stmt_bind_param($stmt, "s", $Email);
                 mysqli_stmt_execute($stmt);
 
                 mysqli_stmt_bind_result($stmt, $good_password);
-                mysqli_stmt_fetch($stmt);
+                mysqli_stmt_fetch($stmt);*/
+                
+                $good_password = $utilisateur->getMotDePasse();
 
                 if (password_verify($Password, $good_password)) {    // si le mot de passe est bon, ouvert la session 
                     $_SESSION['email'] = $Email;
@@ -65,12 +67,14 @@ if (isset($_POST['email'])) {
 
                 }
             } else {
-                $stmt = mysqli_prepare($session, "SELECT MotDePasse FROM utilisateurs WHERE Email=?");   // Connecter et vérification de mot de passe
+                $good_password = $utilisateur->getMotDePasse();
+                
+               /* $stmt = mysqli_prepare($session, "SELECT MotDePasse FROM utilisateurs WHERE Email=?");   // Connecter et vérification de mot de passe
                 mysqli_stmt_bind_param($stmt, "s", $Email);
                 mysqli_stmt_execute($stmt);
 
                 mysqli_stmt_bind_result($stmt, $good_password);
-                mysqli_stmt_fetch($stmt);
+                mysqli_stmt_fetch($stmt);*/
 
                 if (password_verify($Password, $good_password)) {    // si le mot de passe est bon, ouvert la session 
                     $_SESSION['email'] = $Email;

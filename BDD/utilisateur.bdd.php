@@ -73,6 +73,36 @@ class utilisateurBDD {
         $req->closeCursor();
     }
 
+    //select l'id du user par rapport à l'id de besoin
+    public function saisirUserIDByBesoin($CodeB) {
+
+        $atelierTab = [];
+        $req = $this->_bdd->query("select s.CodeU from besoins as b, saisir as s where b.CodeB = $CodeB and b.CodeB = s.CodeB");
+
+       $datas = $req->fetch(PDO::FETCH_ASSOC);
+
+           
+        return $datas['CodeU'];
+
+        $req->closeCursor();
+    }
+    
+    
+    //select l'Email du user par rapport à l'id de besoin
+    public function saisirUserEmailByBesoin($CodeB) {
+
+        $atelierTab = [];
+        $req = $this->_bdd->query("select u.Email from utilisateurs u, saisir s, besoins b where u.CodeU = s.CodeU and s.CodeB = b.CodeB and b.CodeB = $CodeB");
+
+       $datas = $req->fetch(PDO::FETCH_ASSOC);
+
+           
+        return $datas['Email'];
+
+        $req->closeCursor();
+    }
+    
+    
     //Pour le mail en créant un atelier
     public function saisirEmailEtTitreAtelier($usercode) {
 
@@ -128,6 +158,62 @@ class utilisateurBDD {
 
         $req->closeCursor();
     }
+    
+    public function selectUtilisateurEmailTalentByDate($today) {
+
+        $vide = '';
+        $Mails = [];
+
+        $req = $this->_bdd->query("select DISTINCT u.Email from emails as e, utilisateurs as u where e.TypeCarte = 'talent' and e.DateEvaluation = '$today' and ( e.Provenance = u.CodeU or e.Destinataire = u.CodeU )");
+
+        $datas = $req->fetch(PDO::FETCH_ASSOC);
+
+        if ($req) {
+
+            while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
+
+                 $Mails[] = $datas['Email'];
+            }
+        } else {
+            return $vide;
+        }
+
+
+
+
+        return $Mails;
+
+        $req->closeCursor();
+    }
+    
+    
+    public function selectUtilisateurEmailBesoinByDate($today) {
+
+        $vide = '';
+        $Mails = [];
+
+        $req = $this->_bdd->query("select DISTINCT u.Email from emails as e, utilisateurs as u where e.TypeCarte = 'besoin' and e.DateEvaluation = '$today' and ( e.Provenance = u.CodeU or e.Destinataire = u.CodeU )");
+
+        $datas = $req->fetch(PDO::FETCH_ASSOC);
+
+        if ($req) {
+
+            while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
+
+                 $Mails[] = $datas['Email'];
+            }
+        } else {
+            return $vide;
+        }
+
+
+
+
+        return $Mails;
+
+        $req->closeCursor();
+    }
+    
 
     public function selectUtilisateurSearch($cartea) {
 
@@ -184,6 +270,9 @@ class utilisateurBDD {
 
         $req->closeCursor();
     }
+    
+    
+    
 
     //T = ID de besoin
     public function un_userLog($Email) {  //fonction pour afficher les information d'un carte besoin
@@ -218,6 +307,28 @@ class utilisateurBDD {
 
         $req->closeCursor();
     }
+    
+    
+     public function selectBesoinReponseTalentReponse($usercode) {
+
+        $vide = 0;
+        
+
+        $req = $this->_bdd->query("select SUM(b.ReponseB) + SUM(t.ReponseT) as Reponse from besoins b, saisir s, talents t, proposer p where s.CodeB = b.CodeB and t.CodeT = p.CodeT and p.CodeU = $usercode and s.CodeU = $usercode and b.VisibiliteB = 1 and t.VisibiliteT = 1");
+
+        $datas = $req->fetch(PDO::FETCH_ASSOC);
+
+        if ($req) {
+
+            return $datas['Reponse'];
+        } else {
+            return $vide;
+        }
+
+        
+
+        $req->closeCursor();
+    }
 
     public function updateUser(utilisateur $utilisateur) {
         $req = $this->_bdd->prepare('UPDATE utilisateurs
@@ -237,6 +348,45 @@ class utilisateurBDD {
 
 
         $req->execute();
+
+        $req->closeCursor();
+    }
+    
+    
+    public function updateType( $retype, $usercode) {
+        $req = $this->_bdd->prepare('UPDATE utilisateurs
+                                        SET TypeU = :TypeU
+                                        WHERE CodeU = :CodeU
+                                    ');
+
+        // var_dump($utilisateur);
+
+        $req->bindValue(':TypeU', $retype, PDO::PARAM_STR);
+        $req->bindValue(':CodeU', $usercode, PDO::PARAM_STR);
+
+
+
+        return $req->execute();
+
+        $req->closeCursor();
+    }
+    
+    
+    
+    public function updateMDP( $mdp, $email) {
+        $req = $this->_bdd->prepare('UPDATE utilisateurs
+                                        SET MotDePasse = :MotDePasse
+                                        WHERE Email = :Email
+                                    ');
+
+        // var_dump($utilisateur);
+
+        $req->bindValue(':MotDePasse', $mdp, PDO::PARAM_STR);
+        $req->bindValue(':Email', $email, PDO::PARAM_STR);
+
+
+
+        return $req->execute();
 
         $req->closeCursor();
     }
