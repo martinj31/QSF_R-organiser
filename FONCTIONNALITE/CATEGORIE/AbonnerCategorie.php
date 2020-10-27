@@ -45,8 +45,9 @@
 
 
 
-                                if (isset($_SESSION['email'])) {
-                                    $CategorieTab = $categorieBDD->allCategorieByUser($usercode);
+                                
+                                    $CategorieTab = $categorieBDD->allCategorieNameAndId();
+                                    
                                     if (!empty($CategorieTab)) {
 
                                         foreach ($CategorieTab as $value) {
@@ -85,7 +86,7 @@
                                             }
                                         }
                                     }
-                                }
+                                
                         
                         
                         

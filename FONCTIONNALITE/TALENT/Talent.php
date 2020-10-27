@@ -179,10 +179,7 @@
                                 echo ('<a href="TalentX.php?t=' . $value['talent']->getCodeT() . '" class="btn btn-outline-dark">Voir la demande</a>');
                                 echo ('</div>');
                                 echo ('</div></div>');
-                            } else {
-
-                                echo('<h5>Aucun résultat</h5>');
-                            }
+                            } 
                         }
                     }else {
 

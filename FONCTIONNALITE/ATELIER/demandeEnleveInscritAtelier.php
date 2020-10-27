@@ -1,89 +1,54 @@
 <?php
 
-$Categorie = $_POST['categorie'];
-$Titre = $_POST['titre'];   // récupéré les valeurs selon la méthode POST
-$Description = $_POST['description'];
-$Date = $_POST['date'];
-$Lieu = $_POST['lieu'];
-$Nombre = $_POST['nb'];
-$Type = $_POST['type'];
-$Plus = $_POST['plus'];
-//$DatePublicationA = date("yy/m/d");
+$userID= $_GET['u'];   // récupéré les valeurs selon la méthode POST
+$atelierID= $_GET['t'];
+
 
 require_once('../../FONCTIONCOMMUNE/Fonctions.php');
-require_once('../../BDD/atelier.bdd.php');
 require_once('../../BDD/connexion.bdd.php');
-require_once('../../BDD/utilisateur.bdd.php');
+require_once('../../BDD/atelier.bdd.php');
 require_once('../../PHPMailer/src/Exception.php');
 require_once('../../PHPMailer/src/PHPMailer.php');
 require_once('../../PHPMailer/src/SMTP.php');
 require_once('../../PHPMailer/src/PHPMailerAutoload.php');
 
-$atelier = new atelier([]);
 
 
-$atelier->setTitreA($Titre);
-$atelier->setDescriptionA($Description);
-$atelier->setDateA($Date);
-$atelier->setLieuA($Lieu);
-$atelier->setNombreA($Nombre);
-$atelier->setCodeC($Categorie);
-$atelier->setPlusA($Plus);
-$atelier->setTypeA($Type);
-
-
-
+//ajouter un nouveau besoin
+/* $stmt = mysqli_prepare($session, "INSERT INTO besoins(TitreB,DescriptionB,DateButoireB,DatePublicationB,TypeB,CodeC) VALUES(?,?,?,?,?,?)");  //insérer un nouveau besoin dans le table besoins
+  mysqli_stmt_bind_param($stmt, 'sssssi', $Titre, $Description, $DateButoire, $DatePublicationB, $Type, $Categorie); */
 $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
 $bdd = $db->connect();
-$user = new utilisateurBDD($bdd);
-$ateliers = new atelierBDD($bdd);
-//$besoins = new besoin();
 
-$atelierTest = $ateliers->addAtelier($atelier);
+$userBDD = new utilisateurBDD($bdd);
+$user = $userBDD->un_User($userID);
 
-
-//ajouter un nouvelle atelier
-/* $stmt = mysqli_prepare($session, "INSERT INTO ateliers(TitreA,DescriptionA,DateA,LieuA,NombreA,DatePublicationA,PlusA,TypeA,CodeC) VALUES(?,?,?,?,?,?,?,?,?)");  //insérer un nouvel atelier dans le table ateliers
-  mysqli_stmt_bind_param($stmt, 'ssssisssi', $Titre, $Description, $Date, $Lieu, $Nombre, $DatePublicationA, $Plus, $Type, $Categorie);
- */
+$atelierBDD = new atelierBDD($bdd);
+$atelier = $atelierBDD->selectAtelierX($atelierID);
 
 
-
-if ($atelierTest === true) {
-    echo "Votre atelier a bien été enregistré";
-    $atelierLastID = $ateliers->idLastAtelier();
-    $ateliers->participeraAtelierEtUser($usercode, $atelierLastID, "createur");
-
-
-
-
-//ajouter codeb et codeu dans le table saisir
-    /* $sql = "select CodeA from ateliers order by CodeA DESC limit 1";
-      $result = mysqli_query($session, $sql);
-      if ($code = mysqli_fetch_array($result)) {
-      $codea = $code['CodeA'];
-      $stmt2 = mysqli_prepare($session, "INSERT INTO participera(CodeU,CodeA) VALUES(?,?)");   // insérer le code de l'utilisateur et le code de catégorie dans le table abonner
-      mysqli_stmt_bind_param($stmt2, 'ii', $usercode, $codea);
-      mysqli_stmt_execute($stmt2);
-      } */
+    
 
 
 
 
 
-    $emailEtTitre = $user->saisirEmailEtTitreAtelier($usercode);
-   
-    /* $sql = "select u.Email, a.TitreA from utilisateurs u, ateliers a, participera p where u.CodeU = $usercode and u.CodeU = p.CodeU and p.CodeA = a.CodeA order by a.CodeA DESC limit 1";
+
+    /* $sql = "select u.Email, b.TitreB from utilisateurs u, besoins b, saisir s where u.CodeU = $usercode and u.CodeU = s.CodeU and s.CodeB = b.CodeB order by b.CodeB DESC limit 1";
       $result = mysqli_query($session, $sql); */
-    if ($emailEtTitre[0]['Email'] != NULL) {
-        $Email = $emailEtTitre[0]['Email'];
+
+
+    
+    //$email = mysqli_fetch_array($result)
+   
+        $Email = "admincmcp@assurance-maladie.fr";
 
         $destinataire = "$Email"; // adresse mail du destinataire
-        $sujet = "Création d'un nouveau atelier «{$Titre}»"; // sujet du mail
+        $sujet = "[COUP DE MAIN, COUP DE POUCE] Demande de désincription "; // sujet du mail
         $message = '<!DOCTYPE html>
         <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
         <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="x-apple-disable-message-reformatting">
@@ -336,8 +301,8 @@ if ($atelierTest === true) {
         </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
         <p style="padding: 0; margin: 0;">Bonjour,</p><span class="mso-font-fix-tahoma">
         </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
-        </span><p style="padding: 0; margin: 0;">Vous venez de cr&eacute;er un nouveau atelier « ' . $Titre . '».</p><span class="mso-font-fix-tahoma">
-        </span><p style="padding: 0; margin: 0;">Merci de votre participation ! </p><span class="mso-font-fix-tahoma">
+        </span><p style="padding: 0; margin: 0;">Demande de désinscrire «' . $user->getNomU() . ' ' . $user->getPrenomU() . ',  ' . $user->getEmail() . '».<br> Dans l\'atelier  «' . $atelier[0]['atelier']->getTitreA() . '»  dont l\'ID est «' . $atelier[0]['atelier']->getCodeA() . '» </p><span class="mso-font-fix-tahoma">
+        </span><p style="padding: 0; margin: 0;">Bien cordialement ! </p><span class="mso-font-fix-tahoma">
         </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
         </span></div>
         </td>
@@ -409,12 +374,11 @@ if ($atelierTest === true) {
           $header .= "Disposition-Notification-To:l'email d'un administrateur"; // c'est ici que l'on ajoute la directive */
 
         // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
-        /* $headers[0] = 'MIME-Version: 1.0';
-          $headers[1] = 'Content-type: text/html; charset=iso-8859-1';
+        /* $headers = 'MIME-Version: 1.0' . "\r\n";
+          $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+          $headers .= 'From: COUP DE MAIN, COUP DE POUCE <admincmcp@assurance-maladie.fr>' . "\r\n"; */
+        // En-têtes additionnels
 
-          // En-têtes additionnels
-
-          $headers[2] = 'From: COUP DE MAIN, COUP DE POUCE<admincmcp@assurance-maladie.fr>'; */
 
         $Mailer = new PHPMailer\PHPMailer\PHPMailer(true);
         $Mailer->SMTPDebug = 0;
@@ -430,22 +394,17 @@ if ($atelierTest === true) {
         $Mailer->Subject = $sujet;
         $Mailer->Body = $message;
         $Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
-        //$Mailer->AddAddress($destinataire);
+       // $Mailer->AddAddress($destinataire);
         //comme $Mailer->AddAddress($destinataire); ne marche pas cela bloque la redirection (header("Location:../MONESPACE/MonProfil.php");)
         if ($Mailer->send()) {
             header("Location:../MONESPACE/MonProfil.php");
         }
-        // mail($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  
-    }
-} else {
-    ?>
 
-    <script>
-        alert("Désolé, votre atelier n'a pas été enregistré ! \nVeuillez saisir toutes les informations correctement ! ");
-        document.location.href = 'Creer1Atelier.php';
-    </script>
 
-    <?php
 
-}
-?>
+
+        //mail($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  
+    
+
+
+ ?>

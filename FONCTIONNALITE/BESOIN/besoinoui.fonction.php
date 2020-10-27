@@ -26,7 +26,7 @@ $besoinBDD->UpdateReponseB($_GET['c']);
 mysqli_query($session, $req);*/
 
 //Cette réponse ne sera plus visible
-$emailBDD->UpdateVisibilite($_GET['c'], $_GET['p']);
+$emailBDD->UpdateVisibiliteB($_GET['c'], $_GET['p'], $_GET['cem']);
 /*$query = "UPDATE emails SET VisibiliteE = 0 WHERE CodeCarte = {$_GET['c']} AND TypeCarte = 'besoin' AND Provenance = {$_GET['p']}";
 mysqli_query ($session, $query);*/ 
 

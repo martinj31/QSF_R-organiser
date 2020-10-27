@@ -17,8 +17,6 @@ class atelierBDD {
 
     private $_bdd;
 
-   
-
     /*
      * Méthode de construction
      */
@@ -94,16 +92,13 @@ class atelierBDD {
 
             return $vide;
         }
-        
+
 
         return $ateliers;
 
         $req->closeCursor();
     }
-    
-    
-    
-    
+
     public function selectAllAteliers() {
 
         $vide = '';
@@ -128,10 +123,8 @@ class atelierBDD {
 
         $req->closeCursor();
     }
-    
-    
-    
-     public function selectAtelierSearch($cartea) {
+
+    public function selectAtelierSearch($cartea) {
 
         $vide = '';
         $ateliers = [];
@@ -141,9 +134,8 @@ class atelierBDD {
         $datas = $req->fetch(PDO::FETCH_ASSOC);
 
         if ($req) {
-           
-                $ateliers[] = new atelier($datas);
-            
+
+            $ateliers[] = new atelier($datas);
         } else {
             return $vide;
         }
@@ -155,10 +147,10 @@ class atelierBDD {
 
         $req->closeCursor();
     }
-    
-    
+
     public function selectAtelierByUser($usercode) {
 
+        $ateliers = [];
         $vide = '';
         $test = "";
         $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from categories c, ateliers a, participera p where p.CodeA = a.CodeA and c.CodeC = a.CodeC and p.CodeU = {$usercode} order by a.CodeA DESC ";
@@ -308,23 +300,6 @@ class atelierBDD {
         $req->closeCursor();
     }
 
-    //Liaison User / Atelier dans a table saisir
-    public function participeraAtelierEtUser($usercode, $codeA) {  //fonction pour l'affichage des cartes besoins
-        $req = $this->_bdd->prepare('INSERT INTO participera
-                                             SET CodeU = :CodeU,
-                                                 CodeA = :CodeA
-                                    ');
-
-        $req->bindValue(':CodeU', $usercode, PDO::PARAM_INT);
-        $req->bindValue(':CodeA', $codeA, PDO::PARAM_INT);
-
-        return $req->execute();
-
-
-
-        $req->closeCursor();
-    }
-
 //INSERT INTO ateliers SET TitreA = "etelier Test 1", 
 //DescriptionA = "le testimportant", DateA = "du 16 au 18 ", LieuA = "6.16", NombreA = 15, PlusA = "", TypeA = "Pro et Perso", CodeC= 2
 //"INSERT INTO ateliers(TitreA,DescriptionA,DateA,LieuA,NombreA,DatePublicationA,PlusA,TypeA,CodeC) VALUES(?,?,?,?,?,?,?,?,?)"); 
@@ -356,34 +331,104 @@ class atelierBDD {
 
         $req->closeCursor();
     }
-    
-    
+
     //le user veut que cette carte ne soit plus visible 
     public function userUpdateAtelierVisible($CodeA) {  //fonction pour l'affichage des cartes besoins
         $req = $this->_bdd->prepare('UPDATE ateliers 
                                         SET VisibiliteA = :VisibiliteA 
                                     WHERE CodeA = :CodeA');
 
-        
-        $req->bindValue(':CodeA', (int)$CodeA, PDO::PARAM_INT);
+
+        $req->bindValue(':CodeA', (int) $CodeA, PDO::PARAM_INT);
         $req->bindValue(':VisibiliteA', 0, PDO::PARAM_INT);
 
-       
+
         return $req->execute();
 
 
 
         $req->closeCursor();
     }
-    
-    
+
+    //Liaison User / Atelier dans a table saisir
+    public function participeraAtelierEtUser($usercode, $codeA, $RoleA) {  //fonction pour l'affichage des cartes besoins
+        $req = $this->_bdd->prepare('INSERT INTO participera
+                                             SET CodeU = :CodeU,
+                                                 CodeA = :CodeA,
+                                                 RoleA = :RoleA
+                                    ');
+
+        $req->bindValue(':CodeU', $usercode, PDO::PARAM_INT);
+        $req->bindValue(':CodeA', $codeA, PDO::PARAM_INT);
+        $req->bindValue(':RoleA', $RoleA, PDO::PARAM_STR);
+
+        
+
+        return $req->execute();
+
+
+
+        $req->closeCursor();
+    }
+
+    //Select l'email et le titre en fonction de l'id de l'atelier
+    public function nombreParticipantVSNBRMax($CodeA) {
+
+
+        $req = $this->_bdd->query("SELECT a.NombreA, COUNT(p.CodeA) as nbrParticipant FROM participera p, ateliers a WHERE p.RoleA = 'participant' and p.CodeA = a.CodeA and p.CodeA = $CodeA");
+
+        $datas = $req->fetch(PDO::FETCH_ASSOC);
+
+        if ($datas['NombreA'] > $datas['nbrParticipant']) {
+            return true;
+        }else{
+            return false;
+        }
+
+        $req->closeCursor();
+    }
+
+    //Select l'email et le titre en fonction de l'id de l'atelier
+    public function saisirRoleUserAtelier($CodeA, $usercode) {
+
+
+        $req = $this->_bdd->query("SELECT p.RoleA FROM participera p, ateliers a WHERE $usercode = p.CodeU and p.CodeA = a.CodeA and p.CodeA = $CodeA");
+
+
+
+        while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
+
+            return $datas['RoleA'];
+        }
+
+
+
+        $req->closeCursor();
+    }
+
+    //Select l'email et le titre en fonction de l'id de l'atelier
+    public function DesinscriptionAtelier($CodeA, $usercode) {
+
+
+        $req = $this->_bdd->query("DELETE FROM participera WHERE CodeU = $usercode and CodeA = $CodeA");
+
+
+
+        return $req;
+
+
+
+
+        $req->closeCursor();
+    }
+
     //Select l'email et le titre en fonction de l'id de l'atelier
     public function saisirEmailEtTitreAtelier($CodeA) {
 
         $atelierTab = [];
         $req = $this->_bdd->query("SELECT u.Email, a.TitreA FROM utilisateurs u, participera p, ateliers a WHERE u.CodeU = p.CodeU and p.CodeA = a.CodeA and p.CodeA = $CodeA");
 
-       
+
         while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
 
             $atelierTab[] = ['Email' => $datas['Email'], 'Titre' => $datas['TitreA']];
@@ -392,8 +437,7 @@ class atelierBDD {
 
         $req->closeCursor();
     }
-    
-    
+
     //le user veut que cette carte  soit  visible 
     public function userUpdateAtelierVisibleAndURL($CodeA, $URL) {  //fonction pour l'affichage des cartes besoins
         $req = $this->_bdd->prepare('UPDATE ateliers 
@@ -412,7 +456,6 @@ class atelierBDD {
 
         $req->closeCursor();
     }
-    
 
     public function updateAtelier(atelier $atelier) {
         $req = $this->_bdd->prepare('UPDATE ateliers

@@ -541,6 +541,7 @@
                                 echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
                                 echo ('<a href="AdminAtelierX.php?t=' . $value->getCodeA() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
                                 echo ('<button type="submit" name="desactivera" value="' . $value->getCodeA() . '" class="btn "><img src="img/trash.png" alt="Désactiver" width="30" height="30"></button>');
+                                echo ('<a  href="AdminInscritAtelier.php?t=' . $value->getCodeA() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Voir les inscrits" width="30" height="30"></button></a>');
                                 echo ('</div>');
                                 echo ('</td>');
                                 echo ('</tr>');

@@ -51,7 +51,7 @@
                         if ($value["VisibiliteT"] == 1) {
                             echo ('<h6>' . $value["email"]->getSujet() . '</h6>');
                             echo ('<p>' . $value["email"]->getContenu() . '</p><br>');
-                            echo ('<a href="mailto:' . $value["EmailU"] . '"><button type="button" onclick="javascript: sendmail();" class="btn btn-primary">Super, je réponds</button></a> '); // envoyer le mail pour les mettre en contact
+                            echo ('<a  href="talentoui.fonction.php?p=' . $value["email"]->getProvenance() . '&c=' . $value["email"]->getCodeCarte() . '&cem=' . $value["email"]->getCodeEM() .'"><button type="button" onclick="javascript: sendmail();" class="btn btn-primary">Super, je réponds</button></a> '); // envoyer le mail pour les mettre en contact
                             echo ('<a href="talentnon.html.php?p=' . $value["email"]->getProvenance() . '&c=' . $value["email"]->getCodeCarte() . '&cem=' . $value["email"]->getCodeEM() .'"><button type="button" class="btn btn-secondary">Dommage, car...</button></a><hr>'); //refusé, demande la raison
                         
                           

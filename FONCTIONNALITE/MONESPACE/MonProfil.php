@@ -180,7 +180,7 @@
 
                         foreach ($besoinTab as $value) {
                             // echo '<br><br>';
-                           
+
                             if (strtotime($value['besoin']->getDateButoireB()) > strtotime(date("yy/m/d")) && $value['besoin']->getVisibiliteB() == 1) {
 
                                 echo('<li class="list-inline-item">');
@@ -326,7 +326,7 @@
                                                     }
                                                     echo ('</div>');
                                                     echo ('</div></li>');
-                                                } 
+                                                }
                                             }
                                         } else {
 
@@ -426,7 +426,7 @@
                                                             if (!empty($atelierTab)) {
 
                                                                 foreach ($atelierTab as $value) {
-
+                                                                    $role = $ateliers->saisirRoleUserAtelier($value['atelier']->getCodeA(), $usercode);
                                                                     if ($value['atelier']->getVisibiliteA() == 1) {
 
                                                                         echo('<li class="list-inline-item">');
@@ -441,9 +441,16 @@
                                                                         echo ('<p class="card-text">Date & Créneau : ' . $value['atelier']->getDateA() . '</p>');
                                                                         echo ('<a href="../ATELIER/AtelierX.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir le détail</a>');
                                                                         echo ('<p></p><a href="AtelierModification.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Modifier</a>');
+                                                                        
+                                                                            if ($role == "createur") {
+                                                                                echo ('<p></p><a href="../ATELIER/voirInscritAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir les inscrits</a>');
+                                                                            } else if ($role == "participant") {
+                                                                                echo ('<p></p><a href="../ATELIER/desinscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Je me désinscrit </a>');
+                                                                            }
+                                                                         
                                                                         echo ('</div>');
                                                                         echo ('</div></li>');
-                                                                    } 
+                                                                    }
                                                                 }
                                                             } else {
 

@@ -50,7 +50,7 @@ class categorieBDD {
             while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
 
                 $categorie = new categorie($datas);
-
+                
                 /* $categorie->setCodeC($datas['CodeC']);
                   $categorie->setNomC($datas['NomC']); */
 

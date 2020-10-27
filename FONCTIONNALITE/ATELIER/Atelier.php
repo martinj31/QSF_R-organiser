@@ -19,7 +19,7 @@
 
 
         <!-- Menu -->
-<?php require "../../FONCTIONNALITE/menu.php"; ?>
+        <?php require "../../FONCTIONNALITE/menu.php"; ?>
         <!-- Fin Menu -->
 
 
@@ -32,7 +32,7 @@
             <div class="container">
 
                 <br><br>
-<?php is_login_new_atelier(); ?>
+                <?php is_login_new_atelier(); ?>
                 <br><br>
                 <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
 
@@ -163,7 +163,11 @@
 
                         foreach ($atelierTab as $value) {
                             echo '<br><br>';
-                            //var_dump($value['besoin']->getDateButoireB());
+                            if (isset($usercode)) {
+                                $role = $ateliers->saisirRoleUserAtelier($value['atelier']->getCodeA(), $usercode);
+                            }
+
+                            //var_dump($role);
 
                             if ($value['atelier']->getVisibiliteA() == 1) {
                                 if ($value['atelier']->getTypeA() == 'Pro et Perso') {
@@ -177,15 +181,22 @@
                                 echo ('<img src="' . $value["photo"] . '" class="card-img-top" alt="...">');
                                 echo ('<div class="card-body card text-center">');
                                 echo ('<h5 class="card-title">' . $value['atelier']->getTitreA() . '</h5>');
-                                echo ('<p class="card-text">Date de publication: ' . $value['atelier']->getDatePublicationA() . '</p>');
+                                echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
                                 echo ('<p class="card-text">Date & Créneau : ' . $value['atelier']->getDateA() . '</p>');
                                 echo ('<a href="../ATELIER/AtelierX.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir le détail</a><br>');
-                                echo ('<p></p><a href="' . $value['atelier']->getURL() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
+                                if (isset($usercode)) {
+                                    if ($role == "createur") {
+                                        echo ('<p></p><a href="../ATELIER/voirInscritAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir les inscrits</a>');
+                                    } else if ($role == "participant") {
+                                        echo ('<p></p><a href="../ATELIER/desinscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Je me désinscrit </a>');
+                                    } else {
+                                        echo ('<p></p><a href="../ATELIER/inscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
+                                    }
+                                }else{
+                                    echo ('<p></p><a href="../ATELIER/inscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
+                                }
                                 echo ('</div>');
                                 echo ('</div></div>');
-                            } else {
-
-                                echo('<h5>Aucun résultat</h5>');
                             }
                         }
                     } else {
@@ -273,7 +284,7 @@
         </div>        
 
         <!-- footer -->
-<?php require "../../FONCTIONNALITE/footer.php"; ?>
+        <?php require "../../FONCTIONNALITE/footer.php"; ?>
         <!-- Fin footer -->
 
     </body>

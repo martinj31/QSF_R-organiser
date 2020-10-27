@@ -60,6 +60,7 @@ if (!isset($_SESSION['email'])) {
 // 4. Session actuelle : récuperer le code utilisateur   
 if (isset($_SESSION['email'])) {
     $user = $utilisateurBDD->un_userLog($_SESSION['email']);
+  
     /*$sqlr = "select CodeU from utilisateurs WHERE Email = '{$_SESSION['email']}' ";
     $result = mysqli_query($session, $sqlr);*/
     if (!empty($user)) {

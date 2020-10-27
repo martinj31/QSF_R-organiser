@@ -272,6 +272,34 @@ class utilisateurBDD {
     }
     
     
+     //Select l'email et le titre en fonction de l'id de l'atelier
+    public function saisirParticipantAtelier($CodeA) {
+
+        $vide = '';
+        $utilisateurs = [];
+        $req = $this->_bdd->query("SELECT u.CodeU, u.NomU, u.PrenomU, u.Email FROM utilisateurs u, participera p, ateliers a WHERE u.CodeU = p.CodeU and p.CodeA = a.CodeA and p.CodeA = $CodeA and p.RoleA = 'participant'");
+
+
+
+        if ($req) {
+            while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
+                
+                $utilisateur = new utilisateur([]);
+                $utilisateur->setCodeU($datas['CodeU']);
+                $utilisateur->setNomU($datas['NomU']);
+                $utilisateur->setPrenomU($datas['PrenomU']);
+                $utilisateur->setEmail($datas['Email']);
+               
+                $utilisateurs[] = $utilisateur;
+            }
+        } else {
+            return $vide;
+        }
+
+        return $utilisateurs;
+    }
+    
+    
     
 
     //T = ID de besoin
@@ -289,7 +317,7 @@ class utilisateurBDD {
 
                 $utilisateur = new utilisateur([]);
 
-
+                $utilisateur->setCodeU($datas['CodeU']);
                 $utilisateur->setEmail($datas['Email']);
                 $utilisateur->setNomU($datas['NomU']);
                 $utilisateur->setPrenomU($datas['PrenomU']);
