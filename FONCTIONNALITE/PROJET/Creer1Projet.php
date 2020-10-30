@@ -6,14 +6,11 @@
         <?php
         require "../../FONCTIONNALITE/link.php";
         require_once('../../BDD/categorie.bdd.php');
-        require_once('../../BDD/talent.bdd.php');
         require_once('../../BDD/connexion.bdd.php');
         ?>
         <!-- Link -->
 
-        <title>Ajouter un talent</title>
-
-
+        <title>Créer un projet</title>
 
 
     </head>
@@ -28,26 +25,30 @@
         <div class="jumbotron">
 
             <div class="section-title section-title-haut-page" >
-                <h1 class="text-center">Ajouter un talent</h1>
+                <h1 class="text-center">Créer un projet</h1>
 
             </div>
             <div class="container">
-                <form action="Saisir1Talent.php" method="post">
+
+                <form action="Saisir1Projet.php" method="post">
                     <?php
                     require_once('../../FONCTIONCOMMUNE/Fonctions.php');
                     date_default_timezone_set('Europe/Paris');
-                    echo "Date de création : " . date("d/m/yy");
+                    echo "Date de création :   " . date("d/m/yy");
+
+                    $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
+                    $bdd = $db->connect();
                     ?>
                     <div class="form-row align-items-center">
                         <div class="col-auto my-1">
                             <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect">Preference</label>
-                            <select class="custom-select mr-sm-2" name="categorieT" id="inlineFormCustomSelect" required>
+                            <select class="custom-select mr-sm-2" name="categorie" id="inlineFormCustomSelect" required>
                                 <option value="" selected>Choisir une catégorie</option>
                                 <?php
                                 require_once('../../FONCTIONCOMMUNE/Fonctions.php');
 
-                                $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
-                                $bdd = $db->connect();
+
+
 
                                 $categorieBDD = new categorieBDD($bdd);
 
@@ -61,7 +62,8 @@
                                         echo ('<option  name="categorie" value="' . $value['categorie']->getCodeC() . '"> <strong>' . $value['categorie']->getNomC() . '</strong>  </option> ');
                                     }
                                 }
-                                /* $query = "select DescriptionC, CodeC, NomC from categories where VisibiliteC = 1";
+
+                                /* $query = "select CodeC, NomC, DescriptionC from categories where VisibiliteC = 1";
                                   $result = mysqli_query($session, $query);
                                   if (mysqli_num_rows($result) > 0) {
                                   while ($ligne = mysqli_fetch_array($result)) {
@@ -71,32 +73,38 @@
                                   } */
                                 ?>                     
                             </select>
-
-                        </div> <p>(<span style="color:red">*</span>)</p>
+                        </div><p>(<span style="color:red">*</span>)</p>
                     </div>
                     <div class="form-group">
                         <label for="inputEmail4">Titre(<span style="color:red">*</span>)</label>
-                        <input type="text" name="titreT" class="form-control col-md-4" id="inputEmail4" required>
+                        <input type="text" name="titre" class="form-control col-md-4" id="inputEmail4" required>
                     </div>
                     <div class="form-group">
-                        <label for="inputEmail4">Description du talent(<span style="color:red">*</span>)</label><br/>
-                        <textarea rows="4" cols="50" name="descriptionT" placeholder=" Veuillez préciser votre talent" required></textarea>
+                        <label for="inputEmail4">Description du besoin(<span style="color:red">*</span>)</label><br/>
+                        <textarea rows="4" cols="50" name="description" placeholder=" Veuillez préciser votre projet" required></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="inputAddress">Type de talent(<span style="color:red">*</span>)</label>				
+                        <label for="inputEmail4">Date butoire(<span style="color:red">*</span>)</label>
+                        <input type="datetime-local" name="datebutoire" class="form-control col-md-4" id="inputEmail4" required />
                     </div>
-
                     <div class="form-group">
+                        <label for="inputEmail4">Lieu du Projet(<span style="color:red">*</span>)</label>
+                        <input type="text" name="lieu" class="form-control col-md-4"  id="inputEmail4" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="inputAddress">Type de besoin(<span style="color:red">*</span>)</label>				
+                    </div>
+                    <div class="form-group" >
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="typeT" id="inlineRadio1" required value="Pro">
+                            <input class="form-check-input" type="radio" name="type" id="inlineRadio1" required value="Pro">
                             <label class="form-check-label" for="inlineRadio1">Pro</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="typeT" id="inlineRadio2" value="Perso">
+                            <input class="form-check-input" type="radio" name="type" id="inlineRadio2" value="Perso">
                             <label class="form-check-label" for="inlineRadio2">Perso</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="typeT" id="inlineRadio3" value="Pro et Perso" checked>
+                            <input class="form-check-input" type="radio" name="type" id="inlineRadio3" value="Pro et Perso" checked>
                             <label class="form-check-label" for="inlineRadio3">Pro&Perso</label>
                         </div>               
                     </div>
@@ -104,11 +112,11 @@
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">Créer</button> 
                         <a href="../ACCUEIL/index.php"><button type="button" class="btn btn-dark">Annuler</button></a>
-                        <!-- <input type="reset" class="btn btn-dark" value="Annuler"> -->
+                        <!--<input type="reset" class="btn btn-dark" value="Annuler">-->
                     </div>
-                </form>
+                </form>   
             </div>
-        </div>
+        </div>  
 
 
         <!-- footer -->

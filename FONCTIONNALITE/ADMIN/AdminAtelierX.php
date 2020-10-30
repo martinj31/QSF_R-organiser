@@ -51,7 +51,7 @@
                 foreach ($atelierTab as $value) {
                    
                         echo ('<h1>' . $value['atelier']->getTitreA() . '</h1>');
-                    echo ('<h3> Date  & Créneau horaire : ' . $value['atelier']->getDateA() . '</h3>');
+                    echo ('<h3> Date  & Créneau horaire : ' . $value['atelier']->getDateDebutA() . ' à ' . $value['atelier']->getDateFinA()  . '</h3>');
                     echo ('<p> Date Publication : ' . date("d-m-yy", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
                     echo ('<p><img src="' . $value["photo"] . '" class="card-img-top" alt="..." height="200" style="width: 20rem;"</p>');
                     echo ('<p><strong>Type d\'atelier : </strong>' . $value['atelier']->getTypeA() . '</p>');

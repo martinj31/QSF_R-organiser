@@ -40,7 +40,7 @@ $user = new utilisateurBDD($bdd);
 
 
 
-if ($besoinTab = $besoins->addBesoins($besoin)) {
+if ($besoins->addBesoins($besoin)) {
     echo "Votre besoin a bien été enregistré";
 
     //ajouter codeb et codeu dans le table saisir

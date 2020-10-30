@@ -58,7 +58,7 @@ echo ('<tbody>');
     foreach ($utilisateurTab as $value) {
         $comteur += 1;
         echo ('<tr>');
-        echo ('<th scope="row">' .$comteur . '</th>');
+        echo ('<th scope="row">' .$value->getCodeU() . '</th>');
         echo ('<td>' . $value->getNomU() . '</td>');
         echo ('<td>' . $value->getPrenomU() . '</td>');
         echo ('<td>' . $value->getEmail() . '</td>');

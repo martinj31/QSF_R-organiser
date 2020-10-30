@@ -13,7 +13,8 @@ class atelier{
     private $_CodeA;
     private $_TitreA;
     private $_DescriptionA;
-    private $_DateA;
+    private $_DateDebutA;
+    private $_DateFinA;
     private $_LieuA;
     private $_NombreA;
     private $_DatePublicationA;
@@ -22,7 +23,7 @@ class atelier{
     private $_TypeA;
     private $_CodeC;
     private $_VisibiliteA;
-    private $_ReponseT;
+    private $_MailCommence;
     
     
     
@@ -61,10 +62,15 @@ class atelier{
         $this->_DescriptionA = $_DescriptionA;
     }
 
-    function setDateA($_DateA) {
-        $this->_DateA = $_DateA;
+    function setDateDebutA($_DateDebutA) {
+        $this->_DateDebutA = $_DateDebutA;
     }
 
+    function setDateFinA($_DateFinA) {
+        $this->_DateFinA = $_DateFinA;
+    }
+
+    
     function setLieuA($_LieuA) {
         $this->_LieuA = $_LieuA;
     }
@@ -97,10 +103,11 @@ class atelier{
         $this->_VisibiliteA = $_VisibiliteA;
     }
 
-    function setReponseT($_ReponseT) {
-        $this->_ReponseT = $_ReponseT;
+    function setMailCommence($_MailCommence) {
+        $this->_MailCommence = $_MailCommence;
     }
 
+    
         
     
     
@@ -119,10 +126,15 @@ class atelier{
          return $this->_DescriptionA;
      }
 
-     function getDateA() {
-         return $this->_DateA;
+     function getDateDebutA() {
+         return $this->_DateDebutA;
      }
 
+     function getDateFinA() {
+         return $this->_DateFinA;
+     }
+
+     
      function getLieuA() {
          return $this->_LieuA;
      }
@@ -155,9 +167,11 @@ class atelier{
          return $this->_VisibiliteA;
      }
 
-     function getReponseT() {
-         return $this->_ReponseT;
+     function getMailCommence() {
+         return $this->_MailCommence;
      }
+
+
 
 
     

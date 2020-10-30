@@ -2,7 +2,10 @@
 
 require_once('../../BDD/connexion.bdd.php');
 require_once('../../BDD/utilisateur.bdd.php');
+require_once('../../BDD/atelier.bdd.php');
+require_once('../ATELIER/AtelierCommenceMail.php');
 // 1. Connexion à la base de donnée
+
 
 /* $nomlogin = "bd_qualif_qsf";                    // Ici, nous connectons avec le serveur local, si vous voulez le tester sur d'autre serveur, vous pouvez changer ces 3 variables
   $nompasswd = "mYSQLQSF31";
@@ -20,6 +23,7 @@ $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
 $bdd = $db->connect();
 
 $utilisateurBDD = new utilisateurBDD($bdd);
+$atelierBDD = new atelierBDD($bdd);
 
 $session = mysqli_connect($serveur, $nomlogin, $nompasswd, $nombase/* , $port_bdd */);
 
@@ -37,22 +41,26 @@ if ($session == NULL) { // Test de connexion n'est pas réussié
 // 2. Fonction vérification l'existnce d'email       
 
 function is_unique_login($session, $Email) {
-    
+    $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
+    $bdd = $db->connect();
+
+    $utilisateurBDD = new utilisateurBDD($bdd);
     $user = $utilisateurBDD->un_userLog($Email);
-    
+
     //!empty($user)
-    /*$stmt = mysqli_prepare($session, "SELECT Email from utilisateurs where Email = ?");
-    mysqli_stmt_bind_param($stmt, "s", $Email);
-    mysqli_stmt_execute($stmt);*/
+    /* $stmt = mysqli_prepare($session, "SELECT Email from utilisateurs where Email = ?");
+      mysqli_stmt_bind_param($stmt, "s", $Email);
+      mysqli_stmt_execute($stmt); */
     if (!empty($user)) {
         return False;
     } else {
         return True;
     }
 }
+
 //var_dump($_SESSION['email']);
 if (!isset($_SESSION['email'])) {
-   
+
     session_start();
 }
 // 3. Session utilisateur
@@ -60,9 +68,9 @@ if (!isset($_SESSION['email'])) {
 // 4. Session actuelle : récuperer le code utilisateur   
 if (isset($_SESSION['email'])) {
     $user = $utilisateurBDD->un_userLog($_SESSION['email']);
-  
-    /*$sqlr = "select CodeU from utilisateurs WHERE Email = '{$_SESSION['email']}' ";
-    $result = mysqli_query($session, $sqlr);*/
+
+    /* $sqlr = "select CodeU from utilisateurs WHERE Email = '{$_SESSION['email']}' ";
+      $result = mysqli_query($session, $sqlr); */
     if (!empty($user)) {
         $usercode = $user->getCodeU();
     }
@@ -70,8 +78,8 @@ if (isset($_SESSION['email'])) {
 
 if (isset($_SESSION['email'])) {
     $user = $utilisateurBDD->un_userLog($_SESSION['email']);
-    /*$requete = "select CodeU from utilisateurs WHERE Email = '{$_SESSION['email']}' ";
-    $resultat = mysqli_query($session, $requete);*/
+    /* $requete = "select CodeU from utilisateurs WHERE Email = '{$_SESSION['email']}' ";
+      $resultat = mysqli_query($session, $requete); */
     if (!empty($user)) {
         $_SESSION['codeu'] = $user->getCodeU();
     }
@@ -80,8 +88,8 @@ if (isset($_SESSION['email'])) {
 // 5. récupérer le type d'info d'un utilisateur
 if (isset($_SESSION['email'])) {
     $user = $utilisateurBDD->un_userLog($_SESSION['email']);
-   /* $query = "select TypeU from utilisateurs WHERE Email = '{$_SESSION['email']}' ";
-    $result = mysqli_query($session, $query);*/
+    /* $query = "select TypeU from utilisateurs WHERE Email = '{$_SESSION['email']}' ";
+      $result = mysqli_query($session, $query); */
     if (!empty($user)) {
         $_SESSION['type'] = $user->getTypeU();
     }
@@ -127,4 +135,20 @@ function generate_password($length = 8) {
     return $randpwd;
 }
 
+$atelierCommenceTab = $atelierBDD->selectMailAtelierCommence();
+if (!empty($atelierCommenceTab)) {
+
+    foreach ($atelierCommenceTab as $value) {
+
+        $userParticipantTab = $utilisateurBDD->saisirParticipantAtelier($value->getCodeA());
+
+        foreach ($userParticipantTab as $value1) {
+
+            commenceMail($value1->getEmail(), $value->getTitreA());
+        }
+
+        $userCreateur = $utilisateurBDD->saisirCreateurAtelier($value->getCodeA());
+        commenceMail($userCreateur->getEmail(), $value->getTitreA());
+    }
+}
 ?>

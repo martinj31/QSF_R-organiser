@@ -7,7 +7,8 @@ require_once('../../BDD/atelier.bdd.php');
 
 $Titre = $_POST['titre'];   // récupéré les valeurs selon la méthode POST
 $Description = $_POST['description'];
-$Date = $_POST['date'];
+$DateDebut = $_POST['datedebut'];
+$DateFin = $_POST['datefin'];
 $Type = $_POST['type'];
 $Lieu = $_POST['lieu'];
 $Nombre = $_POST['nb'];
@@ -24,7 +25,8 @@ $atelier = new atelier([]);
 
 $atelier->setTitreA($Titre);
 $atelier->setDescriptionA($Description);
-$atelier->setDateA($Date);
+$atelier->setDateDebutA($DateDebut);
+$atelier->setDateFinA($DateFin);
 $atelier->setLieuA($Lieu);
 $atelier->setNombreA($Nombre);
 $atelier->setCodeC($Categorie);

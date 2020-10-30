@@ -8,6 +8,7 @@
         require_once('../../BDD/connexion.bdd.php');
         require_once('../../BDD/utilisateur.bdd.php');
         require_once('../../BDD/talent.bdd.php');
+        require_once('../../BDD/projet.bdd.php');
         require_once('../../BDD/atelier.bdd.php');
         require_once('../../BDD/besoin.bdd.php');
         ?>
@@ -438,16 +439,16 @@
                                                                         echo ('<div class="card-body card text-center">');
                                                                         echo ('<h5 class="card-title">' . $value['atelier']->getTitreA() . '</h5>');
                                                                         echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
-                                                                        echo ('<p class="card-text">Date & Créneau : ' . $value['atelier']->getDateA() . '</p>');
+                                                                        echo ('<p class="card-text">Date & Créneau : ' . $value['atelier']->getDateDebutA() . ' à ' . $value['atelier']->getDateFinA() . '</p>');
                                                                         echo ('<a href="../ATELIER/AtelierX.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir le détail</a>');
                                                                         echo ('<p></p><a href="AtelierModification.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Modifier</a>');
-                                                                        
-                                                                            if ($role == "createur") {
-                                                                                echo ('<p></p><a href="../ATELIER/voirInscritAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir les inscrits</a>');
-                                                                            } else if ($role == "participant") {
-                                                                                echo ('<p></p><a href="../ATELIER/desinscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Je me désinscrit </a>');
-                                                                            }
-                                                                         
+
+                                                                        if ($role == "createur") {
+                                                                            echo ('<p></p><a href="../ATELIER/voirInscritAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir les inscrits</a>');
+                                                                        } else if ($role == "participant") {
+                                                                            echo ('<p></p><a href="../ATELIER/desinscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Je me désinscrit </a>');
+                                                                        }
+
                                                                         echo ('</div>');
                                                                         echo ('</div></li>');
                                                                     }
@@ -527,16 +528,149 @@
           </div>  
        
         <br><br>';
-                                                        } else {
-                                                            echo ('<center><p><br><br>Veuillez d\'abord <a href="../INSCRIPTION/Login.php">se connecter</a></p></center>');
-                                                        }
-                                                        ?>
-                                                </div>
-                                            </div>                 
+                                                            ?>
+                                                    </div>
+                                                </div>     
 
-                                            <!-- footer -->
-                                            <?php require "../../FONCTIONNALITE/footer.php"; ?>
-                                            <!-- Fin footer -->
 
-                                            </body>
-                                            </html>
+
+
+
+
+                                                <!--------------------------------------------------------------------------------------------------------------------------------------------->     
+                                                <div class="container" id="MesAteliers">
+
+                                                    <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
+                                                        <h1> Mes projets </h1>
+                                                        <?php is_login_new_atelier(); ?>
+                                                    </div>
+                                                    <hr>
+
+                                                    <form method="POST" action="Desactiver1Atelier.php">
+                                                        <div class="row">
+                                                            <div class="col-10">
+                                                                <ul class="list-inline">
+
+                                                                    <?php
+                                                                    $projets = new projetBDD($bdd);
+
+                                                                    $projetTab = $projets->selectProjetByUser($usercode);
+
+
+                                                                    if (!empty($projetTab)) {
+
+                                                                        foreach ($projetTab as $value) {
+                                                                            $role = $projets->saisirRoleUserProjet($value['projet']->getCodeP(), $usercode);
+                                                                            if ($value['projet']->getVisibiliteP() == 1) {
+
+                                                                                echo('<li class="list-inline-item">');
+                                                                                echo ('<div class="card" style="width: 12rem;">');
+                                                                                echo ('<div class="card-header">');
+                                                                                echo ('<center><input type="radio" name="codeA" value="' . $value['projet']->getCodeP() . '"/><center>');
+                                                                                echo ('</div>');
+                                                                                echo ('<img src="' . $value["photo"] . '" class="card-img-top" alt="...">');
+                                                                                echo ('<div class="card-body card text-center">');
+                                                                                echo ('<h5 class="card-title">' . $value['projet']->getTitreP() . '</h5>');
+                                                                                echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['projet']->getDatePublicationP())) . '</p>');
+                                                                                echo ('<p class="card-text">Date & Créneau : ' . $value['projet']->getDateButoireP() . '</p>');
+                                                                                echo ('<a href="../ATELIER/AtelierX.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir le détail</a>');
+                                                                                echo ('<p></p><a href="ProjetModification.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Modifier</a>');
+
+                                                                                if ($role == "createur") {
+                                                                                  //  echo ('<p></p><a href="../ATELIER/voirInscritAtelier.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir les inscrits</a>');
+                                                                                } else if ($role == "participant") {
+                                                                                   // echo ('<p></p><a href="../ATELIER/desinscriptionAtelier.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Je me désinscrit </a>');
+                                                                                }
+
+                                                                                echo ('</div>');
+                                                                                echo ('</div></li>');
+                                                                            }
+                                                                        }
+                                                                    } else {
+
+                                                                        echo('<h5>Aucun résultat  VO</h5>');
+                                                                    }
+
+
+
+
+
+
+
+
+                                                                    /* $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from categories c, ateliers a, participera p where p.CodeA = a.CodeA and c.CodeC = a.CodeC and p.CodeU = {$usercode} order by a.CodeA DESC ";
+
+                                                                      $result = mysqli_query($session, $query);
+
+                                                                      if ($result == false) {
+                                                                      die("ereur requête : " . mysqli_error($session));
+                                                                      }
+
+                                                                      if (mysqli_num_rows($result) > 0) {
+                                                                      while ($atelier = mysqli_fetch_array($result)) {
+                                                                      if ($atelier["VisibiliteA"] == 1) {
+                                                                      echo('<li class="list-inline-item">');
+                                                                      echo ('<div class="card" style="width: 12rem;">');
+                                                                      echo ('<div class="card-header">');
+                                                                      echo ('<center><input type="radio" name="codeA" value="' . $atelier["CodeA"] . '"/><center>');
+                                                                      echo ('</div>');
+                                                                      echo ('<img src="' . $atelier["PhotoC"] . '" class="card-img-top" alt="...">');
+                                                                      echo ('<div class="card-body card text-center">');
+                                                                      echo ('<h5 class="card-title">' . $atelier["TitreA"] . '</h5>');
+                                                                      echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($atelier["DatePublicationA"])) . '</p>');
+                                                                      echo ('<p class="card-text">Date & Créneau : ' . $atelier["DateA"] . '</p>');
+                                                                      echo ('<a href="../ATELIER/AtelierX.php?t=' . $atelier["CodeA"] . '" class="btn btn-outline-dark">Voir le détail</a>');
+                                                                      echo ('<p></p><a href="AtelierModification.php?t=' . $atelier["CodeA"] . '" class="btn btn-outline-dark">Modifier</a>');
+                                                                      echo ('</div>');
+                                                                      echo ('</div></li>');
+                                                                      }
+                                                                      }
+                                                                      } else {
+                                                                      echo ("Vous n'avez pas encore créé un atelier");
+                                                                      } */
+
+                                                                    echo '</ul>
+                     </div>
+                <div class="col-2">
+                     <!-- Button trigger modal -->
+                     <button title="Veuillez sélectionner une carte" type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#Myatelier">Désactiver carte</button>
+
+                     <!-- Modal -->
+                    <div class="modal fade" id="Myatelier" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">  
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Vérification</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"> 
+                              <span aria-hidden="true">&times;</span> 
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <p> Êtes-Vous sûr de désactiver cette carte ?</p>
+                          </div>
+                          <div class="modal-footer">
+                            <button name="desactiverA" type="submit" class="btn btn-primary">Désactiver</button>  
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                </div>          
+            </div>
+            </form>   
+          </div>  
+       
+        <br><br>';
+                                                                } else {
+                                                                    echo ('<center><p><br><br>Veuillez d\'abord <a href="../INSCRIPTION/Login.php">se connecter</a></p></center>');
+                                                                }
+                                                                ?>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- footer -->
+                                                    <?php require "../../FONCTIONNALITE/footer.php"; ?>
+                                                    <!-- Fin footer -->
+
+                                                    </body>
+                                                    </html>

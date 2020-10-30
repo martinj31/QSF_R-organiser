@@ -1,12 +1,17 @@
-<?php
 
-$userID= $_GET['u'];   // récupéré les valeurs selon la méthode POST
-$atelierID= $_GET['t'];
+<?php
+$Titre = $_POST['titre'];   // récupéré les valeurs selon la méthode POST
+$Description = $_POST['description'];
+$Lieu = $_POST['lieu'];
+$DateButoire = $_POST['datebutoire'];
+$Type = $_POST['type'];
+$Categorie = $_POST['categorie'];
 
 
 require_once('../../FONCTIONCOMMUNE/Fonctions.php');
+require_once('../../BDD/projet.bdd.php');
 require_once('../../BDD/connexion.bdd.php');
-require_once('../../BDD/atelier.bdd.php');
+require_once('../../BDD/utilisateur.bdd.php');
 require_once('../../PHPMailer/src/Exception.php');
 require_once('../../PHPMailer/src/PHPMailer.php');
 require_once('../../PHPMailer/src/SMTP.php');
@@ -19,15 +24,40 @@ require_once('../../PHPMailer/src/PHPMailerAutoload.php');
   mysqli_stmt_bind_param($stmt, 'sssssi', $Titre, $Description, $DateButoire, $DatePublicationB, $Type, $Categorie); */
 $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
 $bdd = $db->connect();
+$projet = new projet([]);
 
+$projet->setTitreP($Titre);
+$projet->setLieuP($Lieu);
+$projet->setDescriptionP($Description);
+$projet->setDateButoireP($DateButoire);
+$projet->setCodeC($Categorie);
+$projet->setTypeP($Type);
+
+
+$projetBDD = new projetBDD($bdd);
 $userBDD = new utilisateurBDD($bdd);
-$user = $userBDD->un_User($userID);
-
-$atelierBDD = new atelierBDD($bdd);
-$atelier = $atelierBDD->selectAtelierX($atelierID);
+//$besoins = new besoin();
 
 
-    
+
+
+if ($projetBDD->addProjet($projet)) {
+    echo "Votre besoin a bien été enregistré";
+
+    //ajouter codeb et codeu dans le table saisir
+    /* $sql = "select CodeB from besoins order by CodeB DESC limit 1";
+      $result = mysqli_query($session, $sql); */
+    //$code = mysqli_fetch_array($result)
+    $codep = $projetBDD->idLastProjet();
+
+
+    /* /*$codeb = $code['CodeB'];
+      $stmt2 = mysqli_prepare($session, "INSERT INTO saisir(CodeU,CodeB) VALUES(?,?)");   // insérer le code de l'utilisateur et le code de catégorie dans le table abonner
+      mysqli_stmt_bind_param($stmt2, 'ii', $usercode, $codeb);
+      mysqli_stmt_execute($stmt2); */
+
+    $projetBDD->participerProjetEtUser($usercode, $codep, "createur");
+    // var_dump($usercode);
 
 
 
@@ -38,13 +68,13 @@ $atelier = $atelierBDD->selectAtelierX($atelierID);
       $result = mysqli_query($session, $sql); */
 
 
-    
+    $user = $userBDD->un_User($usercode);
     //$email = mysqli_fetch_array($result)
-   
-        $Email = "admincmcp@assurance-maladie.fr";
+    if (!empty($user)) {
+        $Email =$user->getEmail();
 
         $destinataire = "$Email"; // adresse mail du destinataire
-        $sujet = "[COUP DE MAIN, COUP DE POUCE] Demande de Désinscription "; // sujet du mail
+        $sujet = "[COUP DE MAIN, COUP DE POUCE] Création d'une nouvelle carte «{$Titre}» "; // sujet du mail
         $message = '<!DOCTYPE html>
         <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
         <head>
@@ -290,7 +320,7 @@ $atelier = $atelierBDD->selectAtelierX($atelierID);
         <td valign="top" style="padding:30px">
         <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
-        <td valign="top" style="padding-top:5px;padding-right:10px;padding-bottom:5px;padding-left:10px"><div style="font-family:Lato, Helvetica Neue, Helvetica, Arial, sans-serif;font-size:30px;color:#9ab0e0;line-height:37px;text-align:left"><p style="padding: 0; margin: 0;text-align: center;"><strong>Demande De Désinscription</strong></p><span class="mso-font-fix-arial">
+        <td valign="top" style="padding-top:5px;padding-right:10px;padding-bottom:5px;padding-left:10px"><div style="font-family:Lato, Helvetica Neue, Helvetica, Arial, sans-serif;font-size:30px;color:#9ab0e0;line-height:37px;text-align:left"><p style="padding: 0; margin: 0;text-align: center;"><strong>Cr&eacute;ation d\'une nouvelle carte</strong></p><span class="mso-font-fix-arial">
         </span></div>
         </td>
         </tr>
@@ -301,8 +331,8 @@ $atelier = $atelierBDD->selectAtelierX($atelierID);
         </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
         <p style="padding: 0; margin: 0;">Bonjour,</p><span class="mso-font-fix-tahoma">
         </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
-        </span><p style="padding: 0; margin: 0;">Demande de désinscription de «' . $user->getNomU() . ' ' . $user->getPrenomU() . ',  ' . $user->getEmail() . '».<br> Dans l\'atelier  «' . $atelier[0]['atelier']->getTitreA() . '»  </p><span class="mso-font-fix-tahoma">
-        </span><p style="padding: 0; margin: 0;">Bien cordialement ! </p><span class="mso-font-fix-tahoma">
+        </span><p style="padding: 0; margin: 0;">Vous venez de cr&eacute;er une nouvelle carte « ' . $Titre . '». </p><span class="mso-font-fix-tahoma">
+        </span><p style="padding: 0; margin: 0;">Merci de votre participation ! </p><span class="mso-font-fix-tahoma">
         </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
         </span></div>
         </td>
@@ -397,14 +427,23 @@ $atelier = $atelierBDD->selectAtelierX($atelierID);
        // $Mailer->AddAddress($destinataire);
         //comme $Mailer->AddAddress($destinataire); ne marche pas cela bloque la redirection (header("Location:../MONESPACE/MonProfil.php");)
         if ($Mailer->send()) {
-            header("Location:../MONESPACE/MonProfil.php");
+           header("Location:../MONESPACE/MonProfil.php");
         }
 
 
 
 
         //mail($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  
-    
+    }
+} else {
+    ?>
 
+    <script>
+        alert("Désolé, votre besoin n'a pas été enregistré ! \nVeuillez saisir toutes les information correctement ! \n(La date butoire d'un besoin doit être supérieure à aujourd'hui)");
+       // document.location.href = 'Creer1Besoin.php';
+    </script>
 
- ?>
+    <?php
+
+}
+?>

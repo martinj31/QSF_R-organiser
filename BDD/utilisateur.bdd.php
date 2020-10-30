@@ -79,30 +79,28 @@ class utilisateurBDD {
         $atelierTab = [];
         $req = $this->_bdd->query("select s.CodeU from besoins as b, saisir as s where b.CodeB = $CodeB and b.CodeB = s.CodeB");
 
-       $datas = $req->fetch(PDO::FETCH_ASSOC);
+        $datas = $req->fetch(PDO::FETCH_ASSOC);
 
-           
+
         return $datas['CodeU'];
 
         $req->closeCursor();
     }
-    
-    
+
     //select l'Email du user par rapport à l'id de besoin
     public function saisirUserEmailByBesoin($CodeB) {
 
         $atelierTab = [];
         $req = $this->_bdd->query("select u.Email from utilisateurs u, saisir s, besoins b where u.CodeU = s.CodeU and s.CodeB = b.CodeB and b.CodeB = $CodeB");
 
-       $datas = $req->fetch(PDO::FETCH_ASSOC);
+        $datas = $req->fetch(PDO::FETCH_ASSOC);
 
-           
+
         return $datas['Email'];
 
         $req->closeCursor();
     }
-    
-    
+
     //Pour le mail en créant un atelier
     public function saisirEmailEtTitreAtelier($usercode) {
 
@@ -158,7 +156,7 @@ class utilisateurBDD {
 
         $req->closeCursor();
     }
-    
+
     public function selectUtilisateurEmailTalentByDate($today) {
 
         $vide = '';
@@ -172,7 +170,7 @@ class utilisateurBDD {
 
             while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
 
-                 $Mails[] = $datas['Email'];
+                $Mails[] = $datas['Email'];
             }
         } else {
             return $vide;
@@ -185,8 +183,7 @@ class utilisateurBDD {
 
         $req->closeCursor();
     }
-    
-    
+
     public function selectUtilisateurEmailBesoinByDate($today) {
 
         $vide = '';
@@ -200,7 +197,7 @@ class utilisateurBDD {
 
             while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
 
-                 $Mails[] = $datas['Email'];
+                $Mails[] = $datas['Email'];
             }
         } else {
             return $vide;
@@ -213,7 +210,6 @@ class utilisateurBDD {
 
         $req->closeCursor();
     }
-    
 
     public function selectUtilisateurSearch($cartea) {
 
@@ -270,9 +266,8 @@ class utilisateurBDD {
 
         $req->closeCursor();
     }
-    
-    
-     //Select l'email et le titre en fonction de l'id de l'atelier
+
+    //Select les users participant à l'atelier
     public function saisirParticipantAtelier($CodeA) {
 
         $vide = '';
@@ -283,13 +278,13 @@ class utilisateurBDD {
 
         if ($req) {
             while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
-                
+
                 $utilisateur = new utilisateur([]);
                 $utilisateur->setCodeU($datas['CodeU']);
                 $utilisateur->setNomU($datas['NomU']);
                 $utilisateur->setPrenomU($datas['PrenomU']);
                 $utilisateur->setEmail($datas['Email']);
-               
+
                 $utilisateurs[] = $utilisateur;
             }
         } else {
@@ -298,9 +293,31 @@ class utilisateurBDD {
 
         return $utilisateurs;
     }
-    
-    
-    
+
+    //Select le user createur de l'atelier
+    public function saisirCreateurAtelier($CodeA) {
+
+        $vide = '';
+
+        $req = $this->_bdd->query("SELECT u.CodeU, u.NomU, u.PrenomU, u.Email FROM utilisateurs u, participera p, ateliers a WHERE u.CodeU = p.CodeU and p.CodeA = a.CodeA and p.CodeA = $CodeA and p.RoleA = 'createur'");
+
+        $utilisateur = new utilisateur([]);
+
+        if ($req) {
+            while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
+
+
+                $utilisateur->setCodeU($datas['CodeU']);
+                $utilisateur->setNomU($datas['NomU']);
+                $utilisateur->setPrenomU($datas['PrenomU']);
+                $utilisateur->setEmail($datas['Email']);
+            }
+        } else {
+            return $vide;
+        }
+
+        return $utilisateur;
+    }
 
     //T = ID de besoin
     public function un_userLog($Email) {  //fonction pour afficher les information d'un carte besoin
@@ -335,12 +352,11 @@ class utilisateurBDD {
 
         $req->closeCursor();
     }
-    
-    
-     public function selectBesoinReponseTalentReponse($usercode) {
+
+    public function selectBesoinReponseTalentReponse($usercode) {
 
         $vide = 0;
-        
+
 
         $req = $this->_bdd->query("select SUM(b.ReponseB) + SUM(t.ReponseT) as Reponse from besoins b, saisir s, talents t, proposer p where s.CodeB = b.CodeB and t.CodeT = p.CodeT and p.CodeU = $usercode and s.CodeU = $usercode and b.VisibiliteB = 1 and t.VisibiliteT = 1");
 
@@ -353,7 +369,7 @@ class utilisateurBDD {
             return $vide;
         }
 
-        
+
 
         $req->closeCursor();
     }
@@ -379,9 +395,8 @@ class utilisateurBDD {
 
         $req->closeCursor();
     }
-    
-    
-    public function updateType( $retype, $usercode) {
+
+    public function updateType($retype, $usercode) {
         $req = $this->_bdd->prepare('UPDATE utilisateurs
                                         SET TypeU = :TypeU
                                         WHERE CodeU = :CodeU
@@ -398,10 +413,8 @@ class utilisateurBDD {
 
         $req->closeCursor();
     }
-    
-    
-    
-    public function updateMDP( $mdp, $email) {
+
+    public function updateMDP($mdp, $email) {
         $req = $this->_bdd->prepare('UPDATE utilisateurs
                                         SET MotDePasse = :MotDePasse
                                         WHERE Email = :Email

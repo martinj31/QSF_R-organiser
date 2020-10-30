@@ -19,7 +19,7 @@
 
 
         <!-- Menu -->
-<?php require "../../FONCTIONNALITE/menu.php"; ?>
+        <?php require "../../FONCTIONNALITE/menu.php"; ?>
         <!-- Fin Menu -->
 
 
@@ -74,6 +74,9 @@
                                                         echo ('<option  name="categorie" value="' . $value['categorie']->getCodeC() . '"> <strong>' . $value['categorie']->getNomC() . '</strong>  </option> ');
                                                     }
                                                 }
+                                                
+                                                
+                                                
                                                 /* $query = "select DescriptionC, CodeC, NomC from categories where VisibiliteC = 1";
                                                   $result = mysqli_query ($session, $query);
                                                   if (mysqli_num_rows($result)>0) {
@@ -94,9 +97,18 @@
                                         <label for="inputEmail4">Description(<span style="color:red">*</span>)</label><br/>
                                         <textarea rows="4" cols="50" name="description" placeholder=" Veuillez préciser votre atelier" required></textarea>
                                     </div>
+                                    
                                     <div class="form-group">
-                                        <label for="inputEmail4">Date & Créneau horaire (Zone libre) [e.x. Du 14/10 au 16/10 14h00] (<span style="color:red">*</span>)</label>
-                                        <input type="text" name="date" class="form-control col-md-4"  id="inputEmail4" required />
+                                        <label for="inputEmail4">Date et Heure debut d'Atelier (<span style="color:red">*</span>)</label>
+                                        <input type="datetime-local" id="meeting-time" 
+                                               name="dateDebut" 
+                                               min="2020-10-29T00:00" max="2022-06-14T00:00">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail4">Date et Heure fin d'Atelier(<span style="color:red">*</span>)</label>
+                                        <input type="datetime-local" id="meeting-time"
+                                               name="dateFin" 
+                                               min="2020-10-29T00:00" max="2022-06-14T00:00">
                                     </div>
                                     <div class="form-group">
                                         <label for="inputEmail4">Lieu (Pensez à réserver la salle) [e.x. 6.36 Salle de créativité] (<span style="color:red">*</span>)</label>
@@ -119,7 +131,7 @@
                                             <label class="form-check-label" for="inlineRadio2">Perso</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="type" id="inlineRadio3" value="Pro et Perso">
+                                            <input class="form-check-input" type="radio" name="type" id="inlineRadio3" value="Pro et Perso" checked>
                                             <label class="form-check-label" for="inlineRadio3">Pro&Perso</label>
                                         </div>               
                                     </div>   
@@ -141,7 +153,7 @@
 
 
                 <!-- footer -->
-<?php require "../../FONCTIONNALITE/footer.php"; ?>
+                <?php require "../../FONCTIONNALITE/footer.php"; ?>
                 <!-- Fin footer -->
 
                 </body>

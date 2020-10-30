@@ -60,11 +60,13 @@
                
                 
                 if(!empty($atelierTab)){
-                    
+                    if (isset($usercode)) {
+                                $role = $ateliers->saisirRoleUserAtelier($value['atelier']->getCodeA(), $usercode);
+                            }
                 
                 foreach ($atelierTab as $value) {
                      if ($value['atelier']->getVisibiliteA() == 1) {
-                        echo ('<p> Date  & Créneau horaire : ' . $value['atelier']->getDateA() . '</p>');
+                        echo ('<p> Date  & Créneau horaire : ' . $value['atelier']->getDateDebutA() . ' à ' . $value['atelier']->getDateFinA() . '</p>');
                         echo ('<p> Date Publication : ' . date("d-m-yy", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
                         echo ('<p><img src="' . $value["photo"] . '" class="card-img-top" alt="' . $value["nomPhoto"] . '" style="width: 35rem;"</p>');
                         echo ('<p><strong>Type d\'atelier : </strong>' . $value['atelier']->getTypeA() . '</p>');
@@ -73,13 +75,17 @@
                         echo ('<p><strong>Nombre de personnes maximum : </strong>' . $value['atelier']->getNombreA() . '</p>');
                         echo ('<strong>En savoir plus : </strong><a href="' . $value['atelier']->getPlusA() . '" target="_blank">' . $value['atelier']->getPlusA() . '</a>');
                         echo ('<hr>');
-                        if (isset($_SESSION['email'])) {
-                            echo ('<a href="' . $value['atelier']->getURL(). '" target="_blank"><button type="button" class="btn btn-primary btn-light">Je m\'inscris</button></a> ');
-                            echo ('<a href="Atelier.php"><button type="button" class="btn btn-dark btn-light">Retour</button></a>');
-                        } else {
-                            echo ('<a href="Login.php"><button type="button" class="btn btn-primary btn-light">Contacter</button></a> ');
-                            echo ('<a href="Atelier.php"><button type="button" class="btn btn-dark btn-light">Retour</button></a>');
-                        }
+                        if (isset($usercode)) {
+                                    if ($role == "createur") {
+                                        echo ('<p></p><a href="../ATELIER/voirInscritAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir les inscrits</a>');
+                                    } else if ($role == "participant") {
+                                        echo ('<p></p><a href="../ATELIER/desinscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Je me désinscrit </a>');
+                                    } else {
+                                        echo ('<p></p><a href="../ATELIER/inscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
+                                    }
+                                }else{
+                                    echo ('<p></p><a href="../ATELIER/inscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
+                                }
                     }
                 }
                 

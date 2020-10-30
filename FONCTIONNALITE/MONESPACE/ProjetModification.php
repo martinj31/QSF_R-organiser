@@ -5,7 +5,7 @@
         <!-- Link -->
         <?php
         require "../../FONCTIONNALITE/link.php";
-        require_once('../../BDD/atelier.bdd.php');
+        require_once('../../BDD/projet.bdd.php');
         require_once('../../BDD/connexion.bdd.php');
         require_once('../../BDD/categorie.bdd.php');
         ?>
@@ -26,11 +26,11 @@
         <div class="jumbotron">
 
             <div class="section-title section-title-haut-page" >
-                <h1 class="text-center">Modifier votre atelier</h1>
+                <h1 class="text-center">Modifier votre projet</h1>
 
             </div>
             <div class="container">
-                <form action="../ATELIER/Modifier1Atelier.php" method="POST">
+                <form action="Modifier1CarteP.php" method="POST">
                     <?php
                     require_once('../../FONCTIONCOMMUNE/Fonctions.php');
                     date_default_timezone_set('Europe/Paris');
@@ -44,10 +44,10 @@
                     $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
                     $bdd = $db->connect();
 
-                    $ateliers = new atelierBDD($bdd);
+                    $projets = new projetBDD($bdd);
                     //$besoins = new besoin();
 
-                    $atelierTab = $ateliers->selectAtelierX($T);
+                    $projetTab = $projets->un_projetx($T);
 
                     /* $query = "select c.NomC, a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and a.CodeA = $T ";
                       $result = mysqli_query($session, $query);
@@ -57,11 +57,11 @@
                       } */
 
 
-                    foreach ($atelierTab as $value) { /* Afficher le détail de chaque besoin */
+                    foreach ($projetTab as $value) { /* Afficher le détail de chaque besoin */
 
 
 
-                        if ($value['atelier']->getVisibiliteA() == 1) {
+                        if ($value['projet']->getVisibiliteP() == 1) {
 
                             
 
@@ -69,7 +69,7 @@
                             echo('<div class="col-auto my-1">');
                             echo('<label class="mr-sm-2 sr-only" for="inlineFormCustomSelect">Preference</label>');
                             echo('<select class="custom-select mr-sm-2" name="categorie" id="inlineFormCustomSelect" >');
-                            echo('<option name="categorie" value="' . $value['atelier']->getCodeC() . '" selected>' . $value['nomPhoto'] . '</option>');
+                            echo('<option name="categorie" value="' . $value['projet']->getCodeC() . '" selected>' . $value['nom'] . '</option>');
 
                             $categorieBDD = new categorieBDD($bdd);
 
@@ -101,46 +101,28 @@
 
                             echo ('<div class="form-group">');
                             echo ('<label for="inputEmail4">Titre(<span style="color:red">*</span>)</label>');
-                            echo ('<input type="text" name="titre" class="form-control col-md-4" id="inputEmail4" maxlength="20" value="' . $value['atelier']->getTitreA() . '" required>');
+                            echo ('<input type="text" name="titre" class="form-control col-md-4" id="inputEmail4" maxlength="20" value="' . $value['projet']->getTitreP() . '" required>');
                             echo ('</div>');
 
                             echo('<div class="form-group">');
-                            echo('<label for="inputEmail4">Date de debut atelier(<span style="color:red">*</span>)</label>');
-                            echo('<input type="datetime-local" name="datedebut" value="' . strftime('%Y-%m-%dT%H:%M:%S', strtotime($value['atelier']->getDateFinA())) . '" class="form-control col-md-4" id="inputEmail4" maxlength="100" >');
+                            echo('<label for="inputEmail4">Date & Créneau horaire (<span style="color:red">*</span>)</label>');
+                            echo('<input type="datetime-local" name="datebutoire" value="' . strftime('%Y-%m-%dT%H:%M:%S', strtotime($value['projet']->getDateButoireP())) . '" class="form-control col-md-4" id="inputEmail4" maxlength="100" required>');
                             echo('</div>');
-                            
-                            echo('<div class="form-group">');
-                            echo('<label for="inputEmail4">Date de fin atelier (<span style="color:red">*</span>)</label>');
-                            echo('<input type="datetime-local" name="datefin" value="' . strftime('%Y-%m-%dT%H:%M:%S', strtotime($value['atelier']->getDateFinA())) . '" class="form-control col-md-4" id="inputEmail4" maxlength="100" >');
-                            echo('</div>');
-                            
+
                             echo('<div class="form-group">');
                             echo('<label for="inputEmail4">Description(<span style="color:red">*</span>)</label><br/>');
-                            echo('<textarea rows="4" cols="50" name="description" required>' . $value['atelier']->getDescriptionA() . '</textarea>');
+                            echo('<textarea rows="4" cols="50" name="description" required>' . $value['projet']->getDescriptionP() . '</textarea>');
                             echo('</div>');
 
                             echo ('<div class="form-group">');
-                            echo ('<label for="inputEmail4">Lieu d\'atelier(<span style="color:red">*</span>)</label>');
-                            echo ('<input type="text" name="lieu" class="form-control col-md-4" id="inputEmail4" maxlength="50" value="' . $value['atelier']->getLieuA() . '" required>');
+                            echo ('<label for="inputEmail4">Lieu du projet(<span style="color:red">*</span>)</label>');
+                            echo ('<input type="text" name="lieu" class="form-control col-md-4" id="inputEmail4" maxlength="50" value="' . $value['projet']->getLieuP() . '" required>');
                             echo ('</div>');
 
-                            echo ('<div class="form-group">');
-                            echo ('<label for="inputEmail4">Nombre de personnes maximum(<span style="color:red">*</span>)</label>');
-                            echo ('<input type="text" name="nb" class="form-control col-md-4" id="inputEmail4" maxlength="50" value="' . $value['atelier']->getNombreA() . '" required>');
-                            echo ('</div>');
+                            
+                           
 
-                            echo ('<div class="form-group">');
-                            echo ('<label for="inputEmail4">URL de l\'inscription(<span style="color:red">*</span>)</label>');
-                            echo ('<input type="text" name="url" class="form-control col-md-4" id="inputEmail4" maxlength="100" value="' . $value['atelier']->getURL() . '" >');
-                            echo ('</div>');
-
-                            echo ('<div class="form-group">');
-                            echo ('<label for="inputEmail4">En savoir plus</label>');
-                            echo ('<input type="text" name="plus" class="form-control col-md-4" id="inputEmail4" maxlength="100" value="' . $value['atelier']->getPlusA() . '">');
-                            echo ('</div>');
-
-
-                            if ($value['atelier']->getTypeA() == "Pro") {
+                            if ($value['projet']->getTypeP() == "Pro") {
                                 echo('<div class="form-group">');
                                 echo('<label for="inputAddress">Type de besoin(<span style="color:red">*</span>)</label>');
                                 echo('</div>');
@@ -160,7 +142,7 @@
                                 echo('</div>');
                             }
 
-                            if ($value['atelier']->getTypeA() == "Perso") {
+                            if ($value['projet']->getTypeP() == "Perso") {
                                 echo('<div class="form-group">');
                                 echo('<label for="inputAddress">Type de besoin(<span style="color:red">*</span>)</label>');
                                 echo('</div>');
@@ -181,7 +163,7 @@
                             }
 
 
-                            if ($value['atelier']->getTypeA() == "Pro et Perso") {
+                            if ($value['projet']->getTypeP() == "Pro et Perso") {
                                 echo('<div class="form-group">');
                                 echo('<label for="inputAddress">Type de besoin(<span style="color:red">*</span>)</label>');
                                 echo('</div>');
@@ -203,7 +185,7 @@
 
                             echo('<hr>');
                             echo('<div class="form-group">');
-                            echo('<button name="codeA" type="submit" value="' . $value['atelier']->getCodeA() . '" class="btn btn-primary">Modifier</button>');
+                            echo('<button name="codeP" type="submit" value="' . $value['projet']->getCodeP() . '" class="btn btn-primary">Modifier</button>');
                             echo ('<a href="../MONESPACE/MonProfil.php"><button type="button" class="btn btn-dark">Annuler</button></a>');
                             //echo (' <input type="reset" class="btn btn-dark" value="Annuler">');
                             echo('</div>');

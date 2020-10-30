@@ -6,9 +6,7 @@
         <?php
         require "../../FONCTIONNALITE/link.php";
         require_once('../../BDD/categorie.bdd.php');
-        require_once('../../BDD/atelier.bdd.php');
         require_once('../../BDD/connexion.bdd.php');
-        require_once('../../BDD/utilisateur.bdd.php');
         ?>
         <!-- Link -->
 
@@ -65,6 +63,8 @@
                                         echo ('<option  name="categorie" value="' . $value['categorie']->getCodeC() . '"> <strong>' . $value['categorie']->getNomC() . '</strong>  </option> ');
                                     }
                                 }
+                                
+                                
 
                                 /* $query = "select CodeC, NomC, DescriptionC from categories where VisibiliteC = 1";
                                   $result = mysqli_query($session, $query);
@@ -103,7 +103,7 @@
                             <label class="form-check-label" for="inlineRadio2">Perso</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="type" id="inlineRadio3" value="Pro et Perso">
+                            <input class="form-check-input" type="radio" name="type" id="inlineRadio3" value="Pro et Perso" checked>
                             <label class="form-check-label" for="inlineRadio3">Pro&Perso</label>
                         </div>               
                     </div>

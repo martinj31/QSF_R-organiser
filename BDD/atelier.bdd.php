@@ -32,26 +32,26 @@ class atelierBDD {
         if ($sEmail != NULL) {
             if ($st != NULL) {                                            // Utilisateur connecté, sélectionné les catégories
                 if ($sType != NULL) {                        // Utilisateur connecté, sélectionné les catégories, son type est Pro ou Perso
-                    $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and (a.TypeA = '" . $sType . "'  OR a.TypeA ='Pro et Perso') and a.CodeC in $st order by CodeA DESC";
+                    $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateFinA, a.DateDebutA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and (a.TypeA = '" . $sType . "'  OR a.TypeA ='Pro et Perso') and a.CodeC in $st order by CodeA DESC";
                 } else {                                                // Utilisateur connecté, sélectionné les catégories, son type est Pro et Perso
-                    $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and a.CodeC'" . $st . "' order by CodeA DESC";
+                    $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateFinA, a.DateDebutA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and a.CodeC'" . $st . "' order by CodeA DESC";
                 }
             } else {                                                    // Utilisateur connecté, n'a pas sélectionner les catégories
                 if ($sType != NULL) {                        // Utilisateur connecté, n'a pas sélectionner les catégories, son type est Pro ou Perso
-                    $query = "select  a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and (a.TypeA = '" . $sType . "'  OR a.TypeA ='Pro et Perso') order by CodeA DESC";
+                    $query = "select  a.CodeA, a.TitreA, a.DescriptionA, a.DateFinA, a.DateDebutA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and (a.TypeA = '" . $sType . "'  OR a.TypeA ='Pro et Perso') order by CodeA DESC";
                 } else {                                                // Utilisateur connecté, n'a pas sélectionner les catégories, son type est Pro et Perso
-                    $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC order by CodeA DESC";
+                    $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateFinA, a.DateDebutA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC order by CodeA DESC";
                 }
             }
         } else {
             if ($pType != NULL && $pCategorie != NULL) { // V-si un visiteur choisit les deux filtres
-                $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and (a.TypeA = '" . $pType . "' OR a.TypeA ='Pro et Perso') and a.CodeC in $st order by CodeA DESC";
+                $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateFinA, a.DateDebutA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and (a.TypeA = '" . $pType . "' OR a.TypeA ='Pro et Perso') and a.CodeC in $st order by CodeA DESC";
             } elseif ($pType != NULL) {  // V-si un visiteur choisit filtre type
-                $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and (a.TypeA ='" . $pType . "' OR a.TypeA ='Pro et Perso') order by CodeA DESC";
+                $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateFinA, a.DateDebutA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and (a.TypeA ='" . $pType . "' OR a.TypeA ='Pro et Perso') order by CodeA DESC";
             } elseif ($pCategorie != NULL) { // V-si un visiteur choisit filtre categorie
-                $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and a.CodeC in $st order by CodeA DESC";
+                $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateFinA, a.DateDebutA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and a.CodeC in $st order by CodeA DESC";
             } else {  // V-si un visiteur rien choisit 
-                $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC order by CodeA DESC";
+                $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateFinA, a.DateDebutA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC order by CodeA DESC";
             }
         }
 
@@ -59,9 +59,9 @@ class atelierBDD {
         if ($mot != NULL) { /* Recherche par mot clé */
             $mot = htmlspecialchars($mot);
             if ($sEmail != NULL and $sType != NULL) {
-                $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and a.TitreA LIKE  %'" . $mot . "'% and a.TypeA = '" . $sType . "' order by a.CodeA DESC";
+                $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateFinA, a.DateDebutA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and a.TitreA LIKE  %'" . $mot . "'% and a.TypeA = '" . $sType . "' order by a.CodeA DESC";
             } else {
-                $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and a.TitreA LIKE %'" . $mot . "'% order by a.CodeA DESC";
+                $query = "select a.CodeA, a.TitreA, a.DescriptionA,a.DateFinA, a.DateDebutA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and a.TitreA LIKE %'" . $mot . "'% order by a.CodeA DESC";
             }
         }
 
@@ -77,7 +77,8 @@ class atelierBDD {
                 $atelier->setVisibiliteA($datas['VisibiliteA']);
                 $atelier->setTitreA($datas['TitreA']);
                 $atelier->setDescriptionA($datas['DescriptionA']);
-                $atelier->setDateA($datas['DateA']);
+                $atelier->setDateDebutA($datas['DateDebutA']);
+                $atelier->setDateFinA($datas['DateFinA']);
                 $atelier->setLieuA($datas['LieuA']);
                 $atelier->setNombreA($datas['NombreA']);
                 $atelier->setDatePublicationA($datas['DatePublicationA']);
@@ -123,6 +124,53 @@ class atelierBDD {
 
         $req->closeCursor();
     }
+    
+    
+    public function MailAtelierCommence() {
+
+        $atelierTab = selectMailAtelierCommence();
+        
+        if(!empty($atelierTab)){
+            
+            $req = $this->_bdd->prepare('UPDATE ateliers SET MailCommence = 1 WHERE CURDATE() > DATE_SUB(DateDebutA  INTERVAL 1 DAY)');
+
+            $req->execute();
+        }
+        
+       
+        
+        
+        return $atelierTab;
+
+        $req->closeCursor();
+    }
+    
+    
+    public function selectMailAtelierCommence() {
+
+        $vide = '';
+        $ateliers = [];
+
+        $req = $this->_bdd->query("select * from ateliers where CURDATE() > DATE_SUB(DateDebutA  INTERVAL 1 DAY)  and MailCommence = 0");
+
+        
+
+        if ($req) {
+            $datas = $req->fetch(PDO::FETCH_ASSOC); 
+            $ateliers[] = new atelier($datas);
+        } else {
+            return $vide;
+        }
+
+
+
+
+        return $ateliers;
+
+        $req->closeCursor();
+    }
+    
+    
 
     public function selectAtelierSearch($cartea) {
 
@@ -153,7 +201,7 @@ class atelierBDD {
         $ateliers = [];
         $vide = '';
         $test = "";
-        $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from categories c, ateliers a, participera p where p.CodeA = a.CodeA and c.CodeC = a.CodeC and p.CodeU = {$usercode} order by a.CodeA DESC ";
+        $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateFinA, a.DateDebutA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from categories c, ateliers a, participera p where p.CodeA = a.CodeA and c.CodeC = a.CodeC and p.CodeU = {$usercode} order by a.CodeA DESC ";
 
         $req = $this->_bdd->query($query);
 
@@ -166,7 +214,8 @@ class atelierBDD {
                 $atelier->setVisibiliteA($datas['VisibiliteA']);
                 $atelier->setTitreA($datas['TitreA']);
                 $atelier->setDescriptionA($datas['DescriptionA']);
-                $atelier->setDateA($datas['DateA']);
+                $atelier->setDateDebutA($datas['DateDebutA']);
+                $atelier->setDateFinA($datas['DateFinA']);
                 $atelier->setLieuA($datas['LieuA']);
                 $atelier->setNombreA($datas['NombreA']);
                 $atelier->setDatePublicationA($datas['DatePublicationA']);
@@ -192,7 +241,7 @@ class atelierBDD {
 
         $vide = '';
 
-        $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.CodeC, c.PhotoC, c.NomC from ateliers a, categories c where a.CodeC = c.CodeC and a.CodeA = '$T' ";
+        $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateFinA, a.DateDebutA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.CodeC, c.PhotoC, c.NomC from ateliers a, categories c where a.CodeC = c.CodeC and a.CodeA = '$T' ";
 
 
 
@@ -207,7 +256,8 @@ class atelierBDD {
                 $atelier->setVisibiliteA($datas['VisibiliteA']);
                 $atelier->setTitreA($datas['TitreA']);
                 $atelier->setDescriptionA($datas['DescriptionA']);
-                $atelier->setDateA($datas['DateA']);
+                $atelier->setDateDebutA($datas['DateDebutA']);
+                $atelier->setDateFinA($datas['DateFinA']);
                 $atelier->setLieuA($datas['LieuA']);
                 $atelier->setNombreA($datas['NombreA']);
                 $atelier->setDatePublicationA($datas['DatePublicationA']);
@@ -234,21 +284,21 @@ class atelierBDD {
 
         $vide = '';
         if ($sEmail != NULL and $sType != NULL) {
-            $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and (a.TypeA = '{$sType}' or a.TypeA = 'Pro et Perso') order by a.CodeA DESC";
+            $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateFinA, a.DateDebutA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and (a.TypeA = '{$sType}' or a.TypeA = 'Pro et Perso') order by a.CodeA DESC";
         } elseif ($sEmail == NULL and $gPro != NULL) {
-            $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and (a.TypeA = 'Pro' or a.TypeA = 'Pro et Perso') order by a.CodeA DESC";
+            $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateFinA, a.DateDebutA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and (a.TypeA = 'Pro' or a.TypeA = 'Pro et Perso') order by a.CodeA DESC";
         } elseif ($sEmail == NULL and $gPerso != NULL) {
-            $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC  from ateliers a, categories c where a.CodeC = c.CodeC and (a.TypeA = 'Perso' or a.TypeA = 'Pro et Perso') order by a.CodeA DESC";
+            $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateFinA, a.DateDebutA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC  from ateliers a, categories c where a.CodeC = c.CodeC and (a.TypeA = 'Perso' or a.TypeA = 'Pro et Perso') order by a.CodeA DESC";
         } else {
-            $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC order by a.CodeA DESC";
+            $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateFinA, a.DateDebutA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC order by a.CodeA DESC";
         }
 
         if ($mot != NULL) { /* Recherche par mot clé */
             $mot = htmlspecialchars($_GET['motB']);
             if ($sEmail != NULL and $sType != NULL) {
-                $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and a.TitreA LIKE '%$mot%' and a.TypeA = '{$sType}' order by a.CodeA DESC";
+                $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateFinA, a.DateDebutA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and a.TitreA LIKE '%$mot%' and a.TypeA = '{$sType}' order by a.CodeA DESC";
             } else {
-                $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and a.TitreA LIKE '%$mot%' order by a.CodeA DESC";
+                $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateFinA, a.DateDebutA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and a.TitreA LIKE '%$mot%' order by a.CodeA DESC";
             }
         }
 
@@ -263,7 +313,8 @@ class atelierBDD {
                 $atelier->setVisibiliteA($datas['VisibiliteA']);
                 $atelier->setTitreA($datas['TitreA']);
                 $atelier->setDescriptionA($datas['DescriptionA']);
-                $atelier->setDateA($datas['DateA']);
+                $atelier->setDateDebutA($datas['DateDebutA']);
+                $atelier->setDateFinA($datas['DateFinA']);
                 $atelier->setLieuA($datas['LieuA']);
                 $atelier->setNombreA($datas['NombreA']);
                 $atelier->setDatePublicationA($datas['DatePublicationA']);
@@ -307,7 +358,8 @@ class atelierBDD {
         $req = $this->_bdd->prepare('INSERT INTO ateliers
                                              SET TitreA = :TitreA,
                                                  DescriptionA = :DescriptionA,
-                                                 DateA = :DateA,
+                                                 DateFinA = :DateFinA, 
+                                                 DateDebutA = :DateDebutA,
                                                  LieuA = :LieuA,
                                                  NombreA = :NombreA,
                                                  PlusA = :PlusA,
@@ -317,7 +369,8 @@ class atelierBDD {
 
         $req->bindValue(':TitreA', $atelier->getTitreA(), PDO::PARAM_STR);
         $req->bindValue(':DescriptionA', $atelier->getDescriptionA(), PDO::PARAM_STR);
-        $req->bindValue(':DateA', $atelier->getDateA(), PDO::PARAM_STR);
+        $req->bindValue(':DateFinA', $atelier->getDateFinA(), PDO::PARAM_STR);
+        $req->bindValue(':DateDebutA', $atelier->getDateDebutA(), PDO::PARAM_STR);
         $req->bindValue(':LieuA', $atelier->getLieuA(), PDO::PARAM_STR);
         $req->bindValue(':NombreA', $atelier->getNombreA(), PDO::PARAM_INT);
         $req->bindValue(':PlusA', $atelier->getPlusA(), PDO::PARAM_STR);
@@ -388,7 +441,7 @@ class atelierBDD {
         $req->closeCursor();
     }
 
-    //Select l'email et le titre en fonction de l'id de l'atelier
+    //Select le role de l'user de l'atelier
     public function saisirRoleUserAtelier($CodeA, $usercode) {
 
 
@@ -461,7 +514,8 @@ class atelierBDD {
         $req = $this->_bdd->prepare('UPDATE ateliers
                                         SET TitreA = :TitreA,
                                                  DescriptionA = :DescriptionA,
-                                                 DateA = :DateA,
+                                                 DateFinA = :DateFinA, 
+                                                 DateDebutA = :DateDebutA,
                                                  LieuA = :LieuA,
                                                  NombreA = :NombreA,
                                                  PlusA = :PlusA,
@@ -473,7 +527,8 @@ class atelierBDD {
 
         $req->bindValue(':TitreA', $atelier->getTitreA(), PDO::PARAM_STR);
         $req->bindValue(':DescriptionA', $atelier->getDescriptionA(), PDO::PARAM_STR);
-        $req->bindValue(':DateA', $atelier->getDateA(), PDO::PARAM_STR);
+        $req->bindValue(':DateDebutA', $atelier->getDateDebutA(), PDO::PARAM_STR);
+        $req->bindValue(':DateFinA', $atelier->getDateFinA(), PDO::PARAM_STR);
         $req->bindValue(':LieuA', $atelier->getLieuA(), PDO::PARAM_STR);
         $req->bindValue(':NombreA', $atelier->getNombreA(), PDO::PARAM_INT);
         $req->bindValue(':PlusA', $atelier->getPlusA(), PDO::PARAM_STR);

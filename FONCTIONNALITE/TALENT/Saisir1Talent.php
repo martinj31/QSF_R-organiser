@@ -61,7 +61,7 @@ if ($talents->addTalent($talent)) {
 
     // header("Location: ../MONESPACE/MonProfil.php");
 
-    var_dump($usercode);
+   
 
     $emailEtTitre = $user->saisirEmailEtTitreTalent($usercode);
 
@@ -423,6 +423,7 @@ if ($talents->addTalent($talent)) {
         $Mailer->Body = $message;
         $Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
         //$Mailer->AddAddress($destinataire);
+        //$Mailer->AddAddress('admincmcp@assurance-maladie.fr');
         //comme $Mailer->AddAddress($destinataire); ne marche pas cela bloque la redirection (header("Location:../MONESPACE/MonProfil.php");)
         if ($Mailer->send()) {
             header("Location:../MONESPACE/MonProfil.php");

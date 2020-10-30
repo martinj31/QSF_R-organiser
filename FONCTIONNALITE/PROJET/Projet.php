@@ -64,16 +64,41 @@
                     if (!empty($projetTab)) {
 
                         foreach ($projetTab as $value) {
+                            
+                            
+                            if (isset($usercode)) {
+                                $role = $projet->saisirRoleUserProjet($value['projet']->getCodeP(), $usercode);
+                            }
                             echo '<br><br>';
                             //var_dump($value['besoin']->getDateButoireB());
-
+                            if ($value['projet']->getTypeP() == 'Pro et Perso') {
+                                echo ('<div><h5><span class="badge badge-info">' . $value['projet']->getTypeP() . '</span></h5>');
+                            } elseif ($value['projet']->getTypeP() == 'Pro') {
+                                echo ('<div><h5><span class="badge badge-success">' . $value['projet']->getTypeP() . '</span></h5>');
+                            } elseif ($value['projet']->getTypeP() == 'Perso') {
+                                echo ('<div><h5><span class="badge badge-warning">' . $value['projet']->getTypeP() . '</span></h5>');
+                            }
 
 
                             echo ('<div class="card" style="width: 12rem;">');
                             echo ('<img src="' . $value['photo'] . '" class="card-img-top" alt="...">');
                             echo ('<div class="card-body card text-center">');
                             echo ('<h5 class="card-title">' . $value['projet']->getTitreP() . '</h5>');
-                            echo ('<a href="BesoinX.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir la demande</a>');
+                            echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['projet']->getDatePublicationP())) . '</p>');
+                            echo ('<p class="card-text">Date & Créneau : ' . $value['projet']->getDateButoireP()  . '</p>');
+                            echo ('<a href="ProjetX.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir la demande</a>');
+                           if (isset($usercode)) {
+                                    if ($role == "createur") {
+                                       // echo ('<p></p><a href="../ATELIER/voirInscritAtelier.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir les inscrits</a>');
+                                    } else if ($role == "participant") {
+                                        //echo ('<p></p><a href="../ATELIER/desinscriptionAtelier.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Je me désinscrit </a>');
+                                    } else {
+                                        echo ('<p></p><a href="../PROJET/inscriptionProjet.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
+                                    }
+                                }else{
+                                    echo ('<p></p><a href="../PROJET/inscriptionProjet.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
+                                }
+                                
                             echo ('</div>');
                             echo ('</div></div>');
                         }

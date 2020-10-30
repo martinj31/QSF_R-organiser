@@ -3,7 +3,8 @@
 $Categorie = $_POST['categorie'];
 $Titre = $_POST['titre'];   // récupéré les valeurs selon la méthode POST
 $Description = $_POST['description'];
-$Date = $_POST['date'];
+$DateDebut = $_POST['dateDebut'];
+$DateFin = $_POST['dateFin'];
 $Lieu = $_POST['lieu'];
 $Nombre = $_POST['nb'];
 $Type = $_POST['type'];
@@ -24,7 +25,8 @@ $atelier = new atelier([]);
 
 $atelier->setTitreA($Titre);
 $atelier->setDescriptionA($Description);
-$atelier->setDateA($Date);
+$atelier->setDateDebutA($DateDebut);
+$atelier->setDateFinA($DateFin);
 $atelier->setLieuA($Lieu);
 $atelier->setNombreA($Nombre);
 $atelier->setCodeC($Categorie);

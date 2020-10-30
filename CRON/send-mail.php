@@ -10,12 +10,12 @@ do{
     include('cron-config.php'); 
     if($cron_config['run']=="false") break; // si $cron_config['run'] est false, exécute echo "Hors de la boucle"
     
-    $fp1 = fopen('evaluation-besoin.mail.php','r');
-    fread($fp1,filesize('evaluation-besoin.mail.php'));
+    $fp1 = fopen('../FONCTIONNALITE/EVALUATION/evaluation-besoin.mail.php','r');
+    fread($fp1,filesize('../FONCTIONNALITE/EVALUATION/evaluation-besoin.mail.php'));
     fclose($fp1);
     
-    $fp2 = fopen('evaluation-talent.mail.php','r');
-    fread($fp2,filesize('evaluation-talent.mail.php'));
+    $fp2 = fopen('../FONCTIONNALITE/EVALUATION/evaluation-talent.mail.php','r');
+    fread($fp2,filesize('../FONCTIONNALITE/EVALUATION/evaluation-talent.mail.php'));
     fclose($fp2);
     
     sleep($interval); // exécute après 1jour

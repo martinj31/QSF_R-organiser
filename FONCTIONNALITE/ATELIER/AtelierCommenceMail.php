@@ -1,54 +1,18 @@
 <?php
 
-$userID= $_GET['u'];   // récupéré les valeurs selon la méthode POST
-$atelierID= $_GET['t'];
-
-
-require_once('../../FONCTIONCOMMUNE/Fonctions.php');
-require_once('../../BDD/connexion.bdd.php');
-require_once('../../BDD/atelier.bdd.php');
 require_once('../../PHPMailer/src/Exception.php');
 require_once('../../PHPMailer/src/PHPMailer.php');
 require_once('../../PHPMailer/src/SMTP.php');
 require_once('../../PHPMailer/src/PHPMailerAutoload.php');
 
-
-
-//ajouter un nouveau besoin
-/* $stmt = mysqli_prepare($session, "INSERT INTO besoins(TitreB,DescriptionB,DateButoireB,DatePublicationB,TypeB,CodeC) VALUES(?,?,?,?,?,?)");  //insérer un nouveau besoin dans le table besoins
-  mysqli_stmt_bind_param($stmt, 'sssssi', $Titre, $Description, $DateButoire, $DatePublicationB, $Type, $Categorie); */
-$db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
-$bdd = $db->connect();
-
-$userBDD = new utilisateurBDD($bdd);
-$user = $userBDD->un_User($userID);
-
-$atelierBDD = new atelierBDD($bdd);
-$atelier = $atelierBDD->selectAtelierX($atelierID);
-
-
+function commenceMail($destinataire, $Titre){
     
-
-
-
-
-
-
-    /* $sql = "select u.Email, b.TitreB from utilisateurs u, besoins b, saisir s where u.CodeU = $usercode and u.CodeU = s.CodeU and s.CodeB = b.CodeB order by b.CodeB DESC limit 1";
-      $result = mysqli_query($session, $sql); */
-
-
-    
-    //$email = mysqli_fetch_array($result)
-   
-        $Email = "admincmcp@assurance-maladie.fr";
-
-        $destinataire = "$Email"; // adresse mail du destinataire
-        $sujet = "[COUP DE MAIN, COUP DE POUCE] Demande de Désinscription "; // sujet du mail
+        $destinataire = "$destinataire"; // adresse mail du destinataire
+        $sujet = "Votre atelier «{$Titre}» commence demain"; // sujet du mail
         $message = '<!DOCTYPE html>
         <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
         <head>
-        <meta http-equiv="Content-Type" content="text/html; charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="x-apple-disable-message-reformatting">
@@ -290,7 +254,7 @@ $atelier = $atelierBDD->selectAtelierX($atelierID);
         <td valign="top" style="padding:30px">
         <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
-        <td valign="top" style="padding-top:5px;padding-right:10px;padding-bottom:5px;padding-left:10px"><div style="font-family:Lato, Helvetica Neue, Helvetica, Arial, sans-serif;font-size:30px;color:#9ab0e0;line-height:37px;text-align:left"><p style="padding: 0; margin: 0;text-align: center;"><strong>Demande De Désinscription</strong></p><span class="mso-font-fix-arial">
+        <td valign="top" style="padding-top:5px;padding-right:10px;padding-bottom:5px;padding-left:10px"><div style="font-family:Lato, Helvetica Neue, Helvetica, Arial, sans-serif;font-size:30px;color:#9ab0e0;line-height:37px;text-align:left"><p style="padding: 0; margin: 0;text-align: center;"><strong>Votre Atelier Commence Demain !</strong></p><span class="mso-font-fix-arial">
         </span></div>
         </td>
         </tr>
@@ -301,8 +265,8 @@ $atelier = $atelierBDD->selectAtelierX($atelierID);
         </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
         <p style="padding: 0; margin: 0;">Bonjour,</p><span class="mso-font-fix-tahoma">
         </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
-        </span><p style="padding: 0; margin: 0;">Demande de désinscription de «' . $user->getNomU() . ' ' . $user->getPrenomU() . ',  ' . $user->getEmail() . '».<br> Dans l\'atelier  «' . $atelier[0]['atelier']->getTitreA() . '»  </p><span class="mso-font-fix-tahoma">
-        </span><p style="padding: 0; margin: 0;">Bien cordialement ! </p><span class="mso-font-fix-tahoma">
+        </span><p style="padding: 0; margin: 0;">Nous vous prevenons que votre atelier «' . $Titre . '».</p><span class="mso-font-fix-tahoma">
+        </span><p style="padding: 0; margin: 0;">Commence Demain ! </p><span class="mso-font-fix-tahoma">
         </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
         </span></div>
         </td>
@@ -374,11 +338,12 @@ $atelier = $atelierBDD->selectAtelierX($atelierID);
           $header .= "Disposition-Notification-To:l'email d'un administrateur"; // c'est ici que l'on ajoute la directive */
 
         // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
-        /* $headers = 'MIME-Version: 1.0' . "\r\n";
-          $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-          $headers .= 'From: COUP DE MAIN, COUP DE POUCE <admincmcp@assurance-maladie.fr>' . "\r\n"; */
-        // En-têtes additionnels
+        /* $headers[0] = 'MIME-Version: 1.0';
+          $headers[1] = 'Content-type: text/html; charset=iso-8859-1';
 
+          // En-têtes additionnels
+
+          $headers[2] = 'From: COUP DE MAIN, COUP DE POUCE<admincmcp@assurance-maladie.fr>'; */
 
         $Mailer = new PHPMailer\PHPMailer\PHPMailer(true);
         $Mailer->SMTPDebug = 0;
@@ -394,17 +359,11 @@ $atelier = $atelierBDD->selectAtelierX($atelierID);
         $Mailer->Subject = $sujet;
         $Mailer->Body = $message;
         $Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
-       // $Mailer->AddAddress($destinataire);
+        //$Mailer->AddAddress($destinataire);
         //comme $Mailer->AddAddress($destinataire); ne marche pas cela bloque la redirection (header("Location:../MONESPACE/MonProfil.php");)
         if ($Mailer->send()) {
-            header("Location:../MONESPACE/MonProfil.php");
+           // header("Location:../MONESPACE/MonProfil.php");
         }
-
-
-
-
-        //mail($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  
     
-
-
- ?>
+    
+}

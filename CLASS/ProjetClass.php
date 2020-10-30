@@ -9,16 +9,17 @@
 class projet{
     
     
-    private $_CodeB;
-    private $_TitreB;
-    private $_DescriptionB;
-    private $_DateButoireB;
-    private $_DatePubicationB;
-    private $_TypeB;
+    private $_CodeP;
+    private $_TitreP;
+    private $_DescriptionP;
+    private $_LieuP;
+    private $_DateButoireP;
+    private $_DatePublicationP;
+    private $_TypeP;
     private $_CodeC;
-    private $_VisibiliteB;
-    private $_ReponseB;
-    private $_Nombre;
+    private $_VisibiliteP;
+    /*private $_ReponseP;
+    private $_Nombre;*/
     
     
     
@@ -46,89 +47,85 @@ class projet{
 
     
     //Setter
-    function setCodeB($_CodeB) {
-        $this->_CodeB = $_CodeB;
+    function setCodeP($_CodeP) {
+        $this->_CodeP = $_CodeP;
     }
 
-    function setTitreB($_TitreB) {
-        $this->_TitreB = $_TitreB;
+    function setTitreP($_TitreP) {
+        $this->_TitreP = $_TitreP;
     }
 
-    function setDescriptionB($_DescriptionB) {
-        $this->_DescriptionB = $_DescriptionB;
+    function setDescriptionP($_DescriptionP) {
+        $this->_DescriptionP = $_DescriptionP;
+    }
+    
+    function setLieuP($_LieuP) {
+        $this->_LieuP = $_LieuP;
     }
 
-    function setDateButoireB($_DateButoireB) {
-        $this->_DateButoireB = $_DateButoireB;
+    
+    function setDateButoireP($_DateButoireP) {
+        $this->_DateButoireP = $_DateButoireP;
     }
 
-    function setDatePubicationB($_DatePubicationB) {
-        $this->_DatePubicationB = $_DatePubicationB;
+    function setDatePublicationP($_DatePubicationP) {
+        $this->_DatePubicationP = $_DatePubicationP;
     }
 
-    function setTypeB($_TypeB) {
-        $this->_TypeB = $_TypeB;
+    function setTypeP($_TypeP) {
+        $this->_TypeP = $_TypeP;
     }
 
     function setCodeC($_CodeC) {
         $this->_CodeC = $_CodeC;
     }
 
-    function setVisibiliteB($_VisibiliteB) {
-        $this->_VisibiliteB = $_VisibiliteB;
+    function setVisibiliteP($_VisibiliteP) {
+        $this->_VisibiliteP = $_VisibiliteP;
     }
 
-    function setReponseB($_ReponseB) {
-        $this->_ReponseB = $_ReponseB;
-    }
-
-    function setNombre($_Nombre) {
-        $this->_Nombre = $_Nombre;
-    }
-
-        
+            
     
     
      //Getter
-     function getCodeB() {
-         return $this->_CodeB;
+     function getCodeP() {
+         return $this->_CodeP;
      }
 
-     function getTitreB() {
-         return $this->_TitreB;
+     function getTitreP() {
+         return $this->_TitreP;
      }
 
-     function getDescriptionB() {
-         return $this->_DescriptionB;
+     function getDescriptionP() {
+         return $this->_DescriptionP;
+     }
+     
+     function getLieuP() {
+         return $this->_LieuP;
      }
 
-     function getDateButoireB() {
-         return $this->_DateButoireB;
+     
+     function getDateButoireP() {
+         return $this->_DateButoireP;
      }
 
-     function getDatePubicationB() {
-         return $this->_DatePubicationB;
+     function getDatePublicationP() {
+         return $this->_DatePubicationP;
      }
 
-     function getTypeB() {
-         return $this->_TypeB;
+     function getTypeP() {
+         return $this->_TypeP;
      }
 
      function getCodeC() {
          return $this->_CodeC;
      }
 
-     function getVisibiliteB() {
-         return $this->_VisibiliteB;
+     function getVisibiliteP() {
+         return $this->_VisibiliteP;
      }
 
-     function getReponseB() {
-         return $this->_ReponseB;
-     }
 
-     function getNombre() {
-         return $this->_Nombre;
-     }
 
 
     
