@@ -13,7 +13,7 @@ $projetBDD = new projetBDD($bdd);
 
     $res = $projetBDD->participeraProjetEtUser($usercode, $_GET['t'], "participant");
 
-
+    var_dump($_GET['t']);
 
 header("Location:../MONESPACE/MonProfil.php");
 

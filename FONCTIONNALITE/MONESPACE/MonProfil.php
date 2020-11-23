@@ -51,16 +51,9 @@
                         $bdd = $db->connect();
 
                         $utilisateurs = new utilisateurBDD($bdd);
-                        //$besoins = new besoin();
 
                         $utilisateur = $utilisateurs->un_User($usercode);
-                        /* $query = " select NomU, PrenomU, Email, TypeU from utilisateurs where CodeU = {$usercode} ";
-                          $result = mysqli_query ($session, $query);
-
-                          if ($result == false) {
-                          die("ereur requête : ". mysqli_error($session) );
-                          } */
-
+                       
                         echo ('<p>Nom : ' . $utilisateur->getNomU() . '</p>');
                         echo ('<p>Prénom : ' . $utilisateur->getPrenomU() . '</p>');
                         echo ('<p>Adresse mail : ' . $utilisateur->getEmail() . '</p>');
@@ -68,12 +61,6 @@
 
 
 
-                        /* while ($info = mysqli_fetch_array($result)) {                     
-                          echo ('<p>Nom : '.$info["NomU"].'</p>');
-                          echo ('<p>Prénom : '.$info["PrenomU"].'</p>');
-                          echo ('<p>Adresse mail : '.$info["Email"].'</p>');
-                          echo ('<p><a href="changemdp.html.php">Changer mon mot de passe</a></p>');
-                          } */
                     }
                     echo '</div>';
                     echo '<div class="col-4">';
@@ -179,11 +166,12 @@
 
                     if (!empty($besoinTab)) {
 
+                         $conteurBesoin = 0;
+                         
                         foreach ($besoinTab as $value) {
-                            // echo '<br><br>';
 
                             if (strtotime($value['besoin']->getDateButoireB()) > strtotime(date("yy/m/d")) && $value['besoin']->getVisibiliteB() == 1) {
-
+                                $conteurBesoin++;
                                 echo('<li class="list-inline-item">');
                                 if ($value['besoin']->getReponseB() > 0) {  // si il y a des réponses non traitées, affichir le badge rouge
                                     echo ('<span class="badge badge-danger">Nouvelle réponse</span>');
@@ -206,46 +194,15 @@
                                 echo ('</div></li>');
                             }
                         }
+                        
+                        if($conteurBesoin == 0){
+                            echo('<h5>Aucun résultat</h5>');
+                        }
                     } else {
 
                         echo('<h5>Aucun résultat</h5>');
                     }
-                    /* $query = "select b.ReponseB, b.VisibiliteB, b.CodeB, b.TitreB, b.DescriptionB, b.DatePublicationB, b.DateButoireB, c.PhotoC from categories c, besoins b, saisir s where s.CodeB = b.CodeB and c.CodeC = b.CodeC and s.CodeU = {$usercode} order by b.CodeB DESC ";
-
-                      $result = mysqli_query ($session, $query);
-
-                      if ($result == false) {
-                      die("ereur requête : ". mysqli_error($session) );
-                      }
-
-                      if (mysqli_num_rows($result)>0) {
-                      while ($besoin = mysqli_fetch_array($result)) {
-                      if (strtotime($besoin["DateButoireB"]) > strtotime(date("yy/m/d")) && $besoin["VisibiliteB"] == 1) {
-                      echo('<li class="list-inline-item">');
-                      if ($besoin["ReponseB"] > 0) {  // si il y a des réponses non traitées, affichir le badge rouge
-                      echo ('<span class="badge badge-danger">Nouvelle réponse</span>');
-                      }
-                      echo ('<div class="card" style="width: 12rem;">');
-                      echo ('<div class="card-header">');
-                      echo ('<center><input type="radio" name="codeB" value="'.$besoin["CodeB"].'"/><center>');
-                      echo ('</div>');
-                      echo ('<img src="'.$besoin["PhotoC"].'" class="card-img-top" alt="...">');
-                      echo ('<div class="card-body card text-center">');
-                      echo ('<h5 class="card-title">'.$besoin["TitreB"].'</h5>');
-                      echo ('<p class="card-text">Date de publication: '.date("d-m-yy", strtotime($besoin["DatePublicationB"])).'</p>');
-                      echo ('<p class="card-text">Délais souhaité: '.date("d-m-yy", strtotime($besoin["DateButoireB"])).'</p>');
-                      echo ('<a href="../BESOIN/BesoinX.php?t='.$besoin["CodeB"].'" class="btn btn-outline-dark">Voir la demande</a>');
-                      echo ('<p></p><a href="BesoinModification.php?t='.$besoin["CodeB"].'" class="btn btn-outline-dark">Modifier</a>');
-                      if ($besoin["ReponseB"] > 0) {       // si il y a des réponses non traitées, affichir le button "Voir la réponse"
-                      echo ('<p></p><a href="ReponseBesoin.php?code='.$besoin["CodeB"].'" class="btn btn-outline-dark">Voir la réponse</a>');    //prendre les titres pour les besoins pour regrouper les réponses d'un besoin
-                      }
-                      echo ('</div>');
-                      echo ('</div></li>');
-                      }
-                      }
-                      } else {
-                      echo ("Vous n'avez pas encore saisi un besoin");
-                      } */
+                  
 
                     echo'    </ul>
                      </div>
@@ -301,13 +258,15 @@
 
 
                                         if (!empty($talentTab)) {
+                                            
+                                             $conteurTalent = 0;
 
                                             foreach ($talentTab as $value) {
 
-
+                                                 
 
                                                 if ($value['talent']->getVisibiliteT() == 1) {
-
+                                                    $conteurTalent++;
                                                     echo('<li class="list-inline-item">');
                                                     if ($value['talent']->getReponseT() > 0) {  // si il y a des réponses non traitées, affichir "nouvelle message"
                                                         echo ('<span class="badge badge-danger">Nouvelle réponse</span>');
@@ -329,49 +288,16 @@
                                                     echo ('</div></li>');
                                                 }
                                             }
+                                            
+                                            if($conteurTalent == 0){
+                                                echo('<h5>Aucun résultat  VO</h5>');
+                                            }
                                         } else {
 
                                             echo('<h5>Aucun résultat  VO</h5>');
                                         }
 
 
-                                        /* $query = " select t.ReponseT, t.VisibiliteT, t.CodeT, t.TitreT, t.DatePublicationT, c.PhotoC from categories c, talents t, proposer p where p.CodeT = t.CodeT and c.CodeC = t.CodeC and p.CodeU = {$usercode} order by t.CodeT DESC";
-
-                                          $result = mysqli_query($session, $query);
-
-                                          if ($result == false) {
-                                          die("ereur requête : " . mysqli_error($session));
-                                          }
-
-
-
-                                          if (mysqli_num_rows($result) > 0) {
-                                          while ($talent = mysqli_fetch_array($result)) {
-                                          if ($talent["VisibiliteT"] == 1) {  //si la carte n'a pas été caché
-                                          echo('<li class="list-inline-item">');
-                                          if ($talent["ReponseT"] > 0) {  // si il y a des réponses non traitées, affichir "nouvelle message"
-                                          echo ('<span class="badge badge-danger">Nouvelle réponse</span>');
-                                          }
-                                          echo ('<div class="card" style="width: 12rem;">');
-                                          echo ('<div class="card-header">');
-                                          echo ('<center><input type="radio" name="codeT" value="' . $talent["CodeT"] . '"/><center>');
-                                          echo ('</div>');
-                                          echo ('<img src="' . $talent["PhotoC"] . '" class="card-img-top" alt="...">');
-                                          echo ('<div class="card-body card text-center">');
-                                          echo ('<h5 class="card-title">' . $talent["TitreT"] . '</h5>');
-                                          echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($talent["DatePublicationT"])) . '</p>');
-                                          echo ('<a href="../TALENT/TalentX.php?t=' . $talent["CodeT"] . '" class="btn btn-outline-dark">Voir le détail</a>');
-                                          echo ('<p></p><a href="TalentModification.php?t=' . $talent["CodeT"] . '" class="btn btn-outline-dark">Modifier</a>');
-                                          if ($talent["ReponseT"] > 0) { // si il y a des réponses non traitées, affichir le button "Voir la réponse"
-                                          echo ('<p></p><a href="ReponseTalent.php?code=' . $talent["CodeT"] . '" class="btn btn-outline-dark">Voir la réponse</a>');    //prendre les titres pour les besoins pour regrouper les réponses d'un besoin
-                                          }
-                                          echo ('</div>');
-                                          echo ('</div></li>');
-                                          }
-                                          }
-                                          } else {
-                                          echo ("Vous n'avez pas encore saisi un talent");
-                                          } */
 
                                         echo '</ul>     
                    </div>
@@ -425,11 +351,11 @@
 
 
                                                             if (!empty($atelierTab)) {
-
+                                                                $conteurAtelier = 0;
                                                                 foreach ($atelierTab as $value) {
                                                                     $role = $ateliers->saisirRoleUserAtelier($value['atelier']->getCodeA(), $usercode);
-                                                                    if ($value['atelier']->getVisibiliteA() == 1) {
-
+                                                                    if ($value['atelier']->getVisibiliteA() == 1  && strtotime($value['atelier']->getDateFinA()) >= strtotime(date("yy/m/d"))) {
+                                                                        $conteurAtelier++;
                                                                         echo('<li class="list-inline-item">');
                                                                         echo ('<div class="card" style="width: 12rem;">');
                                                                         echo ('<div class="card-header">');
@@ -441,9 +367,10 @@
                                                                         echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
                                                                         echo ('<p class="card-text">Date & Créneau : ' . $value['atelier']->getDateDebutA() . ' à ' . $value['atelier']->getDateFinA() . '</p>');
                                                                         echo ('<a href="../ATELIER/AtelierX.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir le détail</a>');
-                                                                        echo ('<p></p><a href="AtelierModification.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Modifier</a>');
+                                                                        
 
                                                                         if ($role == "createur") {
+                                                                            echo ('<p></p><a href="AtelierModification.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Modifier</a>');
                                                                             echo ('<p></p><a href="../ATELIER/voirInscritAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir les inscrits</a>');
                                                                         } else if ($role == "participant") {
                                                                             echo ('<p></p><a href="../ATELIER/desinscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Je me désinscrit </a>');
@@ -452,6 +379,10 @@
                                                                         echo ('</div>');
                                                                         echo ('</div></li>');
                                                                     }
+                                                                }
+                                                                
+                                                                if($conteurAtelier == 0){
+                                                                    echo('<h5>Aucun résultat  VO</h5>');
                                                                 }
                                                             } else {
 
@@ -463,38 +394,6 @@
 
 
 
-
-
-                                                            /* $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from categories c, ateliers a, participera p where p.CodeA = a.CodeA and c.CodeC = a.CodeC and p.CodeU = {$usercode} order by a.CodeA DESC ";
-
-                                                              $result = mysqli_query($session, $query);
-
-                                                              if ($result == false) {
-                                                              die("ereur requête : " . mysqli_error($session));
-                                                              }
-
-                                                              if (mysqli_num_rows($result) > 0) {
-                                                              while ($atelier = mysqli_fetch_array($result)) {
-                                                              if ($atelier["VisibiliteA"] == 1) {
-                                                              echo('<li class="list-inline-item">');
-                                                              echo ('<div class="card" style="width: 12rem;">');
-                                                              echo ('<div class="card-header">');
-                                                              echo ('<center><input type="radio" name="codeA" value="' . $atelier["CodeA"] . '"/><center>');
-                                                              echo ('</div>');
-                                                              echo ('<img src="' . $atelier["PhotoC"] . '" class="card-img-top" alt="...">');
-                                                              echo ('<div class="card-body card text-center">');
-                                                              echo ('<h5 class="card-title">' . $atelier["TitreA"] . '</h5>');
-                                                              echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($atelier["DatePublicationA"])) . '</p>');
-                                                              echo ('<p class="card-text">Date & Créneau : ' . $atelier["DateA"] . '</p>');
-                                                              echo ('<a href="../ATELIER/AtelierX.php?t=' . $atelier["CodeA"] . '" class="btn btn-outline-dark">Voir le détail</a>');
-                                                              echo ('<p></p><a href="AtelierModification.php?t=' . $atelier["CodeA"] . '" class="btn btn-outline-dark">Modifier</a>');
-                                                              echo ('</div>');
-                                                              echo ('</div></li>');
-                                                              }
-                                                              }
-                                                              } else {
-                                                              echo ("Vous n'avez pas encore créé un atelier");
-                                                              } */
 
                                                             echo '</ul>
                      </div>
@@ -558,11 +457,12 @@
 
 
                                                                     if (!empty($projetTab)) {
-
+                                                                        $conteurProjet = 0;
                                                                         foreach ($projetTab as $value) {
+                                                                            
                                                                             $role = $projets->saisirRoleUserProjet($value['projet']->getCodeP(), $usercode);
-                                                                            if ($value['projet']->getVisibiliteP() == 1) {
-
+                                                                            if ($value['projet']->getVisibiliteP() == 1 && strtotime($value['projet']->getDateButoireP()) >= strtotime(date("yy/m/d"))) {
+                                                                                $conteurProjet++;        
                                                                                 echo('<li class="list-inline-item">');
                                                                                 echo ('<div class="card" style="width: 12rem;">');
                                                                                 echo ('<div class="card-header">');
@@ -573,18 +473,23 @@
                                                                                 echo ('<h5 class="card-title">' . $value['projet']->getTitreP() . '</h5>');
                                                                                 echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['projet']->getDatePublicationP())) . '</p>');
                                                                                 echo ('<p class="card-text">Date & Créneau : ' . $value['projet']->getDateButoireP() . '</p>');
-                                                                                echo ('<a href="../ATELIER/AtelierX.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir le détail</a>');
-                                                                                echo ('<p></p><a href="ProjetModification.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Modifier</a>');
+                                                                                echo ('<a href="../PROJET/ProjetX.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir le détail</a>');
+                                                                                
 
                                                                                 if ($role == "createur") {
-                                                                                  //  echo ('<p></p><a href="../ATELIER/voirInscritAtelier.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir les inscrits</a>');
+                                                                                    echo ('<p></p><a href="ProjetModification.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Modifier</a>');
+                                                                                    echo ('<p></p><a href="../PROJET/voirInscritProjet.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir les inscrits</a>');
                                                                                 } else if ($role == "participant") {
-                                                                                   // echo ('<p></p><a href="../ATELIER/desinscriptionAtelier.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Je me désinscrit </a>');
+                                                                                   echo ('<p></p><a href="../PROJET/desinscriptionProjet.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Je me désinscrit </a>');
                                                                                 }
 
                                                                                 echo ('</div>');
                                                                                 echo ('</div></li>');
                                                                             }
+                                                                        }
+                                                                        
+                                                                        if($conteurProjet == 0){
+                                                                             echo('<h5>Aucun résultat  VO</h5>');
                                                                         }
                                                                     } else {
 
@@ -593,41 +498,6 @@
 
 
 
-
-
-
-
-
-                                                                    /* $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from categories c, ateliers a, participera p where p.CodeA = a.CodeA and c.CodeC = a.CodeC and p.CodeU = {$usercode} order by a.CodeA DESC ";
-
-                                                                      $result = mysqli_query($session, $query);
-
-                                                                      if ($result == false) {
-                                                                      die("ereur requête : " . mysqli_error($session));
-                                                                      }
-
-                                                                      if (mysqli_num_rows($result) > 0) {
-                                                                      while ($atelier = mysqli_fetch_array($result)) {
-                                                                      if ($atelier["VisibiliteA"] == 1) {
-                                                                      echo('<li class="list-inline-item">');
-                                                                      echo ('<div class="card" style="width: 12rem;">');
-                                                                      echo ('<div class="card-header">');
-                                                                      echo ('<center><input type="radio" name="codeA" value="' . $atelier["CodeA"] . '"/><center>');
-                                                                      echo ('</div>');
-                                                                      echo ('<img src="' . $atelier["PhotoC"] . '" class="card-img-top" alt="...">');
-                                                                      echo ('<div class="card-body card text-center">');
-                                                                      echo ('<h5 class="card-title">' . $atelier["TitreA"] . '</h5>');
-                                                                      echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($atelier["DatePublicationA"])) . '</p>');
-                                                                      echo ('<p class="card-text">Date & Créneau : ' . $atelier["DateA"] . '</p>');
-                                                                      echo ('<a href="../ATELIER/AtelierX.php?t=' . $atelier["CodeA"] . '" class="btn btn-outline-dark">Voir le détail</a>');
-                                                                      echo ('<p></p><a href="AtelierModification.php?t=' . $atelier["CodeA"] . '" class="btn btn-outline-dark">Modifier</a>');
-                                                                      echo ('</div>');
-                                                                      echo ('</div></li>');
-                                                                      }
-                                                                      }
-                                                                      } else {
-                                                                      echo ("Vous n'avez pas encore créé un atelier");
-                                                                      } */
 
                                                                     echo '</ul>
                      </div>

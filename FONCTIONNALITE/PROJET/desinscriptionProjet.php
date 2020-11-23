@@ -1,13 +1,13 @@
 <?php
 
 require_once('../../FONCTIONCOMMUNE/Fonctions.php');
-require_once('../../BDD/atelier.bdd.php');
+require_once('../../BDD/projet.bdd.php');
 require_once('../../BDD/connexion.bdd.php');
 
 
 $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
 $bdd = $db->connect();
-$atelierBDD = new atelierBDD($bdd);
+$projetBDD = new projetBDD($bdd);
 
 $user = "";
 
@@ -17,7 +17,7 @@ if(isset($_GET['u'])){
     $user = $usercode;
 }
 
-$atelierBDD->DesinscriptionAtelier($_GET['t'], $user);
+$projetBDD->DesinscriptionProjet($_GET['t'], $user);
 
 header("Location:../MONESPACE/MonProfil.php");
 

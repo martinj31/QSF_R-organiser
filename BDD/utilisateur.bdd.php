@@ -266,6 +266,60 @@ class utilisateurBDD {
 
         $req->closeCursor();
     }
+    
+    
+    //Select les users participant au projet
+    public function saisirParticipantProjet($CodeP) {
+
+        $vide = '';
+        $utilisateurs = [];
+        $req = $this->_bdd->query("SELECT u.CodeU, u.NomU, u.PrenomU, u.Email FROM utilisateurs u, participerp pp, projets p WHERE u.CodeU = pp.CodeU and pp.CodeP = p.CodeP and pp.CodeP = $CodeP and pp.RoleP = 'participant'");
+
+
+
+        if ($req) {
+            while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
+
+                $utilisateur = new utilisateur([]);
+                $utilisateur->setCodeU($datas['CodeU']);
+                $utilisateur->setNomU($datas['NomU']);
+                $utilisateur->setPrenomU($datas['PrenomU']);
+                $utilisateur->setEmail($datas['Email']);
+
+                $utilisateurs[] = $utilisateur;
+            }
+        } else {
+            return $vide;
+        }
+
+        return $utilisateurs;
+    }
+
+    //Select le user createur du projet
+    public function saisirCreateurProjet($CodeP) {
+
+        $vide = '';
+
+        $req = $this->_bdd->query("SELECT u.CodeU, u.NomU, u.PrenomU, u.Email FROM utilisateurs u, participerp pp, projets p WHERE u.CodeU = pp.CodeU and pp.CodeP = p.CodeP and pp.CodeP = $CodeP and pp.RoleP = 'createur'");
+
+        $utilisateur = new utilisateur([]);
+
+        if ($req) {
+            while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
+
+
+                $utilisateur->setCodeU($datas['CodeU']);
+                $utilisateur->setNomU($datas['NomU']);
+                $utilisateur->setPrenomU($datas['PrenomU']);
+                $utilisateur->setEmail($datas['Email']);
+            }
+        } else {
+            return $vide;
+        }
+
+        return $utilisateur;
+    }
+    
 
     //Select les users participant à l'atelier
     public function saisirParticipantAtelier($CodeA) {

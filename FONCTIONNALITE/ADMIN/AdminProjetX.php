@@ -6,7 +6,7 @@
         <?php require "../../FONCTIONNALITE/link.php"; ?>
         <!-- Link -->
 
-            <title>Projet X</title>
+         <title>Admin Projet X</title>
 
 
     </head>
@@ -48,12 +48,13 @@
 
 
 
+
                 foreach ($projetTab as $value) {
                     if (isset($usercode)) {
                         $role = $projetBDD->saisirRoleUserProjet($value['projet']->getCodeP(), $usercode);
                     }
 
-                    if (strtotime($value['projet']->getDateButoireP()) >= strtotime(date("yy/m/d")) && $value['projet']->getVisibiliteP() == 1) {
+                   
                         echo ('<p> Date Butoire: ' . date("d-m-yy", strtotime($value['projet']->getDateButoireP())) . '</p>');
                         echo ('<p> Date Publication: ' . date("d-m-yy", strtotime($value['projet']->getDatePublicationP())) . '</p>');
                         echo ('<p><img src="' . $value['photo'] . '" class="card-img-top" alt="..."  style="width: 35rem;"</p>');
@@ -64,20 +65,22 @@
                         if (isset($usercode)) {
                             if ($role == "createur") {
                                 echo ('<p></p><a href="../PROJET/voirInscritProjet.php?t=' . $value['projet']->getCodeP() . '"><button type="button" class="btn btn-dark btn-light">Voir les inscrits</button></a>');
-                                echo ('<a href="Projet.php"><button type="button" class="btn btn-dark btn-light">Retour</button></a>'); 
+                                echo ('<a href="admin.php"><button type="button" class="btn btn-dark btn-light">Retour</button></a>'); 
                             } else if ($role == "participant") {
+                                echo ('<p></p><a href="../PROJET/voirInscritProjet.php?t=' . $value['projet']->getCodeP() . '"><button type="button" class="btn btn-dark btn-light">Voir les inscrits</button></a>');
                                 echo ('<p></p><a href="../PROJET/desinscriptionProjet.php?t=' . $value['projet']->getCodeP() . '"><button type="button" class="btn btn-dark btn-light">Je me désinscrit </button></a>');
-                                echo ('<a href="Projet.php"><button type="button" class="btn btn-dark btn-light">Retour</button></a>');
+                                echo ('<a href="admin.php"><button type="button" class="btn btn-dark btn-light">Retour</button></a>');
                             } else {
+                                echo ('<p></p><a href="../PROJET/voirInscritProjet.php?t=' . $value['projet']->getCodeP() . '"><button type="button" class="btn btn-dark btn-light">Voir les inscrits</button></a>');
                                 echo ('<p></p><a href="../PROJET/inscriptionProjet.php?t=' . $value['projet']->getCodeP() . '" ><button type="button" class="btn btn-dark btn-light">Je m\'inscris</button></a>');
-                                echo ('<a href="Projet.php"><button type="button" class="btn btn-dark btn-light">Retour</button></a>');
+                                echo ('<a href="admin.php"><button type="button" class="btn btn-dark btn-light">Retour</button></a>');
                             }
                         } else {
                             echo ('<p></p><a href="../PROJET/inscriptionProjet.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
-                            echo ('<a href="Projet.php"><button type="button" class="btn btn-dark btn-light">Retour</button></a>');
+                            echo ('<a href="admin.php"><button type="button" class="btn btn-dark btn-light">Retour</button></a>');
                         }
                        
-                    }
+                    
                 }
                 ?>
             </div>

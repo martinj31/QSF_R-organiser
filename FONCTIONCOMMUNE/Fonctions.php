@@ -2,6 +2,8 @@
 
 require_once('../../BDD/connexion.bdd.php');
 require_once('../../BDD/utilisateur.bdd.php');
+require_once('../../BDD/projet.bdd.php');
+require_once('../PROJET/ProjetCommenceMail.php');
 require_once('../../BDD/atelier.bdd.php');
 require_once('../ATELIER/AtelierCommenceMail.php');
 // 1. Connexion à la base de donnée
@@ -24,6 +26,7 @@ $bdd = $db->connect();
 
 $utilisateurBDD = new utilisateurBDD($bdd);
 $atelierBDD = new atelierBDD($bdd);
+$projetBDD = new projetBDD($bdd);
 
 $session = mysqli_connect($serveur, $nomlogin, $nompasswd, $nombase/* , $port_bdd */);
 
@@ -135,6 +138,7 @@ function generate_password($length = 8) {
     return $randpwd;
 }
 
+//atelier commence dans 1 jour
 $atelierCommenceTab = $atelierBDD->selectMailAtelierCommence();
 if (!empty($atelierCommenceTab)) {
 
@@ -149,6 +153,26 @@ if (!empty($atelierCommenceTab)) {
 
         $userCreateur = $utilisateurBDD->saisirCreateurAtelier($value->getCodeA());
         commenceMail($userCreateur->getEmail(), $value->getTitreA());
+    }
+}
+
+
+
+//projet commence dans 1 jour
+$projetCommenceTab = $projetBDD->selectMailProjetCommence();
+if (!empty($projetCommenceTab)) {
+
+    foreach ($projetCommenceTab as $value) {
+
+        $userParticipantTab = $utilisateurBDD->saisirParticipantProjet($value->getCodeP());
+
+        foreach ($userParticipantTab as $value1) {
+
+            commenceProjetMail($value1->getEmail(), $value->getTitreP());
+        }
+
+        $userCreateur = $utilisateurBDD->saisirCreateurProjet($value->getCodeP());
+        commenceProjetMail($userCreateur->getEmail(), $value->getTitreP());
     }
 }
 ?>

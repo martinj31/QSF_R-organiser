@@ -107,7 +107,6 @@ class atelierBDD {
 
         $req = $this->_bdd->query("select * from ateliers ");
 
-        $datas = $req->fetch(PDO::FETCH_ASSOC);
 
         if ($req) {
             while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
@@ -132,7 +131,7 @@ class atelierBDD {
         
         if(!empty($atelierTab)){
             
-            $req = $this->_bdd->prepare('UPDATE ateliers SET MailCommence = 1 WHERE CURDATE() > DATE_SUB(DateDebutA  INTERVAL 1 DAY)');
+            $req = $this->_bdd->prepare('UPDATE ateliers SET MailCommence = 1 WHERE CURDATE() > DATE_SUB(DateDebutA  INTERVAL 1 DAY)  and MailCommence = 0');
 
             $req->execute();
         }
@@ -459,7 +458,7 @@ class atelierBDD {
         $req->closeCursor();
     }
 
-    //Select l'email et le titre en fonction de l'id de l'atelier
+    //delete la liaison du user et le projet dans participera
     public function DesinscriptionAtelier($CodeA, $usercode) {
 
 
@@ -501,6 +500,24 @@ class atelierBDD {
         $req->bindValue(':CodeA', $CodeA, PDO::PARAM_INT);
         $req->bindValue(':VisibiliteA', 1, PDO::PARAM_INT);
         $req->bindValue(':URL', $URL, PDO::PARAM_STR);
+
+
+        return $req->execute();
+
+
+
+        $req->closeCursor();
+    }
+    
+    
+    //le user veut que cette carte  soit  visible 
+    public function userUpdateAtelierVisibleOui($CodeA) {  //fonction pour l'affichage des cartes besoins
+        $req = $this->_bdd->prepare('UPDATE ateliers 
+                                        SET VisibiliteA = :VisibiliteA
+                                    WHERE CodeA = :CodeA');
+
+        $req->bindValue(':CodeA', $CodeA, PDO::PARAM_INT);
+        $req->bindValue(':VisibiliteA', 1, PDO::PARAM_INT);
 
 
         return $req->execute();

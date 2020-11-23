@@ -53,7 +53,6 @@ class projetBDD {
 
         $req = $this->_bdd->query($query);
 
-        //var_dump($req);
 
         if ($req) { 
             while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
@@ -238,6 +237,56 @@ class projetBDD {
     }
     
     
+    public function selectAllProjets() {
+
+        $vide = '';
+        $projets = [];
+
+        $req = $this->_bdd->query("select * from projets");
+
+     
+
+        if ($req) {
+            while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
+                
+                $projets[] = new projet($datas);
+            }
+        } else {
+            return $vide;
+        }
+        
+        return $projets;
+
+        $req->closeCursor();
+    }
+    
+    
+    
+    public function selectProjetSearch($cartea) {
+
+        $vide = '';
+        $projets = [];
+
+        $req = $this->_bdd->query("select * from projets where ( TitreP LIKE '%$cartea%' or DescriptionP LIKE '%$cartea%' ) order by CodeP DESC");
+
+        $datas = $req->fetch(PDO::FETCH_ASSOC);
+
+        if ($req) {
+
+            $projets[] = new projet($datas);
+        } else {
+            return $vide;
+        }
+
+
+
+
+        return $projets;
+
+        $req->closeCursor();
+    }
+    
+    
     public function selectProjetByUser($usercode) {
 
         $projets = [];
@@ -279,7 +328,7 @@ class projetBDD {
     public function saisirRoleUserProjet($CodeP, $usercode) {
 
 
-        $req = $this->_bdd->query("SELECT pp.RoleP FROM participerp pp, projets p WHERE $usercode = pp.CodeU and P.CodeP = P.CodeP and p.CodeP = $CodeP");
+        $req = $this->_bdd->query("SELECT pp.RoleP FROM participerp pp, projets p WHERE $usercode = pp.CodeU and p.CodeP = pp.CodeP and p.CodeP = $CodeP");
 
 
 
@@ -294,7 +343,7 @@ class projetBDD {
     }
     
     //Liaison User / Atelier dans a table saisir
-    public function participeraProjetEtUser($usercode, $codeA, $RoleA) {  //fonction pour l'affichage des cartes besoins
+    public function participeraProjetEtUser($usercode, $codeP, $RoleP) {  //fonction pour l'affichage des cartes besoins
         $req = $this->_bdd->prepare('INSERT INTO participerp
                                              SET CodeU = :CodeU,
                                                  CodeP = :CodeP,
@@ -341,6 +390,124 @@ class projetBDD {
         $req->closeCursor();
     }
     
+    //Select l'email et le titre en fonction de l'id de l'atelier
+    public function saisirEmailEtTitreProjet($CodeP) {
+
+        $projetTab = [];
+        $req = $this->_bdd->query("SELECT u.Email, pp.TitreP FROM utilisateurs u, participerp p, projets pp WHERE u.CodeU = p.CodeU and p.CodeP = pp.CodeP and p.CodeP = $CodeP");
+
+
+        while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
+
+            $projetTab[] = ['Email' => $datas['Email'], 'Titre' => $datas['TitreP']];
+        }
+        var_dump($CodeP);
+        
+        return $projetTab;
+
+        $req->closeCursor();
+    }
+    
+    
+     //le user veut que cette carte  soit  visible 
+    public function userUpdateProjetVisibleOui($CodeP) {  //fonction pour l'affichage des cartes besoins
+        $req = $this->_bdd->prepare('UPDATE projets 
+                                        SET VisibiliteP = :VisibiliteP
+                                    WHERE CodeP = :CodeP');
+
+        $req->bindValue(':CodeP', $CodeP, PDO::PARAM_INT);
+        $req->bindValue(':VisibiliteP', 1, PDO::PARAM_INT);
+        
+
+
+        return $req->execute();
+
+
+
+        $req->closeCursor();
+    }
+    
+    
+     //le user veut que cette carte ne soit plus visible 
+    public function userUpdateProjetVisibleNon($CodeP) {  //fonction pour l'affichage des cartes besoins
+        $req = $this->_bdd->prepare('UPDATE projets 
+                                        SET VisibiliteP = :VisibiliteP 
+                                    WHERE CodeP = :CodeP');
+
+
+        $req->bindValue(':CodeP',  $CodeP, PDO::PARAM_INT);
+        $req->bindValue(':VisibiliteP', 0, PDO::PARAM_INT);
+
+
+        return $req->execute();
+
+
+
+        $req->closeCursor();
+    }
+    
+    
+    //delete la liaison du user et le projet dans participerp
+    public function DesinscriptionProjet($CodeP, $usercode) {
+
+
+        $req = $this->_bdd->query("DELETE FROM participerp WHERE CodeU = $usercode and CodeP = $CodeP");
+
+
+
+        return $req;
+
+
+
+
+        $req->closeCursor();
+    }
+    
+    
+    
+     public function MailProjetCommence() {
+
+        $atelierTab = selectMailProjetCommence();                                           
+        
+        if(!empty($atelierTab)){
+            
+            $req = $this->_bdd->prepare('UPDATE projets SET MailCommence = 1 WHERE CURDATE() > DATE_SUB(DateButoireP  INTERVAL 1 DAY)  and MailCommence = 0');
+
+            $req->execute();
+        }
+        
+       
+        
+        
+        return $atelierTab;
+
+        $req->closeCursor();
+    }
+    
+    
+    public function selectMailProjetCommence() {
+
+        $vide = '';
+        $ateliers = [];
+
+        $req = $this->_bdd->query("select * from projets where CURDATE() > DATE_SUB(DateButoireP  INTERVAL 1 DAY)  and MailCommence = 0");
+
+        
+
+        if ($req) {
+            $datas = $req->fetch(PDO::FETCH_ASSOC); 
+            $ateliers[] = new atelier($datas);
+        } else {
+            return $vide;
+        }
+
+
+
+
+        return $ateliers;
+
+        $req->closeCursor();
+    }
 
     /*
      * Méthodes Mutateurs (Setters) - Pour modifier la valeur des attributs

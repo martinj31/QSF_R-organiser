@@ -57,93 +57,68 @@
                         $mot = NULL;
                     }
 
-                    //$query = "select CodeC, NomC from categories where VisibiliteC = 1";
-                    // $result = mysqli_query ($session, $query);
+                   
                     $projetTab = $projet->selectProjetEtPhoto($mot);
                     //echo empty($projetTab);
                     if (!empty($projetTab)) {
-
+                        $conteurProjet = 0;
                         foreach ($projetTab as $value) {
-                            
-                            
-                            if (isset($usercode)) {
-                                $role = $projet->saisirRoleUserProjet($value['projet']->getCodeP(), $usercode);
-                            }
-                            echo '<br><br>';
-                            //var_dump($value['besoin']->getDateButoireB());
-                            if ($value['projet']->getTypeP() == 'Pro et Perso') {
-                                echo ('<div><h5><span class="badge badge-info">' . $value['projet']->getTypeP() . '</span></h5>');
-                            } elseif ($value['projet']->getTypeP() == 'Pro') {
-                                echo ('<div><h5><span class="badge badge-success">' . $value['projet']->getTypeP() . '</span></h5>');
-                            } elseif ($value['projet']->getTypeP() == 'Perso') {
-                                echo ('<div><h5><span class="badge badge-warning">' . $value['projet']->getTypeP() . '</span></h5>');
-                            }
+
+                            if ($value['projet']->getVisibiliteP() == 1 && strtotime($value['projet']->getDateButoireP()) >= strtotime(date("yy/m/d"))) {
+                                $conteurProjet++;
+                                if (isset($usercode)) {
+                                    $role = $projet->saisirRoleUserProjet($value['projet']->getCodeP(), $usercode);
+                                }
+                                echo '<br><br>';
+                                //var_dump($value['besoin']->getDateButoireB());
+                                if ($value['projet']->getTypeP() == 'Pro et Perso') {
+                                    echo ('<div><h5><span class="badge badge-info">' . $value['projet']->getTypeP() . '</span></h5>');
+                                } elseif ($value['projet']->getTypeP() == 'Pro') {
+                                    echo ('<div><h5><span class="badge badge-success">' . $value['projet']->getTypeP() . '</span></h5>');
+                                } elseif ($value['projet']->getTypeP() == 'Perso') {
+                                    echo ('<div><h5><span class="badge badge-warning">' . $value['projet']->getTypeP() . '</span></h5>');
+                                }
 
 
-                            echo ('<div class="card" style="width: 12rem;">');
-                            echo ('<img src="' . $value['photo'] . '" class="card-img-top" alt="...">');
-                            echo ('<div class="card-body card text-center">');
-                            echo ('<h5 class="card-title">' . $value['projet']->getTitreP() . '</h5>');
-                            echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['projet']->getDatePublicationP())) . '</p>');
-                            echo ('<p class="card-text">Date & Créneau : ' . $value['projet']->getDateButoireP()  . '</p>');
-                            echo ('<a href="ProjetX.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir la demande</a>');
-                           if (isset($usercode)) {
+                                echo ('<div class="card" style="width: 12rem;">');
+                                echo ('<img src="' . $value['photo'] . '" class="card-img-top" alt="...">');
+                                echo ('<div class="card-body card text-center">');
+                                echo ('<h5 class="card-title">' . $value['projet']->getTitreP() . '</h5>');
+                                echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['projet']->getDatePublicationP())) . '</p>');
+                                echo ('<p class="card-text">Date & Créneau : ' . $value['projet']->getDateButoireP() . '</p>');
+                                echo ('<a href="ProjetX.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir la demande</a>');
+                                if (isset($usercode)) {
                                     if ($role == "createur") {
-                                       // echo ('<p></p><a href="../ATELIER/voirInscritAtelier.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir les inscrits</a>');
+                                        echo ('<p></p><a href="../PROJET/voirInscritProjet.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir les inscrits</a>');
                                     } else if ($role == "participant") {
-                                        //echo ('<p></p><a href="../ATELIER/desinscriptionAtelier.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Je me désinscrit </a>');
+                                        echo ('<p></p><a href="../PROJET/desinscriptionProjet.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Je me désinscrit </a>');
                                     } else {
                                         echo ('<p></p><a href="../PROJET/inscriptionProjet.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
                                     }
-                                }else{
+                                } else {
                                     echo ('<p></p><a href="../PROJET/inscriptionProjet.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
                                 }
-                                
-                            echo ('</div>');
-                            echo ('</div></div>');
+
+                                echo ('</div>');
+                                echo ('</div></div>');
+                            }
+                        }
+                        if($conteurProjet == 0){
+                            echo('<h5>Aucun résultat</h5>');
                         }
                     } else {
 
                         echo('<h5>Aucun résultat</h5>');
                     }
 
-
-
-
-
-
-
-                    /* require_once('../../FONCTIONCOMMUNE/Fonctions.php');
-                      $query = "select p.TitreP, c.PhotoC, p.DateButoireP from projet p, categories c where p.CodeC = c.CodeC order by CodeP DESC";
-
-                      if (isset($_GET['mot']) AND!empty($_GET['mot'])) { /* Recherche par mot clé */
-                    /* $mot = htmlspecialchars($_GET['mot']);
-                      $query = "select p.TitreP, c.PhotoC, p.DateButoireP from projet p, categories c where p.CodeC = c.CodeC and p.TitreP LIKE '%$mot%' order by p.CodeP DESC";
-                      }
-
-                      $result = mysqli_query($session, $query);   /* Si le mot clé existe, il va exécute la deuxième requête, sinon la première */
-
-                    /* if (mysqli_num_rows($result) > 0) {
-                      while ($ligne = mysqli_fetch_array($result)) {
-                      echo ('<div class="card" style="width: 12rem;">');
-                      echo ('<img src="' . $ligne["PhotoC"] . '" class="card-img-top" alt="...">');
-                      echo ('<div class="card-body card text-center">');
-                      echo ('<h5 class="card-title">' . $ligne["TitreP"] . '</h5>');
-                      echo ('<p class="card-text">Délais souhaité: ' . date("d-m-yy", strtotime($ligne["DateButoireP"])) . '</p>');
-                      echo ('<a href="ProjetX.php" class="btn btn-outline-dark">Voir la demande</a>');
-                      echo ('</div>');
-                      echo ('</div>');
-                      }
-                      } else {
-                      echo('<h5> Aucun résultat pour : ' . $mot . '</h5>');
-                      } */
+                  
                     ?>
                 </div>
             </div>
         </div>
 
         <!-- footer -->
-        <?php require "../../FONCTIONNALITE/footer.php"; ?>
+<?php require "../../FONCTIONNALITE/footer.php"; ?>
         <!-- Fin footer -->
 
     </body>

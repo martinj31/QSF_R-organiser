@@ -10,6 +10,7 @@
         require_once('../../BDD/besoin.bdd.php');
         require_once('../../BDD/talent.bdd.php');
         require_once('../../BDD/atelier.bdd.php');
+        require_once('../../BDD/projet.bdd.php');
         require_once('../../BDD/utilisateur.bdd.php');
         require_once('../../BDD/compteurT.bdd.php');
         require_once('../../BDD/compteurB.bdd.php');
@@ -216,6 +217,7 @@
                       <button class="tablinksc" onclick="openCity(event, \'London\')" id="defaultOpenc">Besoins</button>
                       <button class="tablinksc" onclick="openCity(event, \'Paris\')">Talents</button>
                       <button class="tablinksc" onclick="openCity(event, \'Pekin\')">Ateliers</button>
+                      <button class="tablinksc" onclick="openCity(event, \'projet\')">Projets</button>
                     </div>
 
                     <!-- Tab content -->
@@ -418,38 +420,13 @@
                         echo('<h5>Aucun résultat</h5>');
                     }
 
-                    /* if (mysqli_num_rows($result) > 0) {
-                      while ($ligne = mysqli_fetch_array($result)) {
-                      echo ('<tr>');
-                      echo ('<th scope="row">' . $ligne["CodeT"] . '</th>');
-                      echo ('<td>' . $ligne["TitreT"] . '</td>');
-                      echo ('<td>' . $ligne["DescriptionT"] . '</td>');
-                      echo ('<td>');
-                      echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
-                      echo ('<a href="AdminTalentX.php?t=' . $ligne["CodeT"] . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
-                      echo ('<button type="submit" name="desactivert" value="' . $ligne["CodeT"] . '" class="btn "><img src="img/trash.png" alt="Désactiver" width="30" height="30"></button>');
-                      echo ('</div>');
-                      echo ('</td>');
-                      echo ('</tr>');
-                      }
-                      } */
+                   
                     echo ('</tbody>');
                     echo ('</table>');
 
                     echo('<br><h3>Talents cachés</h3><br>');
 
-                    /* $query2 = "select CodeT, TitreT, DescriptionT from talents where VisibiliteT = 0 order by CodeT DESC";
-
-                      if (isset($_GET['cartet']) AND!empty($_GET['cartet'])) { /* Recherche par mot clé dans le titre et description */
-                    /* $cartet = htmlspecialchars($_GET['cartet']);
-                      $query2 = "select CodeT, TitreT, DescriptionT from talents where VisibiliteT = 0 and ( TitreT LIKE '%$cartet%' or DescriptionT LIKE '%$cartet%' ) order by CodeT DESC";
-                      }
-
-                      $result = mysqli_query($session, $query2);
-
-                      if ($result == false) {
-                      die("ereur requête : " . mysqli_error($session));
-                      } */
+                   
 
                     echo ('<table class="table table-striped">');      /* Tableau pour afficher les talents cachés */
                     echo ('<thead>');
@@ -496,7 +473,6 @@
                     
                   <form action="AdminCarteInapproprieA.php" method="post">';
 
-                    //$query = "select CodeA, TitreA, DescriptionA from ateliers where VisibiliteA = 1 order by CodeA DESC";
 
 
                     $ateliers = new atelierBDD($bdd);
@@ -504,17 +480,12 @@
                     $atelierTab = $ateliers->selectAllAteliers();
                     if (isset($_GET['cartea']) AND!empty($_GET['cartea'])) { /* Recherche par mot clé dans le titre et description */
                         $cartet = htmlspecialchars($_GET['cartea']);
-                        // $query = "select CodeA, TitreA, DescriptionA from ateliers where VisibiliteA = 1 and ( TitreA LIKE '%$cartea%' or DescriptionA LIKE '%$cartea%' ) order by CodeA DESC";
-
+                       
 
                         $atelierTab = $ateliers->selectAtelierSearch($cartet);
                     }
 
-                    /* $result = mysqli_query($session, $query);
-
-                      if ($result == false) {
-                      die("ereur requête : " . mysqli_error($session));
-                      } */
+                    
 
                     echo ('<table class="table table-striped">');      /* Tableau pour afficher les talents existantes */
                     echo ('<thead>');
@@ -553,38 +524,13 @@
                     }
 
 
-                    /* if (mysqli_num_rows($result) > 0) {
-                      while ($ligne = mysqli_fetch_array($result)) {
-                      echo ('<tr>');
-                      echo ('<th scope="row">' . $ligne["CodeA"] . '</th>');
-                      echo ('<td>' . $ligne["TitreA"] . '</td>');
-                      echo ('<td>' . $ligne["DescriptionA"] . '</td>');
-                      echo ('<td>');
-                      echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
-                      echo ('<a href="AdminAtelierX.php?t=' . $ligne["CodeA"] . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
-                      echo ('<button type="submit" name="desactivera" value="' . $ligne["CodeA"] . '" class="btn "><img src="img/trash.png" alt="Désactiver" width="30" height="30"></button>');
-                      echo ('</div>');
-                      echo ('</td>');
-                      echo ('</tr>');
-                      }
-                      } */
+                   
                     echo ('</tbody>');
                     echo ('</table>');
 
                     echo('<br><h3>Ateliers cachés</h3><br>');
 
-                   /* $query2 = "select CodeA, TitreA, DescriptionA from ateliers where VisibiliteA = 0 order by CodeA DESC";
-
-                    if (isset($_GET['cartea']) AND!empty($_GET['cartea'])) { /* Recherche par mot clé dans le titre et description */
-                     /*   $cartet = htmlspecialchars($_GET['cartea']);
-                        $query2 = "select CodeA, TitreA, DescriptionA from ateliers where VisibiliteA = 0 and ( TitreA LIKE '%$cartea%' or DescriptionA LIKE '%$cartea%' ) order by CodeA DESC";
-                    }
-
-                    $result = mysqli_query($session, $query2);
-
-                    if ($result == false) {
-                        die("ereur requête : " . mysqli_error($session));
-                    }*/
+                   
 
                     echo ('<table class="table table-striped">');      /* Tableau pour afficher les talents cachés */
                     echo ('<thead>');
@@ -602,13 +548,13 @@
                         foreach ($atelierTab as $value) {
                             if ($value->getVisibiliteA() == 0) {
                             echo ('<tr>');
-                            echo ('<th scope="row"><input type="radio" name="$CodeAC" value="' . $value->getCodeA() . '"/></th>');
                             echo ('<th scope="row">' . $value->getCodeA() . '</th>');
                             echo ('<td>' . $value->getTitreA() . '</td>');
                             echo ('<td>' . $value->getDescriptionA() . '</td>');
                             echo ('<td>');
                             echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
                             echo ('<a href="AdminAtelierX.php?t=' . $value->getCodeA() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');                          
+                            echo ('<button type="submit" name="activera" value="' . $value->getCodeA() . '" class="btn btn-secondary"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS82pYv9wgxfx27dUrgTr8zaGjZ6O3O2CONHA&usqp=CAU" alt="Activer" width="30" height="30"></button>');
                             echo ('</div>');
                             echo ('</td>');
                             echo ('</tr>');
@@ -619,9 +565,120 @@
                     echo ('</table>');
                     echo ('<p>Veuillez choisir un atelier puis saisir un URL pour l\'activer</p>');
                     echo ('<input name="url" type="text"/>');
-                    echo ('<button type="submit" name="activera"  class="btn btn-secondary"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS82pYv9wgxfx27dUrgTr8zaGjZ6O3O2CONHA&usqp=CAU" alt="Activer" width="30" height="30"></button>');
+                   
                     echo ('</form>');
                     echo ('</div>');
+                    
+                    
+                    
+                  echo '   
+                    
+                    <div id="projet" class="tabcontentc">      
+                  <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
+                    <h3>Ateliers en cours</h3>
+                    <form method="GET" class="form-inline my-2 my-lg-0" class="recherche">
+                        <input class="form-control mr-sm-2" type="search" name="cartep" placeholder="Titre/Description" aria-label="Recherche">
+                        <button type="submit" class="btn btn-outline-dark">Recherche</button>
+                    </form>
+                </div>
+                    
+                  <form action="AdminCarteInapproprieP.php" method="post">';
+
+                   
+
+
+                    $projets = new projetBDD($bdd);
+
+                    $projetTab = $projets->selectAllProjets();
+                    if (isset($_GET['cartep']) AND!empty($_GET['cartep'])) { /* Recherche par mot clé dans le titre et description */
+                        $cartep = htmlspecialchars($_GET['cartea']);
+                        // $query = "select CodeA, TitreA, DescriptionA from ateliers where VisibiliteA = 1 and ( TitreA LIKE '%$cartea%' or DescriptionA LIKE '%$cartea%' ) order by CodeA DESC";
+
+
+                        $projetTab = $projets->selectProjetSearch($cartep);
+                    }
+
+                   // var_dump($projetTab);
+
+                    echo ('<table class="table table-striped">');      /* Tableau pour afficher les talents existantes */
+                    echo ('<thead>');
+                    echo ('<tr>');
+                    echo ('<th scope="col">#</th>');
+                    echo ('<th scope="col">Titre</th>');
+                    echo ('<th scope="col">Description</th>');
+                    echo ('<th scope="col">Modification</th>');
+                    echo ('</tr>');
+                    echo ('</thead>');
+                    echo ('<tbody>');
+
+
+
+                    if (!empty($projetTab)) {
+
+                        foreach ($projetTab as $value) {
+                            if ($value->getVisibiliteP() == 1) {
+                                echo ('<tr>');
+                                echo ('<th scope="row">' . $value->getCodeP() . '</th>');
+                                echo ('<td>' . $value->getTitreP() . '</td>');
+                                echo ('<td>' . $value->getDescriptionP() . '</td>');
+                                echo ('<td>');
+                                echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
+                                echo ('<a href="AdminProjetX.php?t=' . $value->getCodeP() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
+                                echo ('<button type="submit" name="desactiverp" value="' . $value->getCodeP() . '" class="btn "><img src="img/trash.png" alt="Désactiver" width="30" height="30"></button>');
+                                echo ('<a  href="AdminInscritProjet.php?t=' . $value->getCodeP() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Voir les inscrits" width="30" height="30"></button></a>');
+                                echo ('</div>');
+                                echo ('</td>');
+                                echo ('</tr>');
+                            }
+                        }
+                    } else {
+
+                        echo('<h5>Aucun résultat</h5>');
+                    }
+
+
+                    echo ('</tbody>');
+                    echo ('</table>');
+
+                    echo('<br><h3>Ateliers cachés</h3><br>');
+
+                  
+
+                    echo ('<table class="table table-striped">');      /* Tableau pour afficher les talents cachés */
+                    echo ('<thead>');
+                    echo ('<tr>');
+                    echo ('<th scope="col">#</th>');
+                    echo ('<th scope="col">Titre</th>');
+                    echo ('<th scope="col">Description</th>');
+                    echo ('<th scope="col">Modification</th>');
+                    echo ('</tr>');
+                    echo ('</thead>');
+                    echo ('<tbody>');
+                     if (!empty($projetTab)) {
+
+                        foreach ($projetTab as $value) {
+                            if ($value->getVisibiliteP() == 0) {
+                            echo ('<tr>');
+                           
+                            echo ('<th scope="row">' . $value->getCodeP() . '</th>');
+                            
+                            echo ('<td>' . $value->getTitreP() . '</td>');
+                            echo ('<td>' . $value->getDescriptionP() . '</td>');
+                             echo ('<td>');
+                            echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
+                            echo ('<a href="AdminProjetX.php?t=' . $value->getCodeP() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');                          
+                           echo ('<button type="submit" name="activerp" value="' . $value->getCodeP() . '" class="btn btn-secondary"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS82pYv9wgxfx27dUrgTr8zaGjZ6O3O2CONHA&usqp=CAU" alt="Activer" width="30" height="30"></button>');
+                            echo ('</div>');
+                            echo ('</td>');
+                            echo ('</tr>');
+                            }
+                        }
+                    }
+                    echo ('</tbody>');
+                    echo ('</table>');
+                   
+                    echo ('</form>');
+                    echo ('</div>')
                     ?>         
                     <!-- CSS pour la tab des cartes-->
 
@@ -643,20 +700,15 @@
                     $utilisateurs = new utilisateurBDD($bdd);
 
                     $utilisateurTab = $utilisateurs->selectAllUtilisateurs();
-                    //$query = "select CodeU, NomU, PrenomU, Email from utilisateurs where NomU <> 'XXXXX' order by CodeU DESC";
+                   
 
                     if (isset($_GET['user']) AND!empty($_GET['user'])) { /* Recherche par mot clé dans prénom, nom, email des utilisateurs */
                         $user = htmlspecialchars($_GET['user']);
-                        //$query = "select CodeU, NomU, PrenomU, Email from utilisateurs where NomU <> 'XXXXX' and ( NomU LIKE '%$user%' or PrenomU LIKE '%$user%' or Email LIKE '%$user%' ) order by CodeU DESC";
-
+                        
                         $utilisateurTab = $utilisateurs->selectUtilisateurSearch($user);
                     }
 
-                    /* $result = mysqli_query($session, $query);
-
-                      if ($result == false) {
-                      die("ereur requête : " . mysqli_error($session));
-                      } */
+                    
 
                     echo ('<table class="table table-striped">');      /* Tableau pour afficher les catégories existantes */
                     echo ('<thead>');
@@ -709,42 +761,6 @@
 
 
 
-                    /* if (mysqli_num_rows($result) > 0) {
-                      while ($ligne = mysqli_fetch_array($result)) {
-                      echo ('<tr>');
-                      echo ('<th scope="row">' . $ligne["CodeU"] . '</th>');
-                      echo ('<td>' . $ligne["NomU"] . '</td>');
-                      echo ('<td>' . $ligne["PrenomU"] . '</td>');
-                      echo ('<td>' . $ligne["Email"] . '</td>');
-                      echo ('<td>');
-                      echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
-                      echo ('<a href="AdminUtilisateur.php?t=' . $ligne["CodeU"] . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
-                      echo ('<button type="button"  class="btn " data-toggle="modal" data-target="#supprimer' . $ligne["CodeU"] . '"><img src="img/trash.png" alt="Désactiver" width="30" height="30"></button>');
-                      echo ('</div>');
-                      echo ('</td>');
-                      echo ('</tr>');
-
-                      echo('<div class="modal" tabindex="-1" id="supprimer' . $ligne["CodeU"] . '" role="dialog">');
-                      echo('<div class="modal-dialog" role="document">');
-                      echo('<div class="modal-content">');
-                      echo('<div class="modal-header">');
-                      echo('<h5 class="modal-title">Vérification</h5>');
-                      echo('<button type="button" class="close" data-dismiss="modal" aria-label="Close">');
-                      echo('<span aria-hidden="true">&times;</span>');
-                      echo('</button>');
-                      echo('</div>');
-                      echo('<div class="modal-body">');
-                      echo('<p>Êtes-Vous sûr de supprimer ce compte ?  </p>');
-                      echo('</div>');
-                      echo('<div class="modal-footer">');
-                      echo('<button name="codeu" value="' . $ligne["CodeU"] . '" type="submit" class="btn btn-primary">Supprimer</button>');
-                      echo('<button type="button" class="btn " data-dismiss="modal">Fermer</button>');
-                      echo('</div>');
-                      echo('</div>');
-                      echo('</div>');
-                      echo('</div>');
-                      }
-                      } */
                     echo ('</tbody>');
                     echo ('</table>');
                     echo '</form>
@@ -766,74 +782,38 @@
 
                     echo ('<dl>');
                     echo ('<dt>Nombre de mise en relation besoins : ' . $compteurBBDDs->relationBesoinsNBRAll() );
-                    /* $query5 = "select count(*) as reussit from compteurb";
-                      $result5 = mysqli_query($session, $query5);
-                      if ($note = mysqli_fetch_array($result5)) {
-                      echo $note["reussit"];
-                      } */
+                    
                     echo ('</dt>');
                     echo ('<dd style="text-indent:2em;"> - Nombre de mise en relation réussit : ' . $compteurBBDDs->relationBesoinsNBRReussi() );
-                    /* $query1 = "select count(*) as reussit from compteurb where NumOuiB = 1";
-                      $result1 = mysqli_query($session, $query1);
-                      if ($note = mysqli_fetch_array($result1)) {
-                      echo $note["reussit"];
-                      } */
+                   
                     echo ('</dd>');
                     echo ('<dd style="text-indent:2em;"> - Nombre de mise en relation échoué : ' . $compteurBBDDs->relationBesoinsNBREchoue() );
-                    /* $query2 = "select count(*) as echoue from compteurb where NumNonB = 1";
-                      $result2 = mysqli_query($session, $query2);
-                      if ($note = mysqli_fetch_array($result2)) {
-                      echo $note["echoue"];
-                      } */
+                   
                     echo ('</dd>');
                     echo ('</dl>');
 
                     echo ('<dl>');
                     echo ('<dt>Nombre de mise en relation talents : ' . $compteurTBDDs->relationTalentsNBRAll());
-                    /* $query6 = "select count(*) as reussit from compteurt";
-                      $result6 = mysqli_query($session, $query6);
-                      if ($note = mysqli_fetch_array($result6)) {
-                      echo $note["reussit"];
-                      } */
+                   
                     echo ('</dt>');
                     echo ('<dd style="text-indent:2em;"> - Nombre de mise en relation réussit : ' . $compteurTBDDs->relationTalentsNBRReussi());
-                    /* $query3 = "select count(*) as reussit from compteurt where NumOuiT = 1";
-                      $result3 = mysqli_query($session, $query3);
-                      if ($note = mysqli_fetch_array($result3)) {
-                      echo $note["reussit"];
-                      } */
+                   
                     echo ('</dd>');
                     echo ('<dd style="text-indent:2em;"> - Nombre de mise en relation échoué : ' . $compteurTBDDs->relationTalentsNBREchoue());
-                    /* $query4 = "select count(*) as echoue from compteurt where NumNonT = 1";
-                      $result4 = mysqli_query($session, $query4);
-                      if ($note = mysqli_fetch_array($result4)) {
-                      echo $note["echoue"];
-                      } */
+                    
                     echo ('</dd>');
                     echo ('</dl><br>');
                     //----------------------------------------------------------------------->                 
                     echo ('<h5>Notes</h5><hr>');
                     echo ('<dl>');
                     echo ('<dt>Note moyenne : ' . $evaluerTBDD->moyenneNoteTAndNoteB());
-                    /* $moyenne = "SELECT (SUM(b.NoteB) + SUM(t.NoteT))/(COUNT(b.NoteB) + COUNT(t.NoteT)) AS moyenne FROM evaluerb AS b, evaluert AS t";
-                      $notemoyenne = mysqli_query($session, $moyenne);
-                      if ($note = mysqli_fetch_array($notemoyenne)) {
-                      echo $note["moyenne"];
-                      } */
+                    
                     echo ('</dt>');
                     echo ('<dd style="text-indent:2em;"><p> - Moyenne de notes besoin : ' . $evaluerBBDD->moyenneNoteB() );
-                    /* $moyenneb = "select AVG(NoteB) as moyenne from evaluerb";
-                      $notemoyenneb = mysqli_query($session, $moyenneb);
-                      if ($noteb = mysqli_fetch_array($notemoyenneb)) {
-                      echo $noteb["moyenne"];
-                      } */
+                   
                     echo ('</p></dd>');
                     echo ('<dd style="text-indent:2em;"><p> - Moyenne de notes talent : ' . $evaluerTBDD->moyenneNoteT());
-                    /* $moyennet = "select AVG(NoteT) as moyenne from evaluert";
-                      $notemoyennet = mysqli_query($session, $moyennet);
-                      if ($notet = mysqli_fetch_array($notemoyennet)) {
-                      echo $notet["moyenne"];
-                      } */
+                  
                     echo ('</p></dd>');
                     echo ('</dl>');
                     //-----------------------------------------------------------------------> 
@@ -868,17 +848,6 @@
                     }
 
 
-                    /* $requete1 = "select b.TitreB, e.NoteB, e.AvisB from evaluerb as e, besoins as b where e.AvisB != '' and e.CodeB = b.CodeB order by DateEB DESC limit 20";
-                      $resultat1 = mysqli_query($session, $requete1);
-                      if (mysqli_num_rows($resultat1) > 0) {
-                      while ($ligne = mysqli_fetch_array($resultat1)) {
-                      echo ('<tr>');
-                      echo ('<th scope="row">' . $ligne["TitreB"] . '</th>');
-                      echo ('<td>' . $ligne["NoteB"] . '</td>');
-                      echo ('<td>' . $ligne["AvisB"] . '</td>');
-                      echo ('</tr>');
-                      }
-                      } */
                     echo ('</tbody>');
                     echo ('</table><br><br>');
 
@@ -910,17 +879,7 @@
                         }
                     }
 
-                    /* $requete2 = "select t.TitreT, e.NoteT, e.AvisT from evaluert as e, talents as t where e.AvisT != '' and e.CodeT = t.CodeT order by DateET DESC limit 20";
-                      $resultat2 = mysqli_query($session, $requete2);
-                      if (mysqli_num_rows($resultat2) > 0) {
-                      while ($ligne = mysqli_fetch_array($resultat2)) {
-                      echo ('<tr>');
-                      echo ('<th scope="row">' . $ligne["TitreT"] . '</th>');
-                      echo ('<td>' . $ligne["NoteT"] . '</td>');
-                      echo ('<td>' . $ligne["AvisT"] . '</td>');
-                      echo ('</tr>');
-                      }
-                      } */
+
                     echo ('</tbody>');
                     echo ('</table>');
 
@@ -1055,13 +1014,7 @@
                         echo '<p>Le délai actuel est de ' . $parametresBDD->selectParamtre() . ' jours</p>';
                     }
 
-                    /* $query = "select p.Interval from parametres as p";
-                      $result = mysqli_query($session, $query);
-                      if (mysqli_num_rows($result) > 0) {
-                      while ($ligne = mysqli_fetch_array($result)) {
-                      echo '<p>Le délai actuel est de ' . $ligne['Interval'] . ' jours</p>';
-                      }
-                      } */
+                    
 
                     echo '<form method="GET" action="AdminParametresFonction.php">
                     <p>Paramétrer le délais d\'envoie de mail d’évaluation : <input type=\'number\' name="interval"> jours </p>

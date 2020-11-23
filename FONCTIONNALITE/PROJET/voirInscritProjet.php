@@ -6,7 +6,7 @@
         <?php require "../../FONCTIONNALITE/link.php"; ?>
         <!-- Link -->
 
-        <title>Inscrit Atelier</title>
+        <title>Inscrit Projet</title>
 
 
     </head>
@@ -31,7 +31,7 @@
             </div>
             <br>
             <br>
-            <a id="imprime" href="voirInscritAtelier.php" onclick="edition();return false;">Imprimer</a>
+            <a id="imprime" href="voirInscritProjet.php" onclick="edition();return false;">Imprimer</a>
             <div class="container">
 
                 <?php
@@ -42,7 +42,7 @@
                 $bdd = $db->connect();
                 $utilisateurs = new utilisateurBDD($bdd);
 
-                $utilisateurTab = $utilisateurs->saisirParticipantAtelier($_GET['t']);
+                $utilisateurTab = $utilisateurs->saisirParticipantProjet($_GET['t']);
 
                 $comteur = 0;
                 if (!empty($utilisateurTab)) {
@@ -69,7 +69,7 @@
                         echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
 
                         //echo ('<button type="button"  class="btn " data-toggle="modal" data-target="#supprimer' . $value->getCodeU() . '"><img src="img/trash.png" alt="demande de désinscription" width="30" height="30"></button>');
-                        echo ('<p></p><a href="demandeEnleveInscritAtelier.php?u=' . $value->getCodeU() . '&t=' . $_GET['t'] . '""  onclick="Envoi()">demande de désinscription</a>');
+                        echo ('<p></p><a href="demandeEnleveInscritProjet.php?u=' . $value->getCodeU() . '&t=' . $_GET['t'] . '""  onclick="Envoi()">demande de désinscription</a>');
                         echo ('</div>');
                         echo ('</td>');
                         echo ('</tr>');
@@ -79,6 +79,8 @@
                 } else {
                     echo('<p>Aucun inscrit </p>');
                 }
+                
+                
                 ?>
 
                 <script>

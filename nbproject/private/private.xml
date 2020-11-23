@@ -12,15 +12,16 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONCOMMUNE/Fonctions.php</file>
-            <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/BESOIN/Creer1Besoin.php</file>
-            <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/ATELIER/AtelierCommenceMail.php</file>
+            <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/ADMIN/AdminTalentX.php</file>
             <file>file:/C:/xampp/htdocs/QSF/QSF/BDD/utilisateur.bdd.php</file>
-            <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/ATELIER/AtelierX.php</file>
-            <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/ATELIER/Saisir1Atelier.php</file>
+            <file>file:/C:/xampp/htdocs/QSF/QSF/BDD/projet.bdd.php</file>
+            <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/ADMIN/AdminCarteInappoprieP.php</file>
+            <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/ADMIN/Admin.php</file>
+            <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/PROJET/ProjetX.php</file>
+            <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/ADMIN/AdminProjetX.php</file>
+            <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/ADMIN/AdminInscritProjet.php</file>
             <file>file:/C:/xampp/htdocs/QSF/QSF/BDD/atelier.bdd.php</file>
-            <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/ATELIER/Creer1Atelier.php</file>
-            <file>file:/C:/xampp/htdocs/QSF/QSF/CLASS/AtelierClass.php</file>
+            <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/ADMIN/AdminInscritAtelier.php</file>
         </group>
     </open-files>
 </project-private>

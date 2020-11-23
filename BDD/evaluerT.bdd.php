@@ -29,7 +29,6 @@ class evaluerTBDD {
         $evaluerTs = [];
         $req = $this->_bdd->query("select * from evaluert");
 
-        $datas = $req->fetch(PDO::FETCH_ASSOC);
 
         if ($req) {
 

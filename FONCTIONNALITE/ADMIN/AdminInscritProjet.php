@@ -6,7 +6,7 @@
         <?php require "../../FONCTIONNALITE/link.php"; ?>
         <!-- Link -->
 
-        <title>Inscrit Atelier</title>
+        <title>Inscrit Projet</title>
 
 
     </head>
@@ -39,7 +39,7 @@ $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
 $bdd = $db->connect();
 $utilisateurs = new utilisateurBDD($bdd);
 
-$utilisateurTab = $utilisateurs->saisirParticipantAtelier($_GET['t']);
+$utilisateurTab = $utilisateurs->saisirParticipantProjet($_GET['t']);
 
 $comteur = 0;
 if (!empty($utilisateurTab)) {
@@ -65,14 +65,14 @@ echo ('<tbody>');
         echo ('<td>');
         echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
 
-        echo ('<p></p><a href="../ATELIER/desinscriptionAtelier.php?u=' . $value->getCodeU() . '&t=' . $_GET['t'] . '""  onclick="Envoi()">Désinscrire</a>');
+        echo ('<p></p><a href="../PROJET/desinscriptionProjet.php?u=' . $value->getCodeU() . '&t=' . $_GET['t'] . '""  onclick="Envoi()">Désinscrire</a>');
         echo ('</div>');
         echo ('</td>');
         echo ('</tr>');
- 
+
         
     }
-    echo ('</table>');
+     echo ('</table>');
 }else{
      echo('<p>Aucun inscrit </p>');
 }

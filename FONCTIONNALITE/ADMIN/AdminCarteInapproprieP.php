@@ -2,7 +2,7 @@
 
 require_once('../../FONCTIONCOMMUNE/Fonctions.php');
 require_once('../../BDD/connexion.bdd.php');
-require_once('../../BDD/atelier.bdd.php');
+require_once('../../BDD/projet.bdd.php');
 require_once('../../BDD/utilisateur.bdd.php');
 require_once('../../PHPMailer/src/Exception.php');
 require_once('../../PHPMailer/src/PHPMailer.php');
@@ -16,43 +16,27 @@ $result = "";
 $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
 $bdd = $db->connect();
 
-$atelierBDD = new atelierBDD($bdd);
+$projetBDD = new projetBDD($bdd);
 $userBDD = new utilisateurBDD($bdd);
 
 // désactiver la carte
-if (isset($_POST['desactivera'])) {
+if (isset($_POST['desactiverp'])) {
     $result = "supprimé";
-    $CodeA = $_POST['desactivera'];
-    $atelierBDD->userUpdateAtelierVisible($CodeA);
-    /* $stmt1 = mysqli_prepare($session, "UPDATE ateliers SET VisibiliteA = 0 WHERE CodeA = ?");
-      mysqli_stmt_bind_param($stmt1, 'i', $CodeA);
-      mysqli_stmt_execute($stmt1); */
-    $titreEtEmail = $atelierBDD->saisirEmailEtTitreAtelier($CodeA);
+    $CodeP = $_POST['desactiverp'];
+    $projetBDD->userUpdateProjetVisibleNon($CodeP);
+    $titreEtEmail = $projetBDD->saisirEmailEtTitreProjet($CodeP);
 }
 
 
 // réactiver la carte 
-if (isset($_POST['activera'])) {
-    
-    
-    
+if (isset($_POST['activerp'])) {
     $result = "activé";
-    $CodeAC = $_POST['activera'];
-    
-    if (isset($_POST['url'])) {
-        
-        $URL = $_POST['url'];
-        $atelierBDD->userUpdateAtelierVisibleAndURL($CodeAC, $URL);
-    }else{
-        $atelierBDD->userUpdateAtelierVisibleOui($CodeAC);
-    }
+    $CodePC = $_POST['activerp'];
 
+   
+    $projetBDD->userUpdateProjetVisibleOui($CodePC);
     
-    
-    /* $stmt2 = mysqli_prepare($session, "UPDATE ateliers SET VisibiliteA = 1, URL = ? WHERE CodeA = ?");
-      mysqli_stmt_bind_param($stmt2, 'si', $URL, $CodeAC);
-      mysqli_stmt_execute($stmt2); */
-    $titreEtEmail = $atelierBDD->saisirEmailEtTitreAtelier($CodeAC);
+    $titreEtEmail = $projetBDD->saisirEmailEtTitreProjet($CodePC);
 }
 
 //header("Location: Admin.php");
@@ -61,14 +45,12 @@ if (isset($_POST['activera'])) {
 
 
 
-/* $sql = "SELECT u.Email, a.TitreA FROM utilisateurs u, participera p, ateliers a WHERE u.CodeU = p.CodeU and p.CodeA = a.CodeA and p.CodeA = $CodeA";
-  $result = mysqli_query($session, $sql); */
 
 if ($titreEtEmail[0]['Email'] != NULL) {
     $Email = $titreEtEmail[0]['Email'];
 
     $destinataire = "$Email"; // adresse mail du destinataire
-    $sujet = "Votre atelier «{$titreEtEmail[0]['Titre']}» a été {$result} par l'administrateur"; // sujet du mail
+    $sujet = "Votre projet «{$titreEtEmail[0]['Titre']}» a été {$result} par l'administrateur"; // sujet du mail
     $message = '<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
@@ -324,7 +306,7 @@ href="https://www.twitter.com/" target="_blank"><img width="24" border="0" heigh
 <td valign="top" style="padding-top:5px;padding-right:10px;padding-bottom:5px;padding-left:10px"><div style="font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:15px;color:#114b5f;line-height:25px;text-align:left"></span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
 <p style="padding: 0; margin: 0;">Bonjour,</p><span class="mso-font-fix-tahoma">
 </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
-</span><p style="padding: 0; margin: 0;">Votre atelier « ' . $titreEtEmail[0]['Titre'] . '» a été ' . $result . ' par l\'administrateur.</p><span class="mso-font-fix-tahoma">
+</span><p style="padding: 0; margin: 0;">Votre projet « ' . $titreEtEmail[0]['Titre'] . '» a été ' . $result . ' par l\'administrateur.</p><span class="mso-font-fix-tahoma">
 </span><p style="padding: 0; margin: 0;"> &agrave; cause des contenus inappropri&eacute;s.</p><span class="mso-font-fix-tahoma">
 </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
 </span></div>
@@ -396,23 +378,7 @@ href="https://www.twitter.com/" target="_blank"><img width="24" border="0" heigh
 </div>
 </body>
 </html>'; // message qui dira que le destinataire a bien lu votre mail
-    // maintenant, l'en-tête du mail
-    /* $header = "From: [Plateforme]\r\n"; 
-      $headers = 'Content-Type: text/plain; charset=utf-8' . "\r\n";
-      $header .= "Disposition-Notification-To:l'email d'un administrateur"; // c'est ici que l'on ajoute la directive */
-
-    // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
-    /* $headers[] = 'MIME-Version: 1.0';
-      $headers[] = 'Content-type: text/html; charset=iso-8859-1';
-
-      // En-têtes additionnels
-
-      $headers[] = 'From: [COUP DE MAIN, COUP DE POUCE]<admincmcp@assurance-maladie.fr>';
-
-
-
-      mail($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail
-     */
+   
 
     $Mailer = new PHPMailer\PHPMailer\PHPMailer(true);
     $Mailer->SMTPDebug = 0;
@@ -428,7 +394,7 @@ href="https://www.twitter.com/" target="_blank"><img width="24" border="0" heigh
     $Mailer->Subject = $sujet;
     $Mailer->Body = $message;
     $Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
-    //$Mailer->AddAddress($destinataire);
+    $Mailer->AddAddress($destinataire);
 
     if ($Mailer->send()) {
         header("Location: Admin.php");

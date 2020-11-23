@@ -154,12 +154,13 @@
 
 
                     $ateliers = new atelierBDD($bdd);
-                    //$besoins = new besoin();
+                    
 
                     $atelierTab = $ateliers->selectAtelierEtPhoto($pCategorie, $pType, $sEmail, $sType, $st, $mot);
 
 
                     if (!empty($atelierTab)) {
+                        $conteurAtelier = 0;
 
                         foreach ($atelierTab as $value) {
                             echo '<br><br>';
@@ -167,9 +168,9 @@
                                 $role = $ateliers->saisirRoleUserAtelier($value['atelier']->getCodeA(), $usercode);
                             }
 
-                            //var_dump($role);
 
-                            if ($value['atelier']->getVisibiliteA() == 1) {
+                            if ($value['atelier']->getVisibiliteA() == 1 && strtotime($value['atelier']->getDateFinA()) >= strtotime(date("yy/m/d"))) {
+                                $conteurAtelier++;
                                 if ($value['atelier']->getTypeA() == 'Pro et Perso') {
                                     echo ('<div><h5><span class="badge badge-info">' . $value['atelier']->getTypeA() . '</span></h5>');
                                 } elseif ($value['atelier']->getTypeA() == 'Pro') {
@@ -199,85 +200,17 @@
                                 echo ('</div></div>');
                             }
                         }
+                        
+                        if($conteurAtelier == 0){
+                            echo('<h5>Aucun résultat</h5>');
+                        }
                     } else {
 
                         echo('<h5>Aucun résultat</h5>');
                     }
 
+                    
 
-
-
-
-
-
-
-
-
-
-                    //select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from categories c, ateliers a where c.CodeC = a.CodeC order by a.CodeA DESC ; 
-
-                    /* if(isset($_SESSION['email'])) {
-                      if(isset($st)) {                                            // Utilisateur connecté, sélectionné les catégories
-                      if ($_SESSION['type'] != NULL) {                        // Utilisateur connecté, sélectionné les catégories, son type est Pro ou Perso
-                      $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and (a.TypeA = '{$_SESSION['type']}' OR a.TypeA ='Pro et Perso') and a.CodeC in $st order by CodeA DESC";
-                      } else {                                                // Utilisateur connecté, sélectionné les catégories, son type est Pro et Perso
-                      $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and a.CodeC in $st order by CodeA DESC";
-                      }
-                      } else {                                                    // Utilisateur connecté, n'a pas sélectionner les catégories
-                      if ($_SESSION['type'] != NULL) {                        // Utilisateur connecté, n'a pas sélectionner les catégories, son type est Pro ou Perso
-                      $query = "select  a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and (a.TypeA = '{$_SESSION['type']}' OR a.TypeA ='Pro et Perso') order by CodeA DESC";
-                      } else {                                                // Utilisateur connecté, n'a pas sélectionner les catégories, son type est Pro et Perso
-                      $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC order by CodeA DESC";
-                      }
-                      }
-                      } else {
-                      if (isset($_POST['type']) && isset($_POST['categorie'])) { // V-si un visiteur choisit les deux filtres
-                      $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and (a.TypeA = '{$_POST['type']}' OR a.TypeA ='Pro et Perso') and a.CodeC in $st order by CodeA DESC";
-                      } elseif (isset($_POST['type'])) {  // V-si un visiteur choisit filtre type
-                      $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and (a.TypeA = '{$_POST['type']}' OR a.TypeA ='Pro et Perso') order by CodeA DESC";
-                      } elseif (isset($_POST['categorie'])) { // V-si un visiteur choisit filtre categorie
-                      $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and a.CodeC in $st order by CodeA DESC";
-                      }  else {  // V-si un visiteur rien choisit
-                      $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC order by CodeA DESC";
-                      }
-                      }
-
-                      if(isset($_GET['mot']) AND !empty($_GET['mot'])) {     /*Recherche par mot clé */
-                    /* $mot = htmlspecialchars($_GET['mot']);
-                      if(isset($_SESSION['email']) and $_SESSION['type'] != NULL) {
-                      $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and a.TitreA LIKE '%$mot%' and a.TypeA = '{$_SESSION['type']}' order by a.CodeA DESC";
-                      } else {
-                      $query = "select a.CodeA, a.TitreA, a.DescriptionA, a.DateA, a.LieuA, a.NombreA, a.DatePublicationA, a.URL, a.PlusA, a.TypeA, a.VisibiliteA, c.PhotoC from ateliers a, categories c where a.CodeC = c.CodeC and a.TitreA LIKE '%$mot%' order by a.CodeA DESC";
-                      }
-                      }
-
-                      $result = mysqli_query ($session, $query);
-
-                      if (mysqli_num_rows($result)>0) {
-                      while ($ligne = mysqli_fetch_array($result)) {                      /* Afficher tous les besoins par l'ordre chronologique en format carte */
-                    /* if ($ligne["VisibiliteA"] == 1) {   
-                      if ($ligne["TypeA"] == 'Pro et Perso') {
-                      echo ('<div><h5><span class="badge badge-info">'.$ligne["TypeA"].'</span></h5>');
-                      } elseif ($ligne["TypeA"] == 'Pro') {
-                      echo ('<div><h5><span class="badge badge-success">'.$ligne["TypeA"].'</span></h5>');
-                      } elseif ($ligne["TypeA"] == 'Perso') {
-                      echo ('<div><h5><span class="badge badge-warning">'.$ligne["TypeA"].'</span></h5>');
-                      }
-                      echo ('<div class="card" style="width: 12rem;">');
-                      echo ('<img src="'.$ligne["PhotoC"].'" class="card-img-top" alt="...">');
-                      echo ('<div class="card-body card text-center">');
-                      echo ('<h5 class="card-title">'.$ligne["TitreA"].'</h5>');
-                      echo ('<p class="card-text">Date de publication: '.date("d-m-yy", strtotime($ligne["DatePublicationA"])).'</p>');
-                      echo ('<p class="card-text">Date & Créneau : '.$ligne["DateA"].'</p>');
-                      echo ('<a href="AtelierX.php?t='.$ligne["CodeA"].'" class="btn btn-outline-dark">Voir le détail</a><br>');
-                      echo ('<p></p><a href="'.$ligne["URL"].'" class="btn btn-outline-dark">Je m\'inscris</a>');
-                      echo ('</div>');
-                      echo ('</div></div>');
-                      }
-                      }
-                      } else {
-                      echo('<h5>Aucun résultat</h5>');
-                      } */
                     ?>
                 </div>
             </div>

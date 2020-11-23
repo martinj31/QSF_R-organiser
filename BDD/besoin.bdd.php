@@ -175,7 +175,6 @@ class besoinBDD {
 
         $req = $this->_bdd->query("select * from besoins ");
 
-        $datas = $req->fetch(PDO::FETCH_ASSOC);
 
         if ($req) {
             while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
@@ -414,7 +413,6 @@ class besoinBDD {
 
 
         while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
-            var_dump($datas);
             $besoinTab[] = ['Email' => $datas['Email'], 'Titre' => $datas['TitreB']];
         }
         return $besoinTab;
