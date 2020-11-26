@@ -125,6 +125,15 @@ function is_login_new_atelier() {
     }
 }
 
+// 6.3 Tester si l'utilisateur est connecté avant saisir un nouveau besoin/talent
+function is_login_new_projet() {
+    if (isset($_SESSION['email'])) {
+        echo ('<a href="../PROJET/Creer1Projet.php"><button type="button" class="btn btn-light">Créer un nouveau projet</button></a>');
+    } else {
+        echo ('<a href="../INSCRIPTION/Login.php"><button type="button" class="btn btn-light">Créer un nouveau projet</button></a>');
+    }
+}
+
 // 6.4 Génerer un mot de passe aléatoire
 function generate_password($length = 8) {
 

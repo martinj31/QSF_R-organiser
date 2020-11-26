@@ -5,7 +5,7 @@
                 <!-- dope Menu -->
                 <nav class="dope-navbar justify-content-between" id="dopeNav">
                     <a class="nav-brand" href="/QSF/QSF/FONCTIONNALITE/ACCUEIL/index.php">
-                        <img class="logo-normal" src="../../img/coup-de-main-coup-de-pouce.png">
+                        <img class="logo-normal" src="../../img/coup-de-main-coup-de-pouce_1.png">
                         <img class="logo-sticky" src="../../img/coup-de-main-coup-de-pouce-2.png">
 
                     </a>
@@ -65,23 +65,26 @@
                 $result = mysqli_query ($session, $query);*/
                 
                  
-                    if ($reponse > 0) {
-                        echo ('<span class="badge badge-danger">Nouveau message</span>');                           
-                    } 
                     
-                    echo('<a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">');
+                    
+                    echo('<a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-cog"></i>');
                    /* $prenom = "select PrenomU from utilisateurs where CodeU = {$usercode} ";
                     $result = mysqli_query ($session, $prenom);*/
                     
-                    $user = $userBDD->un_User($usercode);
+                  /*  $user = $userBDD->un_User($usercode);
                         
-                        echo $user->getPrenomU();       // Afficher le prénom d'un utilisateur
+                        echo $user->getPrenomU();*/       // Afficher le prénom d'un utilisateur
                     
                     echo('</a>');
+                    
+                    
+                    if ($reponse > 0) {
+                         echo ('<span class="badge badge-danger badge-notification" title="Nouveau message"><i class="fas fa-envelope"></i></span>');                  
+                    } 
             } else {
                
-                echo('<a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">');
-                echo "Visiteur";                   //Utilisateur qui n'a pas conncté
+                echo('<a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i>');
+                                  //Utilisateur qui n'a pas conncté
                 echo('</a>');
             } 
             ?>

@@ -18,10 +18,9 @@
         <?php
         require "../../FONCTIONNALITE/menu.php";
         require_once('../../BDD/categorie.bdd.php');
+        
         ?>
         <!-- Fin Menu -->
-
-
         <div class="jumbotron">
 
             <div class="section-title section-title-haut-page" >
@@ -37,7 +36,7 @@
                 <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
 
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary btn-light" data-toggle="modal" data-target="#exampleModal">
+                    <button type="button" class="btn btn-primary btn-light btn-light-fade" data-toggle="modal" data-target="#exampleModal">
                         三 Filtre
                     </button>
 
@@ -87,7 +86,7 @@
                                     </div>
 
                                     <div class="modal-footer">
-                                        <button type="reset" value="reset" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                        <button type="reset" value="reset" class="btn btn-secondary  btn-light-fade" data-dismiss="modal">Fermer</button>
                                         <button type="submit" class="btn btn-primary">Filtrer</button>
                                     </div>
                                 </div>
@@ -164,23 +163,23 @@
                     if (!empty($besoinTab)) {
                          $conteurBesoin = 0;
                         foreach ($besoinTab as $value) {
-                            echo '<br><br>';
+                            
                             //var_dump($value['besoin']->getDateButoireB());
 
                             if ($value['besoin']->getVisibiliteB() == 1 && strtotime($value['besoin']->getDateButoireB()) >= strtotime(date("yy/m/d"))) {
                                 $conteurBesoin++;
                                 if ($value['besoin']->getTypeB() == 'Pro et Perso') {
-                                    echo ('<div><h5><span class="badge badge-info">' . $value['besoin']->getTypeB() . '</span></h5>');
+                                    echo ('<div class="card-margin"><h5><span class="badge badge-info">' . $value['besoin']->getTypeB() . '</span></h5>');
                                 } elseif ($value['besoin']->getTypeB() == 'Pro') {
-                                    echo ('<div><h5><span class="badge badge-success">' . $value['besoin']->getTypeB() . '</span></h5>');
+                                    echo ('<div class="card-margin"><h5><span class="badge badge-success">' . $value['besoin']->getTypeB() . '</span></h5>');
                                 } elseif ($value['besoin']->getTypeB() == 'Perso') {
-                                    echo ('<div><h5><span class="badge badge-warning">' . $value['besoin']->getTypeB() . '</span></h5>');
+                                    echo ('<div class="card-margin"><h5><span class="badge badge-warning">' . $value['besoin']->getTypeB() . '</span></h5>');
                                 }
                                 echo ('<div class="card" style="width: 12rem;">');
                                 echo ('<img src="' . $value['photo'] . '" class="card-img-top" alt="...">');
                                 echo ('<div class="card-body card text-center">');
                                 echo ('<h5 class="card-title">' . $value['besoin']->getTitreB() . '</h5>');
-                                echo ('<p class="card-text">Délais souhaité: ' . date("d-m-yy", strtotime($value['besoin']->getDateButoireB())) . '</p>');
+                                echo ('<p class="card-text"><strong>Délais souhaité: </strong><br>' . date("d-m-yy", strtotime($value['besoin']->getDateButoireB())) . '</p>');
                                 echo ('<a href="BesoinX.php?t=' . $value['besoin']->getCodeB() . '" class="btn btn-outline-dark">Voir la demande</a>');
                                 echo ('</div>');
                                 echo ('</div></div>');
@@ -188,11 +187,11 @@
                         }
                         
                         if($conteurBesoin == 0){
-                            echo('<h5>Aucun résultat</h5>');
+                            echo('<h5 style="color: red !important;>Aucun résultat</h5>');
                         }
                     } else {
 
-                        echo('<h5>Aucun résultat</h5>');
+                        echo('<h5 style="color: red !important;>Aucun résultat</h5>');
                     }
                   
                    

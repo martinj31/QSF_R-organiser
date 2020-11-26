@@ -55,7 +55,7 @@
 
             </div>
 
-            <div class="container">
+            <div class="container containerdescription">
                 <?php
                 require_once('../../FONCTIONCOMMUNE/Fonctions.php');
                 
@@ -63,14 +63,14 @@
                 foreach ($talentTab as $value) {
                     
                     if ($value['talent']->getVisibiliteT() == 1) {
-                        echo ('<p> Date Publication: ' . date("d-m-yy", strtotime($value['talent']->getDatePublicationT())) . '</p>');
-                        echo ('<p><img src="' . $value["photo"] . '" class="card-img-top" alt="..." style="width: 35rem;"</p>');
+                        echo ('<p><img src="' . $value["photo"] . '" class="card-img-top" alt="..." style="width: 15rem;"</p>');
+                        echo ('<p><strong> Date Publication: </strong>' . date("d-m-yy", strtotime($value['talent']->getDatePublicationT())) . '</p>');
                         echo ('<p><strong>Type: </strong>' . $value['talent']->getTypeT() . '</p>');
-                        echo ('<p><strong>Description</strong></p><p>' .$value['talent']->getDescriptionT() . '</p>');
+                        echo ('<p><strong>Description: </strong>' .$value['talent']->getDescriptionT() . '</p>');
                         echo ('<hr>');
                         if (isset($_SESSION['email'])) {
                             echo ('<a href="../MAIL/MailTalent.php?t=' . $value['talent']->getCodeT() . '"><button type="button" class="btn btn-primary btn-light">Contacter</button></a> ');
-                            echo ('<a href="Talent.php"><button type="button" class="btn light btn-light">Retour</button></a>');
+                            echo ('<a href="Talent.php"><button type="button" class="btn light btn-light btn-light-fade">Retour</button></a>');
                         } else {
                             echo ('<a href="../INSCRIPTION/Login.php"><button type="button" class="btn btn-primary btn-light">Contacter</button></a> ');
                             echo ('<a href="../TALENT/Talent.php"><button type="button" class="btn light btn-light">Retour</button></a>');

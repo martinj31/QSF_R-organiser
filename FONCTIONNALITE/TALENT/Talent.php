@@ -37,7 +37,7 @@
 
                 <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary btn-light" data-toggle="modal" data-target="#exampleModal">
+                    <button type="button" class="btn btn-primary btn-light  btn-light-fade" data-toggle="modal" data-target="#exampleModal">
                         三 Filtre
                     </button>
 
@@ -160,17 +160,17 @@
                     if (!empty($talentTab)) {
                          $conteurTalent = 0;
                         foreach ($talentTab as $value) {
-                            echo '<br><br>';
+                            
                             //var_dump($value['besoin']->getDateButoireB());
 
                             if ($value['talent']->getVisibiliteT() == 1) {
                                 $conteurTalent++;
                                 if ($value['talent']->getTypeT() == 'Pro et Perso') {
-                                    echo ('<div><h5><span class="badge badge-info">' . $value['talent']->getTypeT() . '</span></h5>');
+                                    echo ('<div class="card-margin"><h5><span class="badge badge-info">' . $value['talent']->getTypeT() . '</span></h5>');
                                 } elseif ($value['talent']->getTypeT() == 'Pro') {
-                                    echo ('<div><h5><span class="badge badge-success">' . $value['talent']->getTypeT() . '</span></h5>');
+                                    echo ('<div class="card-margin"><h5><span class="badge badge-success">' . $value['talent']->getTypeT() . '</span></h5>');
                                 } elseif ($value['talent']->getTypeT() == 'Perso') {
-                                    echo ('<div><h5><span class="badge badge-warning">' . $value['talent']->getTypeB() . '</span></h5>');
+                                    echo ('<div class="card-margin"><h5><span class="badge badge-warning">' . $value['talent']->getTypeB() . '</span></h5>');
                                 }
                                 echo ('<div class="card" style="width: 12rem;">');
                                 echo ('<img src="' . $value['photo'] . '" class="card-img-top" alt="...">');

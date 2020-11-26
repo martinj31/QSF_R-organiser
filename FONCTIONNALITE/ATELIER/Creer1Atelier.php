@@ -33,14 +33,13 @@
 
                 <div class="row">
                     <div class="col-6">
-                        <h1> Créer un atelier </h1><hr>
-                        <h4>Etapes à suivre pour créer un atelier : </h4><br>
-
-                        <h5>Etape 1 : Je remplis le formulaire.
-
-                            <h5>Etape 2 : Ma carte est en attente d'un admin pour valider. </h5><br>
-
-                            <h5>Etape 3 : Je reçois une liste de participants la veille. </h5><br>
+                         <h3 style="color: #8c8d9e !important; text-align: left;">Etapes à suivre pour créer un atelier : </h3>
+<br>
+              <ol style="list-style: decimal !important;">
+                <li>Je remplis le formulaire.</li>
+                <li>Ma carte est en attente d'un admin pour valider.</li>
+                <li>Je reçois une liste de participants la veille.</li>
+              </ol>
 
 
 

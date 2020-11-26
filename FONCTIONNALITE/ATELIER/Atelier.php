@@ -37,7 +37,7 @@
                 <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
 
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary btn-light" data-toggle="modal" data-target="#exampleModal">
+                    <button type="button" class="btn btn-primary btn-light btn-light-fade" data-toggle="modal" data-target="#exampleModal">
                         三 Filtre
                     </button>
 
@@ -84,7 +84,7 @@
                                     </div>
 
                                     <div class="modal-footer">
-                                        <button type="reset" value="reset" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                        <button type="reset" value="reset" class="btn btn-secondary btn-light-fade" data-dismiss="modal">Fermer</button>
                                         <button type="submit" class="btn btn-primary">Filtrer</button>
                                     </div>
                                 </div>
@@ -163,7 +163,7 @@
                         $conteurAtelier = 0;
 
                         foreach ($atelierTab as $value) {
-                            echo '<br><br>';
+                           
                             if (isset($usercode)) {
                                 $role = $ateliers->saisirRoleUserAtelier($value['atelier']->getCodeA(), $usercode);
                             }
@@ -172,18 +172,18 @@
                             if ($value['atelier']->getVisibiliteA() == 1 && strtotime($value['atelier']->getDateFinA()) >= strtotime(date("yy/m/d"))) {
                                 $conteurAtelier++;
                                 if ($value['atelier']->getTypeA() == 'Pro et Perso') {
-                                    echo ('<div><h5><span class="badge badge-info">' . $value['atelier']->getTypeA() . '</span></h5>');
+                                    echo ('<div class="card-margin"><h5><span class="badge badge-info">' . $value['atelier']->getTypeA() . '</span></h5>');
                                 } elseif ($value['atelier']->getTypeA() == 'Pro') {
-                                    echo ('<div><h5><span class="badge badge-success">' . $value['atelier']->getTypeA() . '</span></h5>');
+                                    echo ('<div class="card-margin"><h5><span class="badge badge-success">' . $value['atelier']->getTypeA() . '</span></h5>');
                                 } elseif ($value['atelier']->getTypeA() == 'Perso') {
-                                    echo ('<div><h5><span class="badge badge-warning">' . $value['atelier']->getTypeA() . '</span></h5>');
+                                    echo ('<div class="card-margin"><h5><span class="badge badge-warning">' . $value['atelier']->getTypeA() . '</span></h5>');
                                 }
                                 echo ('<div class="card" style="width: 12rem;">');
                                 echo ('<img src="' . $value["photo"] . '" class="card-img-top" alt="...">');
                                 echo ('<div class="card-body card text-center">');
                                 echo ('<h5 class="card-title">' . $value['atelier']->getTitreA() . '</h5>');
-                                echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
-                                echo ('<p class="card-text">Date & Créneau : ' . $value['atelier']->getDateDebutA() . ' à ' . $value['atelier']->getDateFinA() . '</p>');
+                                echo ('<p class="card-text"><strong>Date de publication: </strong><br>' . date("d-m-yy", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
+                                echo ('<p class="card-text"><strong>Date & Créneau : </strong><br>' . $value['atelier']->getDateDebutA() . ' à ' . $value['atelier']->getDateFinA() . '</p>');
                                 echo ('<a href="../ATELIER/AtelierX.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir le détail</a><br>');
                                 if (isset($usercode)) {
                                     if ($role == "createur") {
@@ -202,11 +202,11 @@
                         }
                         
                         if($conteurAtelier == 0){
-                            echo('<h5>Aucun résultat</h5>');
+                            echo('<h5 style="color: red !important;>Aucun résultat</h5>');
                         }
                     } else {
 
-                        echo('<h5>Aucun résultat</h5>');
+                        echo('<h5style="color: red !important;>Aucun résultat</h5>');
                     }
 
                     

@@ -41,7 +41,7 @@
 
             </div>
 
-            <div class="container">
+            <div class="container containerdescription">
                 <?php
                 require_once('../../FONCTIONCOMMUNE/Fonctions.php');
 
@@ -50,35 +50,17 @@
 
 
                 foreach ($projetTab as $value) {
-                    if (isset($usercode)) {
-                        $role = $projetBDD->saisirRoleUserProjet($value['projet']->getCodeP(), $usercode);
-                    }
+                    
 
-                   
-                        echo ('<p> Date Butoire: ' . date("d-m-yy", strtotime($value['projet']->getDateButoireP())) . '</p>');
-                        echo ('<p> Date Publication: ' . date("d-m-yy", strtotime($value['projet']->getDatePublicationP())) . '</p>');
-                        echo ('<p><img src="' . $value['photo'] . '" class="card-img-top" alt="..."  style="width: 35rem;"</p>');
+                    echo ('<p><img src="' . $value['photo'] . '" class="card-img-top" alt="..."  style="width: 15rem;"</p>');
+                        echo ('<p><strong> Date Butoire:  </strong>' . date("d-m-yy", strtotime($value['projet']->getDateButoireP())) . '</p>');
+                        echo ('<p><strong> Date Publication:  </strong>' . date("d-m-yy", strtotime($value['projet']->getDatePublicationP())) . '</p>');
+                       
                         echo ('<p><strong>Type: </strong>' . $value['projet']->getTypeP() . '</p>');
-                        echo ('<p><strong>Lieu : </strong></p><p>' . $value['projet']->getLieuP() . '</p>');
-                        echo ('<p><strong>Description : </strong></p><p>' . $value['projet']->getDescriptionP() . '</p>');
-                        echo ('<hr>');
-                        if (isset($usercode)) {
-                            if ($role == "createur") {
-                                echo ('<p></p><a href="../PROJET/voirInscritProjet.php?t=' . $value['projet']->getCodeP() . '"><button type="button" class="btn btn-dark btn-light">Voir les inscrits</button></a>');
-                                echo ('<a href="admin.php"><button type="button" class="btn btn-dark btn-light">Retour</button></a>'); 
-                            } else if ($role == "participant") {
-                                echo ('<p></p><a href="../PROJET/voirInscritProjet.php?t=' . $value['projet']->getCodeP() . '"><button type="button" class="btn btn-dark btn-light">Voir les inscrits</button></a>');
-                                echo ('<p></p><a href="../PROJET/desinscriptionProjet.php?t=' . $value['projet']->getCodeP() . '"><button type="button" class="btn btn-dark btn-light">Je me désinscrit </button></a>');
-                                echo ('<a href="admin.php"><button type="button" class="btn btn-dark btn-light">Retour</button></a>');
-                            } else {
-                                echo ('<p></p><a href="../PROJET/voirInscritProjet.php?t=' . $value['projet']->getCodeP() . '"><button type="button" class="btn btn-dark btn-light">Voir les inscrits</button></a>');
-                                echo ('<p></p><a href="../PROJET/inscriptionProjet.php?t=' . $value['projet']->getCodeP() . '" ><button type="button" class="btn btn-dark btn-light">Je m\'inscris</button></a>');
-                                echo ('<a href="admin.php"><button type="button" class="btn btn-dark btn-light">Retour</button></a>');
-                            }
-                        } else {
-                            echo ('<p></p><a href="../PROJET/inscriptionProjet.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
-                            echo ('<a href="admin.php"><button type="button" class="btn btn-dark btn-light">Retour</button></a>');
-                        }
+                        echo ('<p><strong>Lieu: </strong>' . $value['projet']->getLieuP() . '</p>');
+                        echo ('<p><strong>Description: </strong>' . $value['projet']->getDescriptionP() . '</p>');
+                       
+                        
                        
                     
                 }

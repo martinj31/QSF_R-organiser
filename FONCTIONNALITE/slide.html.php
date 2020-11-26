@@ -22,6 +22,7 @@ $slide4 = $slideBDD->un_slide(4);
       </ol>
       <div class="carousel-inner">';
 
+    
          //<!--First slide-->
     /*$query1 = "select * from slides WHERE NumSlide = 1 ";
     $result1 = mysqli_query ($session, $query1);*/

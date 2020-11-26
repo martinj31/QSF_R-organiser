@@ -44,15 +44,15 @@
                 if (isset($_SESSION['role'])) {
                     echo '
                <br><br>        <!-- Bouton pour les onglets --> 
-                <button class="tablink btn btn-dark" onclick="openPage(\'Catégories\', this, \'orange\')" id="defaultOpen">Catégories</button>&nbsp;&nbsp;   <!-- moteur de recherche : après changer de page ?????-->   
-                <button class="tablink btn btn-dark" onclick="openPage(\'Cartes\', this, \'orange\')" >Cartes</button>&nbsp;&nbsp;
-                <button class="tablink btn btn-dark" onclick="openPage(\'Utilisateurs\', this, \'orange\')" >Utilisateurs</button>&nbsp;&nbsp;
-                <button class="tablink btn btn-dark" onclick="openPage(\'Stats\', this, \'orange\')">Statistiques</button>&nbsp;&nbsp;
-                <button class="tablink btn btn-dark" onclick="openPage(\'Bandeau\', this, \'orange\')" >Bandeau</button>&nbsp;&nbsp;
-                <button class="tablink btn btn-dark" onclick="openPage(\'Paramètres\', this, \'orange\')">Paramètres</button><br><br>';
+                <button class="tablink btn btn-dark" onclick="openPage(\'Catégories\', this, \'#5a00f0\')" id="defaultOpen">Catégories</button>&nbsp;&nbsp;   <!-- moteur de recherche : après changer de page ?????-->   
+                <button class="tablink btn btn-dark" onclick="openPage(\'Cartes\', this, \'#5a00f0\')" >Cartes</button>&nbsp;&nbsp;
+                <button class="tablink btn btn-dark" onclick="openPage(\'Utilisateurs\', this, \'#5a00f0\')" >Utilisateurs</button>&nbsp;&nbsp;
+                <button class="tablink btn btn-dark" onclick="openPage(\'Stats\', this, \'#5a00f0\')">Statistiques</button>&nbsp;&nbsp;
+                <button class="tablink btn btn-dark" onclick="openPage(\'Bandeau\', this, \'#5a00f0\')" >Bandeau</button>&nbsp;&nbsp;
+                <button class="tablink btn btn-dark" onclick="openPage(\'Paramètres\', this, \'#5a00f0\')">Paramètres</button><br><br>';
 //<!--------------------------------------------------------------------------------------------------------------------------------------------->  
                     echo '<div id="Catégories" class="tabcontent">    <!-- Onglet catégorie --> 
-                  <h3>Catégories</h3><hr>
+                  <h3 style="text-align: left; color: #5a00f0 !important;">Catégories</h3><hr>
                     
                   <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">⊕ Créer </button><br><br>
                     
@@ -132,7 +132,7 @@
                                 echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');  //Modifier une catégorie
                                 echo ('<a href="AdminCategorieModification.php?t=' . $value['categorie']->getCodeC() . '"><button type="button" class="btn "><img src="https://png.pngtree.com/png-vector/20190927/ourlarge/pngtree-pencil-icon-png-image_1753753.jpg" alt="Modifier" width="30" height="30"></button></a>');
                                 echo ('<form action="AdminCategorieFonction.php" method="POST">');  //Désactiver une catégorie                            
-                                echo ('<button type="button"  class="btn " data-toggle="modal" data-target="#desactiver' . $value['categorie']->getCodeC() . '"><img src="img/trash.png" alt="Désactiver" width="30" height="30"></button>');
+                                echo ('<button type="button"  class="btn " data-toggle="modal" data-target="#desactiver' . $value['categorie']->getCodeC() . '"><img src="../../img/trash.png" alt="Désactiver" width="30" height="30"></button>');
 
                                 echo('<div class="modal" tabindex="-1" id="desactiver' . $value['categorie']->getCodeC() . '" role="dialog">');
                                 echo('<div class="modal-dialog" role="document">');
@@ -210,7 +210,7 @@
 //<!--------------------------------------------------------------------------------------------------------------------------------------------->   
                     echo '<div id="Cartes" class="tabcontent">      <!-- Onglet carte --> 
                 
-                  <h3>Cartes</h3><hr>  
+                  <h3 style="text-align: left; color: #5a00f0 !important;">Cartes</h3><hr>  
            
                   <!-- Tab links -->
                     <div class="tab">
@@ -223,7 +223,7 @@
                     <!-- Tab content -->
                     <div id="London" class="tabcontentc">
                     <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
-                        <h3>Besoins en cours</h3>
+                        <h3 style="text-align: left; color: #5a00f0 !important;">Besoins en cours</h3>
                         <form method="GET" class="form-inline my-2 my-lg-0" class="recherche">     <!-- Moteur de recherche dans titre & description -->
                             <input class="form-control mr-sm-2" type="search" name="carteb" placeholder="Titre/Description" aria-label="Recherche">
                             <button type="submit" class="btn btn-outline-dark">Recherche</button>
@@ -234,6 +234,7 @@
                     $besoins = new besoinBDD($bdd);
 
                     $besoinTab = $besoins->selectAllBesoins();
+                    
                     // $query = "select CodeB, TitreB, DescriptionB from besoins where VisibiliteB = 1 order by CodeB DESC";
 
                     if (isset($_GET['carteb']) AND!empty($_GET['carteb'])) { /* Recherche par mot clé dans le titre et description */
@@ -243,7 +244,7 @@
 
                         $besoinTab = $besoins->selectBesoinSearch($carteb);
                     }
-
+                    $besoinTab = array_reverse ($besoinTab);
                     /* $result = mysqli_query($session, $query);
 
                       if ($result == false) {
@@ -272,8 +273,8 @@
                                 echo ('<td>' . $value->getDescriptionB() . '</td>');
                                 echo ('<td>');
                                 echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
-                                echo ('<a href="AdminBesoinX.php?t=' . $value->getCodeB() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
-                                echo ('<button type="submit" name="desactiverb" value="' . $value->getCodeB() . '" class="btn "><img src="img/trash.png" alt="Désactiver" width="30" height="30"></button>');
+                                echo ('<a href="AdminBesoinX.php?t=' . $value->getCodeB() . '"><button type="button" class="btn "><img src="../../img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
+                                echo ('<button type="submit" name="desactiverb" value="' . $value->getCodeB() . '" class="btn "><img src="../../img/trash.png" alt="Désactiver" width="30" height="30"></button>');
                                 echo ('</div>');
                                 echo ('</td>');
                                 echo ('</tr>');
@@ -306,7 +307,7 @@
                     echo ('</table>');
 
 
-                    echo('<br><h3>Besoins cachés</h3><br>');
+                    echo('<br><h3 style="text-align: left; color: #5a00f0 !important;">Besoins cachés</h3><br>');
 
                     /* $query2 = "select CodeB, TitreB, DescriptionB from besoins where VisibiliteB = 0 order by CodeB DESC";
 
@@ -341,7 +342,7 @@
                                 echo ('<td>' . $value->getDescriptionB() . '</td>');
                                 echo ('<td>');
                                 echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
-                                echo ('<a href="AdminBesoinX.php?t=' . $value->getCodeB() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
+                                echo ('<a style="display:flex;justify-content:center;align-items:center;" href="AdminBesoinX.php?t=' . $value->getCodeB() . '"><button type="button" class="btn "><img src="../../img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
                                 echo ('<button type="submit" name="activerb" value="' . $value->getCodeB() . '" class="btn "><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS82pYv9wgxfx27dUrgTr8zaGjZ6O3O2CONHA&usqp=CAU" alt="Activer" width="30" height="30"></button>');
                                 echo ('</div>');
                                 echo ('</td>');
@@ -358,7 +359,7 @@
 
                 <div id="Paris" class="tabcontentc">      
                   <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
-                    <h3>Talents en cours</h3>
+                    <h3 style="text-align: left; color: #5a00f0 !important;">Talents en cours</h3>
                     <form method="GET" class="form-inline my-2 my-lg-0" class="recherche">
                         <input class="form-control mr-sm-2" type="search" name="cartet" placeholder="Titre/Description" aria-label="Recherche">
                         <button type="submit" class="btn btn-outline-dark">Recherche</button>
@@ -380,7 +381,7 @@
 
                         $talentTab = $talents->selectTalentSearch($cartet);
                     }
-
+                    $talentTab = array_reverse ($talentTab);
                     /* $result = mysqli_query($session, $query);
 
                       if ($result == false) {
@@ -408,8 +409,8 @@
                                 echo ('<td>' . $value->getDescriptionT() . '</td>');
                                 echo ('<td>');
                                 echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
-                                echo ('<a href="AdminTalentX.php?t=' . $value->getCodeT() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
-                                echo ('<button type="submit" name="desactivert" value="' . $value->getCodeT() . '" class="btn "><img src="img/trash.png" alt="Désactiver" width="30" height="30"></button>');
+                                echo ('<a  style="display:flex;justify-content:center;align-items:center;" href="AdminTalentX.php?t=' . $value->getCodeT() . '"><button type="button" class="btn "><img src="../../img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
+                                echo ('<button type="submit" name="desactivert" value="' . $value->getCodeT() . '" class="btn "><img src="../../img/trash.png" alt="Désactiver" width="30" height="30"></button>');
                                 echo ('</div>');
                                 echo ('</td>');
                                 echo ('</tr>');
@@ -424,7 +425,7 @@
                     echo ('</tbody>');
                     echo ('</table>');
 
-                    echo('<br><h3>Talents cachés</h3><br>');
+                    echo('<br><h3 style="text-align: left; color: #5a00f0 !important;">Talents cachés</h3><br>');
 
                    
 
@@ -448,7 +449,7 @@
                                 echo ('<td>' . $value->getDescriptionT() . '</td>');
                                 echo ('<td>');
                                 echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
-                                echo ('<a href="AdminTalentX.php?t=' . $value->getCodeT() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
+                                echo ('<a  style="display:flex;justify-content:center;align-items:center;" href="AdminTalentX.php?t=' . $value->getCodeT() . '"><button type="button" class="btn "><img src="../../img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
                                 echo ('<button type="submit" name="activert" value="' . $value->getCodeT() . '" class="btn "><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS82pYv9wgxfx27dUrgTr8zaGjZ6O3O2CONHA&usqp=CAU" alt="Activer" width="30" height="30"></button>');
                                 echo ('</div>');
                                 echo ('</td>');
@@ -464,7 +465,7 @@
 
                     <div id="Pekin" class="tabcontentc">      
                   <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
-                    <h3>Ateliers en cours</h3>
+                    <h3 style="text-align: left; color: #5a00f0 !important;">Ateliers en cours</h3>
                     <form method="GET" class="form-inline my-2 my-lg-0" class="recherche">
                         <input class="form-control mr-sm-2" type="search" name="cartea" placeholder="Titre/Description" aria-label="Recherche">
                         <button type="submit" class="btn btn-outline-dark">Recherche</button>
@@ -485,7 +486,7 @@
                         $atelierTab = $ateliers->selectAtelierSearch($cartet);
                     }
 
-                    
+                    $atelierTab = array_reverse ($atelierTab);    
 
                     echo ('<table class="table table-striped">');      /* Tableau pour afficher les talents existantes */
                     echo ('<thead>');
@@ -510,9 +511,9 @@
                                 echo ('<td>' . $value->getDescriptionA() . '</td>');
                                 echo ('<td>');
                                 echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
-                                echo ('<a href="AdminAtelierX.php?t=' . $value->getCodeA() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
-                                echo ('<button type="submit" name="desactivera" value="' . $value->getCodeA() . '" class="btn "><img src="img/trash.png" alt="Désactiver" width="30" height="30"></button>');
-                                echo ('<a  href="AdminInscritAtelier.php?t=' . $value->getCodeA() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Voir les inscrits" width="30" height="30"></button></a>');
+                                echo ('<a href="AdminAtelierX.php?t=' . $value->getCodeA() . '"><button type="button" class="btn "><img src="../../img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
+                                echo ('<button type="submit" name="desactivera" value="' . $value->getCodeA() . '" class="btn "><img src="../../img/trash.png" alt="Désactiver" width="30" height="30"></button>');
+                                echo ('<a  style="display:flex;justify-content:center;align-items:center;" href="AdminInscritAtelier.php?t=' . $value->getCodeA() . '"><button type="button" class="btn "><img src="../../img/loupe.png" alt="Voir les inscrits" width="30" height="30"></button></a>');
                                 echo ('</div>');
                                 echo ('</td>');
                                 echo ('</tr>');
@@ -528,14 +529,14 @@
                     echo ('</tbody>');
                     echo ('</table>');
 
-                    echo('<br><h3>Ateliers cachés</h3><br>');
+                    echo('<br><h3 style="text-align: left; color: #5a00f0 !important;">Ateliers cachés</h3><br>');
 
                    
 
                     echo ('<table class="table table-striped">');      /* Tableau pour afficher les talents cachés */
                     echo ('<thead>');
                     echo ('<tr>');
-                    echo ('<th scope="col"></th>');
+                    
                     echo ('<th scope="col">#</th>');
                     echo ('<th scope="col">Titre</th>');
                     echo ('<th scope="col">Description</th>');
@@ -553,8 +554,9 @@
                             echo ('<td>' . $value->getDescriptionA() . '</td>');
                             echo ('<td>');
                             echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
-                            echo ('<a href="AdminAtelierX.php?t=' . $value->getCodeA() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');                          
-                            echo ('<button type="submit" name="activera" value="' . $value->getCodeA() . '" class="btn btn-secondary"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS82pYv9wgxfx27dUrgTr8zaGjZ6O3O2CONHA&usqp=CAU" alt="Activer" width="30" height="30"></button>');
+                            echo ('<a style="display:flex;justify-content:center;align-items:center;" href="AdminAtelierX.php?t=' . $value->getCodeA() . '"><button type="button" class="btn "><img src="../../img/loupe.png" alt="Détail" width="30" height="30"></button></a>');                          
+                            echo ('<button type="submit" name="activera" value="' . $value->getCodeA() . '" class="btn "><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS82pYv9wgxfx27dUrgTr8zaGjZ6O3O2CONHA&usqp=CAU" alt="Activer" width="30" height="30"></button>');
+                            
                             echo ('</div>');
                             echo ('</td>');
                             echo ('</tr>');
@@ -575,7 +577,7 @@
                     
                     <div id="projet" class="tabcontentc">      
                   <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
-                    <h3>Ateliers en cours</h3>
+                    <h3 style="text-align: left; color: #5a00f0 !important;">Projet en cours</h3>
                     <form method="GET" class="form-inline my-2 my-lg-0" class="recherche">
                         <input class="form-control mr-sm-2" type="search" name="cartep" placeholder="Titre/Description" aria-label="Recherche">
                         <button type="submit" class="btn btn-outline-dark">Recherche</button>
@@ -597,7 +599,7 @@
 
                         $projetTab = $projets->selectProjetSearch($cartep);
                     }
-
+                    $projetTab = array_reverse ($projetTab);
                    // var_dump($projetTab);
 
                     echo ('<table class="table table-striped">');      /* Tableau pour afficher les talents existantes */
@@ -623,9 +625,9 @@
                                 echo ('<td>' . $value->getDescriptionP() . '</td>');
                                 echo ('<td>');
                                 echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
-                                echo ('<a href="AdminProjetX.php?t=' . $value->getCodeP() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
-                                echo ('<button type="submit" name="desactiverp" value="' . $value->getCodeP() . '" class="btn "><img src="img/trash.png" alt="Désactiver" width="30" height="30"></button>');
-                                echo ('<a  href="AdminInscritProjet.php?t=' . $value->getCodeP() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Voir les inscrits" width="30" height="30"></button></a>');
+                                echo ('<a href="AdminProjetX.php?t=' . $value->getCodeP() . '"><button type="button" class="btn "><img src="../../img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
+                                echo ('<button type="submit" name="desactiverp" value="' . $value->getCodeP() . '" class="btn "><img src="../../img/trash.png" alt="Désactiver" width="30" height="30"></button>');
+                                echo ('<a  style="display:flex;justify-content:center;align-items:center;" href="AdminInscritProjet.php?t=' . $value->getCodeP() . '"><button type="button" class="btn "><img src="../../img/loupe.png" alt="Voir les inscrits" width="30" height="30"></button></a>');
                                 echo ('</div>');
                                 echo ('</td>');
                                 echo ('</tr>');
@@ -640,7 +642,7 @@
                     echo ('</tbody>');
                     echo ('</table>');
 
-                    echo('<br><h3>Ateliers cachés</h3><br>');
+                    echo('<br><h3 style="text-align: left; color: #5a00f0 !important;">Projets cachés</h3><br>');
 
                   
 
@@ -666,8 +668,8 @@
                             echo ('<td>' . $value->getDescriptionP() . '</td>');
                              echo ('<td>');
                             echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
-                            echo ('<a href="AdminProjetX.php?t=' . $value->getCodeP() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');                          
-                           echo ('<button type="submit" name="activerp" value="' . $value->getCodeP() . '" class="btn btn-secondary"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS82pYv9wgxfx27dUrgTr8zaGjZ6O3O2CONHA&usqp=CAU" alt="Activer" width="30" height="30"></button>');
+                            echo ('<a  style="display:flex;justify-content:center;align-items:center;" href="AdminProjetX.php?t=' . $value->getCodeP() . '"><button type="button" class="btn "><img src="../../img/loupe.png" alt="Détail" width="30" height="30"></button></a>');                          
+                           echo ('<button type="submit" name="activerp" value="' . $value->getCodeP() . '" class="btn"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS82pYv9wgxfx27dUrgTr8zaGjZ6O3O2CONHA&usqp=CAU" alt="Activer" width="30" height="30"></button>');
                             echo ('</div>');
                             echo ('</td>');
                             echo ('</tr>');
@@ -690,7 +692,7 @@
 //<!--------------------------------------------------------------------------------------------------------------------------------------------->       
                     echo '<div id="Utilisateurs" class="tabcontent">      <!-- Onglet utilisateur --> 
                   <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
-                      <h3>Utilisateurs</h3><hr>
+                      <h3 style="text-align: left; color: #5a00f0 !important;">Utilisateurs</h3><hr>
                     <form method="GET" class="form-inline my-2 my-lg-0" class="recherche">  <!-- Moteur de recherche --> 
                         <input class="form-control mr-sm-2" type="search" name="user" placeholder="Nom/Prénom/Email" aria-label="Recherche">
                         <button type="submit" class="btn btn-outline-dark">Recherche</button>
@@ -731,8 +733,8 @@
                             echo ('<td>' . $value->getEmail() . '</td>');
                             echo ('<td>');
                             echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
-                            echo ('<a href="AdminUtilisateur.php?t=' . $value->getCodeU() . '"><button type="button" class="btn "><img src="img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
-                            echo ('<button type="button"  class="btn " data-toggle="modal" data-target="#supprimer' . $value->getCodeU() . '"><img src="img/trash.png" alt="Désactiver" width="30" height="30"></button>');
+                            echo ('<a  style="display:flex;justify-content:center;align-items:center;" href="AdminUtilisateur.php?t=' . $value->getCodeU() . '"><button type="button" class="btn "><img src="../../img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
+                            echo ('<button type="button"  class="btn " data-toggle="modal" data-target="#supprimer' . $value->getCodeU() . '"><img src="../../img/trash.png" alt="Désactiver" width="30" height="30"></button>');
                             echo ('</div>');
                             echo ('</td>');
                             echo ('</tr>');
@@ -741,7 +743,7 @@
                             echo('<div class="modal-dialog" role="document">');
                             echo('<div class="modal-content">');
                             echo('<div class="modal-header">');
-                            echo('<h5 class="modal-title">Vérification</h5>');
+                            echo('<h5  style="color: #5a00f0 !important; margin: 2rem 0;" class="modal-title">Vérification</h5>');
                             echo('<button type="button" class="close" data-dismiss="modal" aria-label="Close">');
                             echo('<span aria-hidden="true">&times;</span>');
                             echo('</button>');
@@ -767,13 +769,13 @@
                 </div>';
 //<!--------------------------------------------------------------------------------------------------------------------------------------------->   
                     echo '<div id="Stats" class="tabcontent">
-              <h3>Statistiques</h3><hr>   
+              <h3 style="text-align: left; color: #5a00f0 !important;">Statistiques</h3><hr>   
               
-              <h5>Nombre de connexion du site</h5>
-              <a href="https://analytics.google.com/analytics/web/?authuser=1#/report/visitors-overview/a173955301w241368476p225152034/" target="_blank" class="btn btn-light">Aller voir sur Google Analytics</a>
+              <h5 style="color: #5a00f0 !important; margin: 2rem 0;">Nombre de connexion du site</h5>
+              <a style="display:flex;justify-content:center;align-items:center;" href="https://analytics.google.com/analytics/web/?authuser=1#/report/visitors-overview/a173955301w241368476p225152034/" target="_blank" class="btn btn-light">Aller voir sur Google Analytics</a>
               <p><br></p>
               
-              <h5>Mise en relation</h5><hr>';
+              <h5 style="color: #5a00f0 !important; margin: 2rem 0;">Mise en relation</h5><hr>';
 
                     $compteurTBDDs = new compteurTBDD($bdd);
                     $compteurBBDDs = new compteurBBDD($bdd);
@@ -804,7 +806,7 @@
                     echo ('</dd>');
                     echo ('</dl><br>');
                     //----------------------------------------------------------------------->                 
-                    echo ('<h5>Notes</h5><hr>');
+                    echo ('<h5 style="color: #5a00f0 !important; margin: 2rem 0;">Notes</h5><hr>');
                     echo ('<dl>');
                     echo ('<dt>Note moyenne : ' . $evaluerTBDD->moyenneNoteTAndNoteB());
                     
@@ -817,9 +819,9 @@
                     echo ('</p></dd>');
                     echo ('</dl>');
                     //-----------------------------------------------------------------------> 
-                    echo ('<br><h5>Retour d\'expérience</h5><hr>');
+                    echo ('<br><h5 style="color: #5a00f0 !important; margin: 2rem 0;">Retour d\'expérience</h5><hr>');
 
-                    echo ('<h5>Avis besoin</h5>');
+                    echo ('<h5 style="color: #5a00f0 !important; margin: 2rem 0;">Avis besoin</h5>');
                     echo ('<table class="table table-striped">');      /* Tableau pour afficher les catégories existantes */
                     echo ('<thead>');
                     echo ('<tr>');
@@ -851,7 +853,7 @@
                     echo ('</tbody>');
                     echo ('</table><br><br>');
 
-                    echo ('<h5>Avis talent</h5>');
+                    echo ('<h5 style="color: #5a00f0 !important; margin: 2rem 0;">Avis talent</h5>');
                     echo ('<table class="table table-striped">');      /* Tableau pour afficher les catégories existantes */
                     echo ('<thead>');
                     echo ('<tr>');
@@ -886,7 +888,7 @@
                     echo ('</div>');
 //<!--------------------------------------------------------------------------------------------------------------------------------------------->                  
                     echo '<div id="Bandeau" class="tabcontent">
-            <h3>Bandeau</h3><hr>';
+            <h3 style="text-align: left; color: #5a00f0 !important;">Bandeau</h3><hr>';
 
                     require_once('../../FONCTIONNALITE/slide.html.php');
 
@@ -894,7 +896,7 @@
         <h4>Modification</h4><hr>
         
         <form method="POST" action="AdminBandeauFonction.php">           
-            <h5>Premier slide</h5>
+            <h5 style="color: #5a00f0 !important; margin: 2rem 0;">Premier slide</h5>
                 <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text">Titre slide 1</span>
@@ -923,7 +925,7 @@
                     <textarea class="form-control" aria-label="With textarea" name="slide1_4"></textarea>
                 </div><br>        
                 
-            <h5>Deuxième slide</h5>
+            <h5 style="color: #5a00f0 !important; margin: 2rem 0;">Deuxième slide</h5>
                 <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text">Titre slide 2</span>
@@ -938,7 +940,7 @@
                     <textarea class="form-control" aria-label="With textarea" name="slide2_2"></textarea>
                 </div><br>
             
-            <h5>Troisième slide</h5>
+            <h5 style="color: #5a00f0 !important; margin: 2rem 0;">Troisième slide</h5>
                 <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text">Titre slide 3</span>
@@ -960,7 +962,7 @@
                     <textarea class="form-control" aria-label="With textarea" name="slide3_3"></textarea>
                 </div><br>
                 
-            <h5>Quatième slide</h5>
+            <h5 style="color: #5a00f0 !important; margin: 2rem 0;">Quatième slide</h5>
                 <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text">Titre slide 4</span>
@@ -1000,7 +1002,7 @@
         </div> ';
 //<!--------------------------------------------------------------------------------------------------------------------------------------------->   
                     echo '<div id="Paramètres" class="tabcontent">
-                <h3>Paramètres</h3><hr>
+                <h3 style="text-align: left; color: #5a00f0 !important;">Paramètres</h3><hr>
 
                 <form method="GET" action="AdminParametresFonction.php">';
 
@@ -1024,7 +1026,7 @@
             </div>';
                 } else {
                     echo '<div><center><p><br><br><br>Vous n\'avez pas le droit d\'accéder à cette page</p>';
-                    echo '<a href="index.php">Retour à l\'acceuil</a></div></center>';
+                    echo '<a style="display:flex;justify-content:center;align-items:center;" href="index.php">Retour à l\'acceuil</a></div></center>';
                 }
 
 //<!---------------------------------------------------------------------------------------------------------------------------------------------> 

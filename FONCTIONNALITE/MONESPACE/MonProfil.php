@@ -28,7 +28,7 @@
         <div class="jumbotron">
 
             <div class="section-title section-title-haut-page" >
-                <h1 class="text-center">Mon profil</h1>
+                <h1 class="text-center">Mes informations personnelles</h1>
 
             </div>
             <div class="container">
@@ -37,8 +37,7 @@
                 if (isset($_SESSION['email'])) {
                     echo '<div class="container" id="MesInfos">';
 
-                    echo '<h1>Mes informations personnelles</h1>';
-                    echo '<hr>';
+
 
                     echo '<div class="row">';
                     echo '<div class="col-8">';
@@ -53,20 +52,17 @@
                         $utilisateurs = new utilisateurBDD($bdd);
 
                         $utilisateur = $utilisateurs->un_User($usercode);
-                       
-                        echo ('<p>Nom : ' . $utilisateur->getNomU() . '</p>');
-                        echo ('<p>Prénom : ' . $utilisateur->getPrenomU() . '</p>');
-                        echo ('<p>Adresse mail : ' . $utilisateur->getEmail() . '</p>');
+
+                        echo ('<p><strong>Nom : </strong>' . $utilisateur->getNomU() . '</p>');
+                        echo ('<p><strong>Prénom : </strong>' . $utilisateur->getPrenomU() . '</p>');
+                        echo ('<p><strong>Adresse mail : </strong>' . $utilisateur->getEmail() . '</p>');
                         echo ('<p><a href="changemdp.html.php">Changer mon mot de passe</a></p>');
-
-
-
                     }
                     echo '</div>';
                     echo '<div class="col-4">';
                     echo '<form name="Supprimer" action="Supprimer1Compte.php" method="post"><br>';
 
-                    echo('<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#supprimer">Supprimer mon compte</button>');
+                    echo('<button type="button" class="btn btn-outline-dark btn-light-fade" data-toggle="modal" data-target="#supprimer">Supprimer mon compte</button>');
 
                     echo('<div class="modal" tabindex="-1" id="supprimer" role="dialog">');
                     echo('<div class="modal-dialog" role="document">');
@@ -135,80 +131,80 @@
                             alert("Modification réussite !");
                         }
                     </script>   
-                    <?php
-                    echo '</form>';
-                    echo '</div>';
-                    echo '<br><br>';
+    <?php
+    echo '</form>';
+    echo '</div>';
+    echo '<br><br>';
 
 //<!--------------------------------------------------------------------------------------------------------------------------------------------->           
-                    echo '<div class="container" id="MesBesoins">';
+    echo '<div class="container" id="MesBesoins">';
 
-                    echo '<div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">';
-                    echo '<h1> Mes besoins </h1>';
-                    is_login_new_besoin();
-                    echo '</div>';
-                    echo '<hr>';
+    echo '<div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">';
+    echo '<h1 style="color: #5a00f0 !important;"> Mes besoins </h1>';
+    is_login_new_besoin();
+    echo '</div>';
+    echo '<hr>';
 
-                    echo '<form method="POST" action="Desactiver1CarteB.php">';
-                    echo '<div class="row">';
-                    echo '<div class="col-10">';
-                    echo '<ul class="list-inline">';
-
-
-
-
-                    $besoins = new besoinBDD($bdd);
+    echo '<form method="POST" action="Desactiver1CarteB.php">';
+    echo '<div class="row">';
+    echo '<div class="col-10">';
+    echo '<ul class="list-inline">';
 
 
 
-                    $besoinTab = $besoins->selectBesoinsByUser($usercode);
+
+    $besoins = new besoinBDD($bdd);
 
 
-                    if (!empty($besoinTab)) {
 
-                         $conteurBesoin = 0;
-                         
-                        foreach ($besoinTab as $value) {
+    $besoinTab = $besoins->selectBesoinsByUser($usercode);
 
-                            if (strtotime($value['besoin']->getDateButoireB()) > strtotime(date("yy/m/d")) && $value['besoin']->getVisibiliteB() == 1) {
-                                $conteurBesoin++;
-                                echo('<li class="list-inline-item">');
-                                if ($value['besoin']->getReponseB() > 0) {  // si il y a des réponses non traitées, affichir le badge rouge
-                                    echo ('<span class="badge badge-danger">Nouvelle réponse</span>');
-                                }
-                                echo ('<div class="card" style="width: 12rem;">');
-                                echo ('<div class="card-header">');
-                                echo ('<center><input type="radio" name="codeB" value="' . $value['besoin']->getCodeB() . '"/><center>');
-                                echo ('</div>');
-                                echo ('<img src="' . $value['photo'] . '" class="card-img-top" alt="...">');
-                                echo ('<div class="card-body card text-center">');
-                                echo ('<h5 class="card-title">' . $value['besoin']->getTitreB() . '</h5>');
-                                echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['besoin']->getDatePublicationB())) . '</p>');
-                                echo ('<p class="card-text">Délais souhaité: ' . date("d-m-yy", strtotime($value['besoin']->getDateButoireB())) . '</p>');
-                                echo ('<a href="../BESOIN/BesoinX.php?t=' . $value['besoin']->getCodeB() . '" class="btn btn-outline-dark">Voir la demande</a>');
-                                echo ('<p></p><a href="BesoinModification.php?t=' . $value['besoin']->getCodeB() . '" class="btn btn-outline-dark">Modifier</a>');
-                                if ($value['besoin']->getReponseB() > 0) {       // si il y a des réponses non traitées, affichir le button "Voir la réponse"             
-                                    echo ('<p></p><a href="../Besoin/ReponseBesoin.php?code=' . $value['besoin']->getCodeB() . '" class="btn btn-outline-dark">Voir la réponse</a>');    //prendre les titres pour les besoins pour regrouper les réponses d'un besoin 
-                                }
-                                echo ('</div>');
-                                echo ('</div></li>');
-                            }
-                        }
-                        
-                        if($conteurBesoin == 0){
-                            echo('<h5>Aucun résultat</h5>');
-                        }
-                    } else {
 
-                        echo('<h5>Aucun résultat</h5>');
-                    }
-                  
+    if (!empty($besoinTab)) {
 
-                    echo'    </ul>
+        $conteurBesoin = 0;
+
+        foreach ($besoinTab as $value) {
+
+            if (strtotime($value['besoin']->getDateButoireB()) > strtotime(date("yy/m/d")) && $value['besoin']->getVisibiliteB() == 1) {
+                $conteurBesoin++;
+                echo('<li class="list-inline-item">');
+                if ($value['besoin']->getReponseB() > 0) {  // si il y a des réponses non traitées, affichir le badge rouge
+                    echo ('<span class="badge badge-danger">Nouvelle réponse</span>');
+                }
+                echo ('<div class="card" style="width: 12rem;">');
+                echo ('<div class="card-header">');
+                echo ('<center><input type="radio" name="codeB" value="' . $value['besoin']->getCodeB() . '"/><center>');
+                echo ('</div>');
+                echo ('<img src="' . $value['photo'] . '" class="card-img-top" alt="...">');
+                echo ('<div class="card-body card text-center">');
+                echo ('<h5 class="card-title">' . $value['besoin']->getTitreB() . '</h5>');
+                echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['besoin']->getDatePublicationB())) . '</p>');
+                echo ('<p class="card-text">Délais souhaité: ' . date("d-m-yy", strtotime($value['besoin']->getDateButoireB())) . '</p>');
+                echo ('<a href="../BESOIN/BesoinX.php?t=' . $value['besoin']->getCodeB() . '" class="btn btn-outline-dark">Voir la demande</a>');
+                echo ('<p></p><a href="BesoinModification.php?t=' . $value['besoin']->getCodeB() . '" class="btn btn-outline-dark">Modifier</a>');
+                if ($value['besoin']->getReponseB() > 0) {       // si il y a des réponses non traitées, affichir le button "Voir la réponse"             
+                    echo ('<p></p><a href="../Besoin/ReponseBesoin.php?code=' . $value['besoin']->getCodeB() . '" class="btn btn-outline-dark">Voir la réponse</a>');    //prendre les titres pour les besoins pour regrouper les réponses d'un besoin 
+                }
+                echo ('</div>');
+                echo ('</div></li>');
+            }
+        }
+
+        if ($conteurBesoin == 0) {
+            echo('<h5>Vous n\'avez pas encore saisi un besoin</h5>');
+        }
+    } else {
+
+        echo('<h5>Vous n\'avez pas encore saisi un besoin</h5>');
+    }
+
+
+    echo'    </ul>
                      </div>
                 <div class="col-2">
                      <!-- Button trigger modal -->
-                     <button  title="Veuillez sélectionner une carte" type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#MyModal">Désactiver carte</button>
+                     <button  title="Veuillez sélectionner une carte" type="button" class="btn btn-outline-dark btn-light-fade" data-toggle="modal" data-target="#MyModal">Désactiver carte</button>
 
                      <!-- Modal -->
                     <div class="modal fade" id="MyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">  
@@ -236,12 +232,12 @@
           </div>  
        
         <br><br>';
-                    ?>
+    ?>
                     <!--------------------------------------------------------------------------------------------------------------------------------------------->     
                     <div class="container" id="MesTalents">
                         <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
-                            <h1> Mes talents </h1>             
-                            <?php is_login_new_talent(); ?>
+                            <h1 style="color: #5a00f0 !important;"> Mes talents </h1>             
+    <?php is_login_new_talent(); ?>
                         </div>
 
                         <hr>
@@ -251,59 +247,59 @@
                                 <div class="col-10">
                                     <ul class="list-inline">
 
-                                        <?php
-                                        $talents = new talentBDD($bdd);
+    <?php
+    $talents = new talentBDD($bdd);
 
-                                        $talentTab = $talents->selectTalentByUser($usercode);
+    $talentTab = $talents->selectTalentByUser($usercode);
 
 
-                                        if (!empty($talentTab)) {
-                                            
-                                             $conteurTalent = 0;
+    if (!empty($talentTab)) {
 
-                                            foreach ($talentTab as $value) {
+        $conteurTalent = 0;
 
-                                                 
-
-                                                if ($value['talent']->getVisibiliteT() == 1) {
-                                                    $conteurTalent++;
-                                                    echo('<li class="list-inline-item">');
-                                                    if ($value['talent']->getReponseT() > 0) {  // si il y a des réponses non traitées, affichir "nouvelle message"
-                                                        echo ('<span class="badge badge-danger">Nouvelle réponse</span>');
-                                                    }
-                                                    echo ('<div class="card" style="width: 12rem;">');
-                                                    echo ('<div class="card-header">');
-                                                    echo ('<center><input type="radio" name="codeT" value="' . $value['talent']->getCodeT() . '"/><center>');
-                                                    echo ('</div>');
-                                                    echo ('<img src="' . $value['photo'] . '" class="card-img-top" alt="...">');
-                                                    echo ('<div class="card-body card text-center">');
-                                                    echo ('<h5 class="card-title">' . $value['talent']->getTitreT() . '</h5>');
-                                                    echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['talent']->getDatePublicationT())) . '</p>');
-                                                    echo ('<a href="../TALENT/TalentX.php?t=' . $value['talent']->getCodeT() . '" class="btn btn-outline-dark">Voir le détail</a>');
-                                                    echo ('<p></p><a href="TalentModification.php?t=' . $value['talent']->getCodeT() . '" class="btn btn-outline-dark">Modifier</a>');
-                                                    if ($value['talent']->getReponseT() > 0) { // si il y a des réponses non traitées, affichir le button "Voir la réponse"
-                                                        echo ('<p></p><a href="../TALENT/ReponseTalent.php?code=' . $value['talent']->getCodeT() . '" class="btn btn-outline-dark">Voir la réponse</a>');    //prendre les titres pour les besoins pour regrouper les réponses d'un besoin
-                                                    }
-                                                    echo ('</div>');
-                                                    echo ('</div></li>');
-                                                }
-                                            }
-                                            
-                                            if($conteurTalent == 0){
-                                                echo('<h5>Aucun résultat  VO</h5>');
-                                            }
-                                        } else {
-
-                                            echo('<h5>Aucun résultat  VO</h5>');
-                                        }
+        foreach ($talentTab as $value) {
 
 
 
-                                        echo '</ul>     
+            if ($value['talent']->getVisibiliteT() == 1) {
+                $conteurTalent++;
+                echo('<li class="list-inline-item">');
+                if ($value['talent']->getReponseT() > 0) {  // si il y a des réponses non traitées, affichir "nouvelle message"
+                    echo ('<span class="badge badge-danger">Nouvelle réponse</span>');
+                }
+                echo ('<div class="card" style="width: 12rem;">');
+                echo ('<div class="card-header">');
+                echo ('<center><input type="radio" name="codeT" value="' . $value['talent']->getCodeT() . '"/><center>');
+                echo ('</div>');
+                echo ('<img src="' . $value['photo'] . '" class="card-img-top" alt="...">');
+                echo ('<div class="card-body card text-center">');
+                echo ('<h5 class="card-title">' . $value['talent']->getTitreT() . '</h5>');
+                echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['talent']->getDatePublicationT())) . '</p>');
+                echo ('<a href="../TALENT/TalentX.php?t=' . $value['talent']->getCodeT() . '" class="btn btn-outline-dark">Voir le détail</a>');
+                echo ('<p></p><a href="TalentModification.php?t=' . $value['talent']->getCodeT() . '" class="btn btn-outline-dark">Modifier</a>');
+                if ($value['talent']->getReponseT() > 0) { // si il y a des réponses non traitées, affichir le button "Voir la réponse"
+                    echo ('<p></p><a href="../TALENT/ReponseTalent.php?code=' . $value['talent']->getCodeT() . '" class="btn btn-outline-dark">Voir la réponse</a>');    //prendre les titres pour les besoins pour regrouper les réponses d'un besoin
+                }
+                echo ('</div>');
+                echo ('</div></li>');
+            }
+        }
+
+        if ($conteurTalent == 0) {
+            echo('<h5>Vous n\'avez pas encore saisi un talent</h5>');
+        }
+    } else {
+
+        echo('<h5>Vous n\'avez pas encore saisi un talent</h5>');
+    }
+
+
+
+    echo '</ul>     
                    </div>
                    <div class="col-2">
                      <!-- Button trigger modal -->
-                     <button title="Veuillez sélectionner une carte" type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#MyModalT">Désactiver carte</button>
+                     <button title="Veuillez sélectionner une carte" type="button" class="btn btn-outline-dark btn-light-fade" data-toggle="modal" data-target="#MyModalT">Désactiver carte</button>
                     
                      <!-- Modal -->
                     <div class="modal fade" id="MyModalT" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">  
@@ -329,13 +325,13 @@
             </form>        
           </div>
         <br><br>';
-                                        ?>
+    ?>
                                         <!--------------------------------------------------------------------------------------------------------------------------------------------->     
                                         <div class="container" id="MesAteliers">
 
                                             <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
-                                                <h1> Mes ateliers </h1>
-                                                <?php is_login_new_atelier(); ?>
+                                                <h1 style="color: #5a00f0 !important;"> Mes ateliers </h1>
+    <?php is_login_new_atelier(); ?>
                                             </div>
                                             <hr>
 
@@ -344,62 +340,62 @@
                                                     <div class="col-10">
                                                         <ul class="list-inline">
 
-                                                            <?php
-                                                            $ateliers = new atelierBDD($bdd);
+    <?php
+    $ateliers = new atelierBDD($bdd);
 
-                                                            $atelierTab = $ateliers->selectAtelierByUser($usercode);
-
-
-                                                            if (!empty($atelierTab)) {
-                                                                $conteurAtelier = 0;
-                                                                foreach ($atelierTab as $value) {
-                                                                    $role = $ateliers->saisirRoleUserAtelier($value['atelier']->getCodeA(), $usercode);
-                                                                    if ($value['atelier']->getVisibiliteA() == 1  && strtotime($value['atelier']->getDateFinA()) >= strtotime(date("yy/m/d"))) {
-                                                                        $conteurAtelier++;
-                                                                        echo('<li class="list-inline-item">');
-                                                                        echo ('<div class="card" style="width: 12rem;">');
-                                                                        echo ('<div class="card-header">');
-                                                                        echo ('<center><input type="radio" name="codeA" value="' . $value['atelier']->getCodeA() . '"/><center>');
-                                                                        echo ('</div>');
-                                                                        echo ('<img src="' . $value["photo"] . '" class="card-img-top" alt="...">');
-                                                                        echo ('<div class="card-body card text-center">');
-                                                                        echo ('<h5 class="card-title">' . $value['atelier']->getTitreA() . '</h5>');
-                                                                        echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
-                                                                        echo ('<p class="card-text">Date & Créneau : ' . $value['atelier']->getDateDebutA() . ' à ' . $value['atelier']->getDateFinA() . '</p>');
-                                                                        echo ('<a href="../ATELIER/AtelierX.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir le détail</a>');
-                                                                        
-
-                                                                        if ($role == "createur") {
-                                                                            echo ('<p></p><a href="AtelierModification.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Modifier</a>');
-                                                                            echo ('<p></p><a href="../ATELIER/voirInscritAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir les inscrits</a>');
-                                                                        } else if ($role == "participant") {
-                                                                            echo ('<p></p><a href="../ATELIER/desinscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Je me désinscrit </a>');
-                                                                        }
-
-                                                                        echo ('</div>');
-                                                                        echo ('</div></li>');
-                                                                    }
-                                                                }
-                                                                
-                                                                if($conteurAtelier == 0){
-                                                                    echo('<h5>Aucun résultat  VO</h5>');
-                                                                }
-                                                            } else {
-
-                                                                echo('<h5>Aucun résultat  VO</h5>');
-                                                            }
+    $atelierTab = $ateliers->selectAtelierByUser($usercode);
 
 
+    if (!empty($atelierTab)) {
+        $conteurAtelier = 0;
+        foreach ($atelierTab as $value) {
+            $role = $ateliers->saisirRoleUserAtelier($value['atelier']->getCodeA(), $usercode);
+            if ($value['atelier']->getVisibiliteA() == 1 && strtotime($value['atelier']->getDateFinA()) >= strtotime(date("yy/m/d"))) {
+                $conteurAtelier++;
+                echo('<li class="list-inline-item">');
+                echo ('<div class="card" style="width: 12rem;">');
+                echo ('<div class="card-header">');
+                echo ('<center><input type="radio" name="codeA" value="' . $value['atelier']->getCodeA() . '"/><center>');
+                echo ('</div>');
+                echo ('<img src="' . $value["photo"] . '" class="card-img-top" alt="...">');
+                echo ('<div class="card-body card text-center">');
+                echo ('<h5 class="card-title">' . $value['atelier']->getTitreA() . '</h5>');
+                echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
+                echo ('<p class="card-text">Date & Créneau : ' . $value['atelier']->getDateDebutA() . ' à ' . $value['atelier']->getDateFinA() . '</p>');
+                echo ('<a href="../ATELIER/AtelierX.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir le détail</a>');
+
+
+                if ($role == "createur") {
+                    echo ('<p></p><a href="AtelierModification.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Modifier</a>');
+                    echo ('<p></p><a href="../ATELIER/voirInscritAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir les inscrits</a>');
+                } else if ($role == "participant") {
+                    echo ('<p></p><a href="../ATELIER/desinscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Je me désinscrit </a>');
+                }
+
+                echo ('</div>');
+                echo ('</div></li>');
+            }
+        }
+
+        if ($conteurAtelier == 0) {
+            echo('<h5>Vous n\'avez pas encore créé un atelier</h5>');
+        }
+    } else {
+
+        echo('<h5>Vous n\'avez pas encore créé un atelier</h5>');
+    }
 
 
 
 
 
-                                                            echo '</ul>
+
+
+    echo '</ul>
                      </div>
                 <div class="col-2">
                      <!-- Button trigger modal -->
-                     <button title="Veuillez sélectionner une carte" type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#Myatelier">Désactiver carte</button>
+                     <button title="Veuillez sélectionner une carte" type="button" class="btn btn-outline-dark btn-light-fade" data-toggle="modal" data-target="#Myatelier">Désactiver carte</button>
 
                      <!-- Modal -->
                     <div class="modal fade" id="Myatelier" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">  
@@ -427,9 +423,9 @@
           </div>  
        
         <br><br>';
-                                                            ?>
+    ?>
                                                     </div>
-                                                </div>     
+                                                   
 
 
 
@@ -440,8 +436,8 @@
                                                 <div class="container" id="MesAteliers">
 
                                                     <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
-                                                        <h1> Mes projets </h1>
-                                                        <?php is_login_new_atelier(); ?>
+                                                        <h1 style="color: #5a00f0 !important;"> Mes projets </h1>
+    <?php is_login_new_projet(); ?>
                                                     </div>
                                                     <hr>
 
@@ -450,60 +446,60 @@
                                                             <div class="col-10">
                                                                 <ul class="list-inline">
 
-                                                                    <?php
-                                                                    $projets = new projetBDD($bdd);
+    <?php
+    $projets = new projetBDD($bdd);
 
-                                                                    $projetTab = $projets->selectProjetByUser($usercode);
-
-
-                                                                    if (!empty($projetTab)) {
-                                                                        $conteurProjet = 0;
-                                                                        foreach ($projetTab as $value) {
-                                                                            
-                                                                            $role = $projets->saisirRoleUserProjet($value['projet']->getCodeP(), $usercode);
-                                                                            if ($value['projet']->getVisibiliteP() == 1 && strtotime($value['projet']->getDateButoireP()) >= strtotime(date("yy/m/d"))) {
-                                                                                $conteurProjet++;        
-                                                                                echo('<li class="list-inline-item">');
-                                                                                echo ('<div class="card" style="width: 12rem;">');
-                                                                                echo ('<div class="card-header">');
-                                                                                echo ('<center><input type="radio" name="codeA" value="' . $value['projet']->getCodeP() . '"/><center>');
-                                                                                echo ('</div>');
-                                                                                echo ('<img src="' . $value["photo"] . '" class="card-img-top" alt="...">');
-                                                                                echo ('<div class="card-body card text-center">');
-                                                                                echo ('<h5 class="card-title">' . $value['projet']->getTitreP() . '</h5>');
-                                                                                echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['projet']->getDatePublicationP())) . '</p>');
-                                                                                echo ('<p class="card-text">Date & Créneau : ' . $value['projet']->getDateButoireP() . '</p>');
-                                                                                echo ('<a href="../PROJET/ProjetX.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir le détail</a>');
-                                                                                
-
-                                                                                if ($role == "createur") {
-                                                                                    echo ('<p></p><a href="ProjetModification.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Modifier</a>');
-                                                                                    echo ('<p></p><a href="../PROJET/voirInscritProjet.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir les inscrits</a>');
-                                                                                } else if ($role == "participant") {
-                                                                                   echo ('<p></p><a href="../PROJET/desinscriptionProjet.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Je me désinscrit </a>');
-                                                                                }
-
-                                                                                echo ('</div>');
-                                                                                echo ('</div></li>');
-                                                                            }
-                                                                        }
-                                                                        
-                                                                        if($conteurProjet == 0){
-                                                                             echo('<h5>Aucun résultat  VO</h5>');
-                                                                        }
-                                                                    } else {
-
-                                                                        echo('<h5>Aucun résultat  VO</h5>');
-                                                                    }
+    $projetTab = $projets->selectProjetByUser($usercode);
 
 
+    if (!empty($projetTab)) {
+        $conteurProjet = 0;
+        foreach ($projetTab as $value) {
+
+            $role = $projets->saisirRoleUserProjet($value['projet']->getCodeP(), $usercode);
+            if ($value['projet']->getVisibiliteP() == 1 && strtotime($value['projet']->getDateButoireP()) >= strtotime(date("yy/m/d"))) {
+                $conteurProjet++;
+                echo('<li class="list-inline-item">');
+                echo ('<div class="card" style="width: 12rem;">');
+                echo ('<div class="card-header">');
+                echo ('<center><input type="radio" name="codeA" value="' . $value['projet']->getCodeP() . '"/><center>');
+                echo ('</div>');
+                echo ('<img src="' . $value["photo"] . '" class="card-img-top" alt="...">');
+                echo ('<div class="card-body card text-center">');
+                echo ('<h5 class="card-title">' . $value['projet']->getTitreP() . '</h5>');
+                echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['projet']->getDatePublicationP())) . '</p>');
+                echo ('<p class="card-text">Date & Créneau : ' . $value['projet']->getDateButoireP() . '</p>');
+                echo ('<a href="../PROJET/ProjetX.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir le détail</a>');
 
 
-                                                                    echo '</ul>
+                if ($role == "createur") {
+                    echo ('<p></p><a href="ProjetModification.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Modifier</a>');
+                    echo ('<p></p><a href="../PROJET/voirInscritProjet.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir les inscrits</a>');
+                } else if ($role == "participant") {
+                    echo ('<p></p><a href="../PROJET/desinscriptionProjet.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Je me désinscrit </a>');
+                }
+
+                echo ('</div>');
+                echo ('</div></li>');
+            }
+        }
+
+        if ($conteurProjet == 0) {
+            echo('<h5>Vous n\'avez pas encore crée de projet</h5>');
+        }
+    } else {
+
+        echo('<h5>Vous n\'avez pas encore crée de projet</h5>');
+    }
+
+
+
+
+    echo '</ul>
                      </div>
                 <div class="col-2">
                      <!-- Button trigger modal -->
-                     <button title="Veuillez sélectionner une carte" type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#Myatelier">Désactiver carte</button>
+                     <button title="Veuillez sélectionner une carte" type="button" class="btn btn-outline-dark btn-light-fade" data-toggle="modal" data-target="#Myatelier">Désactiver carte</button>
 
                      <!-- Modal -->
                     <div class="modal fade" id="Myatelier" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">  
@@ -531,15 +527,15 @@
           </div>  
        
         <br><br>';
-                                                                } else {
-                                                                    echo ('<center><p><br><br>Veuillez d\'abord <a href="../INSCRIPTION/Login.php">se connecter</a></p></center>');
-                                                                }
-                                                                ?>
+} else {
+    echo ('<center><p><br><br>Veuillez d\'abord <a href="../INSCRIPTION/Login.php">se connecter</a></p></center>');
+}
+?>
                                                         </div>
                                                     </div>
 
                                                     <!-- footer -->
-                                                    <?php require "../../FONCTIONNALITE/footer.php"; ?>
+<?php require "../../FONCTIONNALITE/footer.php"; ?>
                                                     <!-- Fin footer -->
 
                                                     </body>

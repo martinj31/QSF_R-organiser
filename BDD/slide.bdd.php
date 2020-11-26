@@ -61,6 +61,7 @@ class slideBDD {
                 $slide = new slide([]);
                 $slide->setNumSlide($datas['NumSlide']);
                 $slide->setPhotoS($datas['PhotoS']);
+                $slide->setTitreS($datas['TitreS']);
                 $slide->setTextS1($datas['TextS1']);
                 $slide->setTextS2($datas['TextS2']);
                 $slide->setTextS3($datas['TextS3']);

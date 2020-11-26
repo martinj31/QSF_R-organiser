@@ -34,23 +34,13 @@ Author:    F4H3M
 17. Footer
 
 -------------------------------------------------------------------*/
-
-/* =================================== */
-
-/*  Font Family and Colors Styles
-/* =================================== */
-
-/* =================================== */
-
-/*  Basic Style 
-/* */
-
 :root {
     --main: linear-gradient(45deg, #460082 , #240b36);
     --mainlight: #5a00f0;
     --mainlight2: #f0e8ff;
     --main-dark: #1e0046;
     --background-grey: #eeeeee;
+    --fade: #abb7b7;
 
     --tout: #7a40dd;
     --pro: #6ec1e4;
@@ -2989,10 +2979,11 @@ a.bulle:hover span {
 }
 
 .jumbotron {
-background: #fff;
+background: #e9ecef;
 padding-left: 0 !important;
 padding-right: 0 !important;
 margin-top: -6rem;
+margin-bottom: 0rem !important;
 }
 
 .jumbotron .section-title-haut-page {
@@ -3058,6 +3049,20 @@ margin-top: -24px;
     -o-transition: all 0.3s ease 0s;
     transition: all 0.3s ease 0s;
 }
+
+.btn-light-fade{
+      color: #fff !important;
+    background: var(--fade) !important;
+    border-color: var(--fade) !important;
+}
+
+.btn-light-fade:hover{
+    color: #fff !important;
+    background: var(--fade) !important;
+    border-color: var(--fade) !important;
+
+}
+
 
 #navbarDropdown{
   font-size: 16px;
@@ -3503,6 +3508,7 @@ background: none;
 
 .card-title{
   color: #5a00f0;
+max-height: 6rem;
 }
 
 .card-header{
@@ -3599,4 +3605,34 @@ padding: 0 !important;
 
 .container h1 a{
   color: #343a40 !important;
+}
+
+.page-link {
+    color: #17a2b8;
+}
+
+.card-body h6, .card-body h5{
+    color: #5a00f0 !important;
+}
+
+.card-margin{
+    margin: 0.7rem 0 !important;
+    background: #fff;
+    padding: 2rem;
+}
+
+b, strong {
+    font-weight: 900 !important;
+}
+
+
+.badge-notification{
+    z-index: 10000;
+}
+
+
+.containerdescription{
+background: #fff !important;
+padding: 5rem !important;
+padding-top: 2rem !important;
 }

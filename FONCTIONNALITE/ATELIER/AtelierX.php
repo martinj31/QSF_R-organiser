@@ -53,7 +53,7 @@
 
             </div>
 
-            <div class="container">
+            <div class="container containerdescription">
                 <?php
                 require_once('../../FONCTIONCOMMUNE/Fonctions.php');
                 $T = $_GET['t'];
@@ -66,25 +66,41 @@
                 
                 foreach ($atelierTab as $value) {
                      if ($value['atelier']->getVisibiliteA() == 1) {
-                        echo ('<p> Date  & Créneau horaire : ' . $value['atelier']->getDateDebutA() . ' à ' . $value['atelier']->getDateFinA() . '</p>');
-                        echo ('<p> Date Publication : ' . date("d-m-yy", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
-                        echo ('<p><img src="' . $value["photo"] . '" class="card-img-top" alt="' . $value["nomPhoto"] . '" style="width: 35rem;"</p>');
+                         echo ('<p><img src="' . $value["photo"] . '" class="card-img-top" alt="' . $value["nomPhoto"] . '" style="width: 15rem;"</p>');
+                        echo ('<p><strong> Date  & Créneau horaire : </strong>' . $value['atelier']->getDateDebutA() . ' à ' . $value['atelier']->getDateFinA() . '</p>');
+                        echo ('<p><strong> Date Publication : </strong>' . date("d-m-yy", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
+                        
                         echo ('<p><strong>Type d\'atelier : </strong>' . $value['atelier']->getTypeA() . '</p>');
-                        echo ('<p><strong>Description</strong></p><p>' . $value['atelier']->getDescriptionA() . '</p>');
+                        echo ('<p><strong>Description: </strong>' . $value['atelier']->getDescriptionA() . '</p>');
                         echo ('<p><strong>Lieu d\'atelier : </strong>' . $value['atelier']->getLieuA() . '</p>');
                         echo ('<p><strong>Nombre de personnes maximum : </strong>' . $value['atelier']->getNombreA() . '</p>');
+                        
+                        if(!empty($value['atelier']->getPlusA())){
                         echo ('<strong>En savoir plus : </strong><a href="' . $value['atelier']->getPlusA() . '" target="_blank">' . $value['atelier']->getPlusA() . '</a>');
+                    }
+                        
                         echo ('<hr>');
+                        if (!isset($_SESSION['email'])) {
+                             echo ('<a href="Login.php"><button type="button" class="btn btn-primary btn-light">Contacter</button></a> ');
+                        } 
                         if (isset($usercode)) {
                                     if ($role == "createur") {
-                                        echo ('<p></p><a href="../ATELIER/voirInscritAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir les inscrits</a>');
+                                        echo ('<a href="../ATELIER/voirInscritAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-primary btn-light">Voir les inscrits</a>');
+                                    echo ('<a href="Atelier.php"><button type="button" class="btn btn-dark btn-light btn-light-fade">Retour</button></a>');
+                                        
                                     } else if ($role == "participant") {
-                                        echo ('<p></p><a href="../ATELIER/desinscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Je me désinscrit </a>');
+                                        echo ('<a href="../ATELIER/desinscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-primary btn-light">Je me désinscrit </a>');
+                                    
+                                        echo ('<a href="Atelier.php"><button type="button" class="btn btn-dark btn-light btn-light-fade">Retour</button></a>');
                                     } else {
-                                        echo ('<p></p><a href="../ATELIER/inscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
+                                        echo ('<a href="../ATELIER/inscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-primary btn-light">Je m\'inscris</a>');
+                                    
+                                        echo ('<a href="Atelier.php"><button type="button" class="btn btn-dark btn-light btn-light-fade">Retour</button></a>');
                                     }
                                 }else{
-                                    echo ('<p></p><a href="../ATELIER/inscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
+                                    echo ('<p></p><a href="../ATELIER/inscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-primary btn-light">Je m\'inscris</a>');
+                                
+                                    echo ('<a href="Atelier.php"><button type="button" class="btn btn-dark btn-light btn-light-fade">Retour</button></a>');
                                 }
                     }
                 }

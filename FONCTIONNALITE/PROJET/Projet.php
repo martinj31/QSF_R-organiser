@@ -7,6 +7,7 @@
         require "../../FONCTIONNALITE/link.php";
         require_once('../../BDD/projet.bdd.php');
         require_once('../../BDD/connexion.bdd.php');
+        require_once('../../BDD/categorie.bdd.php');
         ?>
         <!-- Link -->
 
@@ -30,16 +31,71 @@
             </div>
             <div class="container">
                 <br><br>
-                <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
+                 <?php is_login_new_projet(); ?>
+                <br><br>
+               <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
 
-                    <a href="Creer1Projet.php"><button type="button" class="btn btn-light">Ajouter un nouveau projet</button></a>
-                </div>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary btn-light btn-light-fade" data-toggle="modal" data-target="#exampleModal">
+                        三 Filtre
+                    </button>
 
-                <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
-                    <a href="ProjetC.php"><div class="alert alert-light" role="alert">Filtrer les projets par catégorie</div></a>
-                    <form class="form-inline my-2 my-lg-0" class="recherche">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Entrez un mot clé" aria-label="Recherche">
-                        <button type="button" class="btn btn-outline-dark">Recherche</button>
+                    <form action="Projet.php" method="post">
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Filter les projets</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h3> Par catégorie </h3>
+                                        <?php
+                                        require_once('../../FONCTIONCOMMUNE/Fonctions.php');
+                                        $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
+                                        $bdd = $db->connect();
+
+                                        $categorieBDD = new categorieBDD($bdd);
+
+                                        //$query = "select CodeC, NomC from categories where VisibiliteC = 1";
+                                        // $result = mysqli_query ($session, $query);
+                                        $CategorieTab = $categorieBDD->allCategorieNameAndId();
+
+                                        if (!empty($CategorieTab)) {
+
+                                            foreach ($CategorieTab as $value) {
+                                                echo ('<label class="radio-inline"> <input type="checkbox" name="categorie[]" value="' . $value['categorie']->getCodeC() . '"> <strong>' . $value['categorie']->getNomC() . '</strong>  </label> ');
+                                            }
+                                        }
+                                        ?>
+
+                                        <?php
+                                        if (empty($_SESSION['email'])) {
+                                            echo ('<br><br>');
+                                            echo ('<h3> Par type </h3><p>(Ne pas choisir si vous voulez tous affichés)</p>');
+                                            echo ('<label class="radio-inline"><input type="radio" name="type" value="Pro"><em><strong>Pro</strong></em></label>');
+                                            echo ('<label class="radio-inline"><input type="radio" name="type" value="Perso"><em><strong>Perso</strong></em></label>');
+                                        }
+                                        ?>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="reset" value="reset" class="btn btn-secondary btn-light-fade" data-dismiss="modal">Fermer</button>
+                                        <button type="submit" class="btn btn-primary">Filtrer</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <input type=button value="Tout affficher" class="btn btn-light" onclick="location = 'Projet.php'"> 
+
+                    <form method="GET" class="form-inline my-2 my-lg-0" class="recherche">
+                        <input class="form-control mr-sm-2" type="search" name="mot" placeholder="Entrez un mot clé" aria-label="Recherche">
+                        <button type="submit" class="btn btn-outline-dark">Recherche</button>
                     </form>
                 </div>
 
@@ -69,14 +125,14 @@
                                 if (isset($usercode)) {
                                     $role = $projet->saisirRoleUserProjet($value['projet']->getCodeP(), $usercode);
                                 }
-                                echo '<br><br>';
+                                
                                 //var_dump($value['besoin']->getDateButoireB());
                                 if ($value['projet']->getTypeP() == 'Pro et Perso') {
-                                    echo ('<div><h5><span class="badge badge-info">' . $value['projet']->getTypeP() . '</span></h5>');
+                                    echo ('<div class="card-margin"><h5><span class="badge badge-info">' . $value['projet']->getTypeP() . '</span></h5>');
                                 } elseif ($value['projet']->getTypeP() == 'Pro') {
-                                    echo ('<div><h5><span class="badge badge-success">' . $value['projet']->getTypeP() . '</span></h5>');
+                                    echo ('<div class="card-margin"><h5><span class="badge badge-success">' . $value['projet']->getTypeP() . '</span></h5>');
                                 } elseif ($value['projet']->getTypeP() == 'Perso') {
-                                    echo ('<div><h5><span class="badge badge-warning">' . $value['projet']->getTypeP() . '</span></h5>');
+                                    echo ('<div class="card-margin"><h5><span class="badge badge-warning">' . $value['projet']->getTypeP() . '</span></h5>');
                                 }
 
 
@@ -84,8 +140,8 @@
                                 echo ('<img src="' . $value['photo'] . '" class="card-img-top" alt="...">');
                                 echo ('<div class="card-body card text-center">');
                                 echo ('<h5 class="card-title">' . $value['projet']->getTitreP() . '</h5>');
-                                echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['projet']->getDatePublicationP())) . '</p>');
-                                echo ('<p class="card-text">Date & Créneau : ' . $value['projet']->getDateButoireP() . '</p>');
+                                echo ('<p class="card-text"><strong>Date de publication:  </strong><br>' . date("d-m-yy", strtotime($value['projet']->getDatePublicationP())) . '</p>');
+                                echo ('<p class="card-text"><strong>Date & Créneau :  </strong><br>' . $value['projet']->getDateButoireP() . '</p>');
                                 echo ('<a href="ProjetX.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir la demande</a>');
                                 if (isset($usercode)) {
                                     if ($role == "createur") {

@@ -23,13 +23,15 @@
 
 ​<link href="/docs/4.4/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-<link rel="stylesheet" type="text/css" href="../STYLE/style.css">
+<link rel="stylesheet" type="text/css" href="../../STYLE/style.css">
 
 <script src="https://kit.fontawesome.com/93613f5f6a.js" crossorigin="anonymous"></script>
 
 
-<script src="../SCRIPT/jquery.js"></script>
+<script src="../../SCRIPT/jquery.js"></script>
 
 <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>  
 
 <link href="../../STYLE/style.css" rel="stylesheet" type="text/css">
+<link href="css/owl.carousel.min.css" rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">

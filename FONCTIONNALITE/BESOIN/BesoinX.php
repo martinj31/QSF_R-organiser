@@ -44,7 +44,7 @@
 
             </div>
 
-            <div class="container">
+            <div class="container containerdescription">
                 <?php
                 require_once('../../FONCTIONCOMMUNE/Fonctions.php');
                 
@@ -59,18 +59,19 @@
                 foreach ($besoinTab as $value) {
 
                     if (strtotime($value['besoin']->getDateButoireB()) >= strtotime(date("yy/m/d")) && $value['besoin']->getVisibiliteB() == 1) {
-                        echo ('<p> Date Butoire: ' . date("d-m-yy", strtotime($value['besoin']->getDateButoireB())) . '</p>');
-                        echo ('<p> Date Publication: ' . date("d-m-yy", strtotime($value['besoin']->getDatePublicationB())) . '</p>');
-                        echo ('<p><img src="' . $value['photo'] . '" class="card-img-top" alt="..."  style="width: 35rem;"</p>');
+                        echo ('<p><img src="' . $value['photo'] . '" class="card-img-top" alt="..."  style="width: 15rem;"</p>');
+                        echo ('<p><strong> Date Butoire: </strong>' . date("d-m-yy", strtotime($value['besoin']->getDateButoireB())) . '</p>');
+                        echo ('<p><strong> Date Publication: </strong>' . date("d-m-yy", strtotime($value['besoin']->getDatePublicationB())) . '</p>');
+                        
                         echo ('<p><strong>Type: </strong>' . $value['besoin']->getTypeB() . '</p>');
-                        echo ('<p><strong>Description</strong></p><p>' . $value['besoin']->getDescriptionB() . '</p>');
+                        echo ('<p><strong>Description: </strong>' . $value['besoin']->getDescriptionB() . '</p>');
                         echo ('<hr>');
                         if (isset($_SESSION['email'])) {
                             echo ('<a href="../MAIL/MailBesoin.php?c=' . $value['besoin']->getCodeB() . '"><button type="button" class="btn btn-primary btn-light">Contacter</button></a>');
                             echo ('<a href="besoinx.fonction.php?c=' . $value['besoin']->getCodeB() . '">
                                 <input type="submit" class="btn btn-primary btn-light" name="rejoint" value="Rejoindre à ce besoin"></input>
                               </a>');
-                            echo ('<a href="Besoin.php"><button type="button" class="btn btn-dark btn-light">Retour</button></a>');
+                            echo ('<a href="Besoin.php"><button type="button" class="btn btn-dark btn-light btn-light-fade">Retour</button></a>');
                         } else {
                             echo ('<a href="../INSCRIPTION/Login.php"><button type="button" class="btn btn-primary btn-light">Contacter</button></a>');
                             echo ('<a href="../INSCRIPTION/Besoin.php" ><button type="button" class="btn btn-dark btn-light">Retour</button></a>');

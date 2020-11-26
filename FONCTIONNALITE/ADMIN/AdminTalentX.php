@@ -26,10 +26,6 @@
         <div class="jumbotron">
 
             <div class="section-title section-title-haut-page" >
-                <h1 class="text-center">Admin Talent X</h1>
-
-            </div>
-            <div class="container">
                 <?php
                 require_once('../../FONCTIONCOMMUNE/Fonctions.php');
                 $T = $_GET['t'];
@@ -44,11 +40,26 @@
 
                 foreach ($talentTab as $value) {
 
-                    echo ('<h1>' . $value['talent']->getTitreT() . '</h1><br>');
-                    echo ('<p> Date Publication: ' . date("d-m-yy", strtotime($value['talent']->getDatePublicationT())) . '</p>');
-                    echo ('<p><img src="' .  $value["photo"] . '" class="card-img-top" alt="..." height="200" style="width: 20rem;"</p>');
+                    echo ('<h1 class="text-center">' . $value['talent']->getTitreT() . '</h1>');
+                    
+                }
+
+
+             
+                ?> 
+
+            </div>
+            <div class="container containerdescription">
+                <?php
+                
+
+                foreach ($talentTab as $value) {
+
+                     echo ('<p><img src="' .  $value["photo"] . '" class="card-img-top" alt="..."  style="width: 15rem;"</p>');
+                    echo ('<p><strong> Date Publication: </strong>' . date("d-m-yy", strtotime($value['talent']->getDatePublicationT())) . '</p>');
+                   
                     echo ('<p><strong>Type: </strong>' . $value['talent']->getTypeT() . '</p>');
-                    echo ('<p><strong>Description</strong></p><p>' . $value['talent']->getDescriptionT() . '</p>');
+                    echo ('<p><strong>Description</strong>' . $value['talent']->getDescriptionT() . '</p>');
                 }
 
 

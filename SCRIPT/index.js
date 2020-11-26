@@ -3,9 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
-var show_per_page = 5;
+var show_per_page = 4;
 var current_page = 0;
 
 function set_display(first, last) {
