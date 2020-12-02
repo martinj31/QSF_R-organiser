@@ -7,7 +7,7 @@
         <!-- Link -->
 
         <title>Inscrit Atelier</title>
-
+       <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
     </head>
     <body>
@@ -73,7 +73,6 @@
                         echo ('</div>');
                         echo ('</td>');
                         echo ('</tr>');
-                        
                     }
                     echo ('</table>');
                 } else {
@@ -81,7 +80,28 @@
                 }
                 ?>
 
+
+                <br/><br/>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <label for="name">Search information:</label>
+                            <input type="search" class="form-control" onkeyup="fetchData()" id="find" placeholder="fill the information">
+
+                        </div>
+                    </div>
+
+                </div>
+                
+	<div id="comehere"></div>
+    </div>
+
+
+
+
                 <script>
+
+                    //if(jQuery) alert('jQuery is loaded');
                     function Envoi() {
                         alert("La demande a été envoyée à l'admin !");
                     }
@@ -92,11 +112,36 @@
 
                         window.print();
                     }
-                    /*$('.navbar-nav mr-auto').find('a').each(function () {
-                     if (this.href == document.location.href || document.location.href.search(this.href) >= 0) {
-                     $(this).parent().addClass('active'); // this.className = 'active';
-                     }
-                     });*/
+                   
+                    function reqListener() {
+                        console.log(this.responseText);
+                    }
+
+                    function fetchData() {
+                        var search = $('#find').val();
+
+                        console.log(search);
+
+
+                        var data = new FormData();
+                        data.append('search', search);
+                        data.append('t',<?php echo $_GET['t'] ?> );
+                       
+
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('POST', 'searchInscritAtelier.php', true);
+                        xhr.onload = function () {
+                            // do something to response
+                            console.log(this.responseText);
+                            $('#comehere').html(this.responseText);
+                        };
+                        xhr.send(data);
+
+
+
+                    }
+
+
                 </script>
 
             </div>

@@ -82,6 +82,21 @@
                 
                 
                 ?>
+                
+                <br/><br/>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <label for="name">Search information:</label>
+                            <input type="search" class="form-control" onkeyup="fetchData()" id="find" placeholder="fill the information">
+
+                        </div>
+                    </div>
+
+                </div>
+                
+	<div id="comehere"></div>
+    </div>
 
                 <script>
                     function Envoi() {
@@ -94,11 +109,31 @@
 
                         window.print();
                     }
-                    /*$('.navbar-nav mr-auto').find('a').each(function () {
-                     if (this.href == document.location.href || document.location.href.search(this.href) >= 0) {
-                     $(this).parent().addClass('active'); // this.className = 'active';
-                     }
-                     });*/
+                    
+                    
+                    function fetchData() {
+                        var search = $('#find').val();
+
+                        console.log(search);
+
+
+                        var data = new FormData();
+                        data.append('search', search);
+                        data.append('t',<?php echo $_GET['t'] ?> );
+                       
+
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('POST', 'searchInscritProjet.php', true);
+                        xhr.onload = function () {
+                            // do something to response
+                            console.log(this.responseText);
+                            $('#comehere').html(this.responseText);
+                        };
+                        xhr.send(data);
+
+
+
+                    }
                 </script>
 
             </div>

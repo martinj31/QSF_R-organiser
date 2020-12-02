@@ -28,7 +28,7 @@
 <script src="https://kit.fontawesome.com/93613f5f6a.js" crossorigin="anonymous"></script>
 
 
-<script src="../../SCRIPT/jquery.js"></script>
+
 
 <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>  
 

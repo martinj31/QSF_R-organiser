@@ -72,6 +72,73 @@ class utilisateurBDD {
 
         $req->closeCursor();
     }
+    
+    
+    //selection d'une liste de user en fonction de ce que tape le user (search autocomplete)
+    public function ajoutInscritSearchAutoCompete($mail) {
+
+        $userTab = [];
+        $req = $this->_bdd->prepare("select CodeU, Email from utilisateurs  where  Email like :mail and Email <> 'XXXXX' ");
+        
+         $req->bindValue(':mail', '%'.$mail.'%', PDO::PARAM_STR);
+        
+       $req->execute();
+        while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
+
+        $userTab[] = [ 'Email' => $datas['Email'] , 'Id' => $datas['CodeU']];
+        }
+        
+
+        return $userTab;
+
+        $req->closeCursor();
+    }
+    
+    
+    //gere le faite qu'on ne puisse pas ajouter plusieurs fois un personne pour atelier
+    public function atelierSearchAutoCompete($userTab, $atlierID ) {
+        
+        $userTabEnd = [];
+        
+        foreach ($userTab as $value){
+            
+            $req = $this->_bdd->query("select  CodeU from participera  where CodeU = ".$value['Id'] ."  and CodeA = $atlierID ");
+            
+            if(empty($req->fetch(PDO::FETCH_ASSOC))){
+                $userTabEnd[] = $value;
+            }
+            
+        }
+        
+
+        return $userTabEnd;
+
+        $req->closeCursor();
+    }
+    
+    
+    //gere le faite qu'on ne puisse pas ajouter plusieurs fois un personne pour projet
+    public function projetSearchAutoCompete($userTab, $projetID ) {
+
+        $userTabEnd = [];
+        
+        foreach ($userTab as $value){
+            
+            $req = $this->_bdd->query("select  CodeU from participerp  where CodeU = ".$value['Id'] ."  and CodeP = $projetID ");
+            
+            if(empty($req->fetch(PDO::FETCH_ASSOC))){
+                $userTabEnd[] = $value;
+            }
+            
+        }
+        
+
+        return $userTabEnd;
+
+        $req->closeCursor();
+    }
+    
+    
 
     //select l'id du user par rapport à l'id de besoin
     public function saisirUserIDByBesoin($CodeB) {

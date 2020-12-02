@@ -10,11 +10,18 @@ $bdd = $db->connect();
 $atelierBDD = new atelierBDD($bdd);
 
 
-if($atelierBDD->nombreParticipantVSNBRMax($_GET['t'])){
-    $res = $atelierBDD->participeraAtelierEtUser($usercode, $_GET['t'], "participant");
+if ($_GET['c'] and $_GET['userId']) {
+
+    if ($atelierBDD->nombreParticipantVSNBRMax($_GET['t'])) {
+        $res = $atelierBDD->participeraAtelierEtUser($_GET['userId'], $_GET['t'], "participant");
+    }
+} else {
+
+    if ($atelierBDD->nombreParticipantVSNBRMax($_GET['t'])) {
+        $res = $atelierBDD->participeraAtelierEtUser($usercode, $_GET['t'], "participant");
+    }
 }
 
 
 header("Location:../MONESPACE/MonProfil.php");
-
 ?>
