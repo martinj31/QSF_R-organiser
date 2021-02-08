@@ -126,7 +126,7 @@
 
 
                         $besoinTab = $besoins->selectBesoinsEtPhotoAccueil($pType, $sEmail, $sType, $gPro, $gPerso, $mot);
-
+                        
 
                         if (!empty($besoinTab)) {
                             
@@ -136,7 +136,7 @@
                             foreach ($besoinTab as $value) {
                                 
 
-                                if ($value['besoin']->getVisibiliteB() == 1 && strtotime($value['besoin']->getDateButoireB()) >= strtotime(date("yy/m/d"))) {
+                                if ($value['besoin']->getVisibiliteB() == 1 && strtotime($value['besoin']->getDateButoireB()) >= strtotime(date("Y-m-d H:i:s"))) {
                                     
                                     $conteurBesoin++;
                                     
@@ -412,7 +412,7 @@
                                
                                 //var_dump($value['besoin']->getDateButoireB());
 
-                                if ($value['atelier']->getVisibiliteA() == 1 && strtotime($value['atelier']->getDateFinA()) >= strtotime(date("yy/m/d"))) {
+                                if ($value['atelier']->getVisibiliteA() == 1 && strtotime($value['atelier']->getDateFinA()) >= strtotime(date("Y-m-d H:i:s"))) {
                                     $conteurAtelier++;
                                     
                                     if ($value['atelier']->getTypeA() == 'Pro et Perso') {
@@ -484,7 +484,7 @@
                                     
                             foreach ($projetTab as $value) {
 
-                                if ($value['projet']->getVisibiliteP() == 1 && strtotime($value['projet']->getDateButoireP()) >= strtotime(date("yy/m/d"))) {
+                                if ($value['projet']->getVisibiliteP() == 1 && strtotime($value['projet']->getDateButoireP()) >= strtotime(date("Y-m-d H:i:s"))) {
                                     $conteurProjet++;
 
                                     if (isset($usercode)) {

@@ -112,26 +112,19 @@
                     
                     
                     function fetchData() {
+                        
                         var search = $('#find').val();
-
-                        console.log(search);
-
-
                         var data = new FormData();
                         data.append('search', search);
                         data.append('t',<?php echo $_GET['t'] ?> );
-                       
 
                         var xhr = new XMLHttpRequest();
                         xhr.open('POST', 'searchInscritProjet.php', true);
                         xhr.onload = function () {
-                            // do something to response
-                            console.log(this.responseText);
+                            
                             $('#comehere').html(this.responseText);
                         };
                         xhr.send(data);
-
-
 
                     }
                 </script>

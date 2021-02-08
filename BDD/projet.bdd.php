@@ -46,13 +46,12 @@ class projetBDD {
         $vide = '';
         $query = "select p.TitreP, p.VisibiliteP, p.CodeP, p.DatePublicationP,  p.LieuP, c.PhotoC, p.DescriptionP, p.DateButoireP, p.TypeP from projets p, categories c where p.CodeC = c.CodeC order by CodeP DESC";
 
-        if ($mot != NULL) { /* Recherche par mot clé */
+        if ($mot != NULL) { 
             $mot = htmlspecialchars($mot);
             $query = "select p.TitreP, p.VisibiliteP, c.PhotoC, p.CodeP,  p.LieuP, p.DatePublicationP, p.DescriptionP, p.TypeP ,p.DateButoireP from projets p, categories c where p.CodeC = c.CodeC and p.TitreP LIKE '%$mot%' order by p.CodeP DESC";
         }
 
         $req = $this->_bdd->query($query);
-
 
         if ($req) { 
             while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
@@ -74,7 +73,6 @@ class projetBDD {
         } else {
             return $vide;
         }
-
 
         return $projets;
 
@@ -154,31 +152,24 @@ class projetBDD {
         $req->bindValue(':typeP', $projet->getTypeP(), PDO::PARAM_STR);
         $req->bindValue(':CodeC', $projet->getCodeC(), PDO::PARAM_INT);
 
-        
-        
         return $req->execute();
-
-
 
         $req->closeCursor();
     }
     
     
-    //Liaison User / Besoin dans a table saisir
-    public function participerProjetEtUser($usercode, $codep, $rolep) {  //fonction pour l'affichage des cartes besoins
+    //Liaison User / Projet dans a table participerp
+    public function participerProjetEtUser($usercode, $codep, $rolep) { 
         $req = $this->_bdd->prepare('INSERT INTO participerp
                                              SET CodeU = :CodeU,
                                                  CodeP = :CodeP,
                                                  RoleP = :RoleP
                                     ');
 
-
         $req->bindValue(':CodeU', $usercode, PDO::PARAM_INT);
         $req->bindValue(':CodeP', $codep, PDO::PARAM_INT);
         $req->bindValue(':RoleP', $rolep, PDO::PARAM_STR);
         return $req->execute();
-
-
 
         $req->closeCursor();
     }

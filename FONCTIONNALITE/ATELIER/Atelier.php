@@ -169,7 +169,7 @@
                             }
 
 
-                            if ($value['atelier']->getVisibiliteA() == 1 && strtotime($value['atelier']->getDateFinA()) >= strtotime(date("yy/m/d"))) {
+                            if ($value['atelier']->getVisibiliteA() == 1 && strtotime($value['atelier']->getDateFinA()) >=strtotime(date("Y-m-d H:i:s"))) {
                                 $conteurAtelier++;
                                 if ($value['atelier']->getTypeA() == 'Pro et Perso') {
                                     echo ('<div class="card-margin"><h5><span class="badge badge-info">' . $value['atelier']->getTypeA() . '</span></h5>');

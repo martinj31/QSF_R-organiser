@@ -79,10 +79,8 @@ class utilisateurBDD {
 
         $userTab = [];
         $req = $this->_bdd->prepare("select CodeU, Email from utilisateurs  where  Email like :mail and Email <> 'XXXXX' ");
-        
-         $req->bindValue(':mail', '%'.$mail.'%', PDO::PARAM_STR);
-        
-       $req->execute();
+        $req->bindValue(':mail', '%'.$mail.'%', PDO::PARAM_STR);
+        $req->execute();
         while ($datas = $req->fetch(PDO::FETCH_ASSOC)) {
 
         $userTab[] = [ 'Email' => $datas['Email'] , 'Id' => $datas['CodeU']];

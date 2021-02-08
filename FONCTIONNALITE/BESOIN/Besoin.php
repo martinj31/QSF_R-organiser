@@ -166,7 +166,7 @@
                             
                             //var_dump($value['besoin']->getDateButoireB());
 
-                            if ($value['besoin']->getVisibiliteB() == 1 && strtotime($value['besoin']->getDateButoireB()) >= strtotime(date("yy/m/d"))) {
+                            if ($value['besoin']->getVisibiliteB() == 1 && strtotime($value['besoin']->getDateButoireB()) >= strtotime(date("Y-m-d H:i:s"))) {
                                 $conteurBesoin++;
                                 if ($value['besoin']->getTypeB() == 'Pro et Perso') {
                                     echo ('<div class="card-margin"><h5><span class="badge badge-info">' . $value['besoin']->getTypeB() . '</span></h5>');

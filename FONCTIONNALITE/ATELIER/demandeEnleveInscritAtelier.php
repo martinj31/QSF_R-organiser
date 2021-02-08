@@ -383,8 +383,6 @@ $atelier = $atelierBDD->selectAtelierX($atelierID);
         $Mailer = new PHPMailer\PHPMailer\PHPMailer(true);
         $Mailer->SMTPDebug = 0;
         $Mailer->isSMTP();
-
-        //$Mailer->SMTPAuth = true;
         $Mailer->Timeout = 10000;
         $Mailer->Host = 'smtp.cpam-toulouse.cnamts.fr';
         $Mailer->Port = 25;

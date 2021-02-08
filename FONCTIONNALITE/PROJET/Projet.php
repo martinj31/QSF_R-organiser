@@ -115,12 +115,13 @@
 
                    
                     $projetTab = $projet->selectProjetEtPhoto($mot);
-                    //echo empty($projetTab);
+                    //echo ($projetTab);
                     if (!empty($projetTab)) {
                         $conteurProjet = 0;
                         foreach ($projetTab as $value) {
-
-                            if ($value['projet']->getVisibiliteP() == 1 && strtotime($value['projet']->getDateButoireP()) >= strtotime(date("yy/m/d"))) {
+                            
+                            
+                            if ($value['projet']->getVisibiliteP() == 1 && strtotime($value['projet']->getDateButoireP()) >= strtotime(date("Y-m-d H:i:s"))) {
                                 $conteurProjet++;
                                 if (isset($usercode)) {
                                     $role = $projet->saisirRoleUserProjet($value['projet']->getCodeP(), $usercode);

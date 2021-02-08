@@ -35,8 +35,6 @@
                 $bdd = $db->connect();
 
                 $ateliers = new atelierBDD($bdd);
-                //$besoins = new besoin();
-
                 $atelierTab = $ateliers->selectAtelierX($T);
 
 

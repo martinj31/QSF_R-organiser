@@ -166,7 +166,7 @@
 
         foreach ($besoinTab as $value) {
 
-            if (strtotime($value['besoin']->getDateButoireB()) > strtotime(date("yy/m/d")) && $value['besoin']->getVisibiliteB() == 1) {
+            if (strtotime($value['besoin']->getDateButoireB()) > strtotime(date("Y-m-d H:i:s")) && $value['besoin']->getVisibiliteB() == 1) {
                 $conteurBesoin++;
                 echo('<li class="list-inline-item">');
                 if ($value['besoin']->getReponseB() > 0) {  // si il y a des réponses non traitées, affichir le badge rouge
@@ -350,7 +350,7 @@
         $conteurAtelier = 0;
         foreach ($atelierTab as $value) {
             $role = $ateliers->saisirRoleUserAtelier($value['atelier']->getCodeA(), $usercode);
-            if ($value['atelier']->getVisibiliteA() == 1 && strtotime($value['atelier']->getDateFinA()) >= strtotime(date("yy/m/d"))) {
+            if ($value['atelier']->getVisibiliteA() == 1 && strtotime($value['atelier']->getDateFinA()) >= strtotime(date("Y-m-d H:i:s"))) {
                 $conteurAtelier++;
                 echo('<li class="list-inline-item">');
                 echo ('<div class="card" style="width: 12rem;">');
@@ -457,7 +457,7 @@
         foreach ($projetTab as $value) {
 
             $role = $projets->saisirRoleUserProjet($value['projet']->getCodeP(), $usercode);
-            if ($value['projet']->getVisibiliteP() == 1 && strtotime($value['projet']->getDateButoireP()) >= strtotime(date("yy/m/d"))) {
+            if ($value['projet']->getVisibiliteP() == 1 && strtotime($value['projet']->getDateButoireP()) >= strtotime(date("Y-m-d H:i:s"))) {
                 $conteurProjet++;
                 echo('<li class="list-inline-item">');
                 echo ('<div class="card" style="width: 12rem;">');
