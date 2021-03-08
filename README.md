@@ -22,12 +22,19 @@ compte ftp:
 	ftp.cluster005.hosting.ovh.net
 	User ftp : cpambyqt-qualifqsf
 
+#pas utilisé pour le moment
+#Compte smtp: 
+#	https://www.ovh.com/fr/mail/
+#	serveur:ssl0.ovh.net
+#	port:587
+#	Compte:qsf@cpam31.fr
 
+
+#Serveur Actuel
 Compte smtp: 
-	https://www.ovh.com/fr/mail/
-	serveur:ssl0.ovh.net
-	port:587
-	Compte:qsf@cpam31.fr
+	serveur:smtp.cpam-toulouse.cnamts.fr
+	port:25
+	
 
 
 Compte Phpmyadmin:

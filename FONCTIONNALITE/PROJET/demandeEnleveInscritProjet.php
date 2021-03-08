@@ -390,11 +390,12 @@ $projet = $projetBDD->un_projetx($projetID);
         $Mailer->Port = 25;
         $Mailer->isHTML(true);
         $Mailer->CharSet = "UTF-8";
-        $Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
+        //$Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
+        $Mailer->setFrom('cmcp@cpam31.fr', 'COUP DE MAIN, COUP DE POUCE');
         $Mailer->Subject = $sujet;
         $Mailer->Body = $message;
-        $Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
-       // $Mailer->AddAddress($destinataire);
+        //$Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
+        $Mailer->AddAddress($destinataire);
         //comme $Mailer->AddAddress($destinataire); ne marche pas cela bloque la redirection (header("Location:../MONESPACE/MonProfil.php");)
         if ($Mailer->send()) {
             header("Location:../MONESPACE/MonProfil.php");

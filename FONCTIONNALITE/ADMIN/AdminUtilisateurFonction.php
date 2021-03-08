@@ -26,7 +26,7 @@ if (isset($_POST['codeu'])) {
     $result = mysqli_query($session, $sql);
 
     if ($utilisateur->getEmail() != null) {
-       $Email = $utilisateur->getEmail();
+        $Email = $utilisateur->getEmail();
 
         $destinataire = "$Email"; // adresse mail du destinataire
         $sujet = "Votre compte a était bloqué par l'administrateur"; // sujet du mail
@@ -363,20 +363,20 @@ if (isset($_POST['codeu'])) {
           $header .= "Disposition-Notification-To:l'email d'un administrateur"; // c'est ici que l'on ajoute la directive */
 
         // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
-       /* $headers[] = 'MIME-Version: 1.0';
-        $headers[] = 'Content-type: text/html; charset=iso-8859-1';
+        /* $headers[] = 'MIME-Version: 1.0';
+          $headers[] = 'Content-type: text/html; charset=iso-8859-1';
 
-        // En-têtes additionnels
+          // En-têtes additionnels
 
-        $headers[] = 'From: [COUP DE MAIN, COUP DE POUCE]<admincmcp@assurance-maladie.fr>';
+          $headers[] = 'From: [COUP DE MAIN, COUP DE POUCE]<admincmcp@assurance-maladie.fr>';
 
 
 
-        mail($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail  
+          mail($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail
          */
-        
-        
-         $Mailer = new PHPMailer\PHPMailer\PHPMailer(true);
+
+
+        $Mailer = new PHPMailer\PHPMailer\PHPMailer(true);
         $Mailer->SMTPDebug = 0;
         $Mailer->isSMTP();
 
@@ -386,33 +386,35 @@ if (isset($_POST['codeu'])) {
         $Mailer->Port = 25;
         $Mailer->isHTML(true);
         $Mailer->CharSet = "UTF-8";
-        $Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
+        //$Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
+        $Mailer->setFrom('admincmcp@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
         $Mailer->Subject = $sujet;
         $Mailer->Body = $message;
-        $Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
+        // $Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
         $Mailer->AddAddress($destinataire);
         if ($Mailer->send()) {
-            header("Location:../MONESPACE/MonProfil.php");
-        }
-    
-        }
-        
 
-    $utilisateur->setCodeU($usercode);
-    $utilisateur->setEmail('XXXXX');
+            $utilisateur->setCodeU($usercode);
+            $utilisateur->setEmail('XXXXX');
 //$utilisateur->setAnonyme(0);
-    $utilisateur->setNomU('XXXXX');
-    $utilisateur->setPrenomU('XXXXX');
+            $utilisateur->setNomU('XXXXX');
+            $utilisateur->setPrenomU('XXXXX');
 
 
 
-    $besoins->updateBesoinUserDeleting($usercode);
-    $talents->updateTalentUserDeleting($usercode);
-    $abonners->deleteAbonner($usercode);
-    $utilisateurs->updateUser($utilisateur);
-    
-    
-    
+            $besoins->updateBesoinUserDeleting($usercode);
+            $talents->updateTalentUserDeleting($usercode);
+            $abonners->deleteAbonner($usercode);
+            $utilisateurs->updateUser($utilisateur);
+
+
+            header("Location: Admin.php");
+        }
+    }
+
+
+
+
 
     /* Rendre l'utilisateur et tous ses cartes, catégories en anonyme */
     /* tous ses cartes */
@@ -449,5 +451,5 @@ if (isset($_POST['codeu'])) {
       mysqli_stmt_execute($S7); */
 }
 
-header("Location: Admin.php")
+header("Location: Admin.php");
 ?>
