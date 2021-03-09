@@ -18,8 +18,8 @@ require_once('../ATELIER/AtelierCommenceMail.php');
 $nomlogin = "root";                    // Ici, nous connectons avec le serveur local, si vous voulez le tester sur d'autre serveur, vous pouvez changer ces 3 variables
 $nompasswd = "";
 $nombase = "qsf";
-$serveur = "localhost";
-//$port_bdd = "35171";*/
+$serveur = "localhost";*/
+//$port_bdd = "35171";
 
 $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
 $bdd = $db->connect();
@@ -28,7 +28,7 @@ $utilisateurBDD = new utilisateurBDD($bdd);
 $atelierBDD = new atelierBDD($bdd);
 $projetBDD = new projetBDD($bdd);
 
-$session = mysqli_connect($serveur, $nomlogin, $nompasswd, $nombase , $port_bdd );
+$session = mysqli_connect($serveur, $nomlogin, $nompasswd, $nombase  , $port_bdd );
 
 if ($session == NULL) { // Test de connexion n'est pas réussié
     echo ("<p>Echec de connection</p>");
@@ -44,10 +44,25 @@ if ($session == NULL) { // Test de connexion n'est pas réussié
 // 2. Fonction vérification l'existnce d'email       
 
 function is_unique_login($session, $Email) {
+
+    $EndMailUrssaf = "@urssaf.fr";
+    $EndMailCpam = "@assurance-maladie.fr";
     $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
     $bdd = $db->connect();
 
     $utilisateurBDD = new utilisateurBDD($bdd);
+
+    if (filter_var($Email, FILTER_VALIDATE_EMAIL)) {
+     
+        if (strpos($Email, $EndMailUrssaf) !== false || strpos($Email, $EndMailCpam) !== false) {
+            
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+
     $user = $utilisateurBDD->un_userLog($Email);
 
     //!empty($user)

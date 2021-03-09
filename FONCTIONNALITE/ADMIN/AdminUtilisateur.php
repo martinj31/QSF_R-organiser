@@ -271,7 +271,7 @@
                             echo ('<div class="card-body card text-center">');
                             echo ('<h5 class="card-title">' . $value['atelier']->getTitreA() . '</h5>');
                             echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
-                            echo ('<p class="card-text">Date & Créneau : ' . $value['atelier']->getDateA() . '</p>');
+                            echo ('<p class="card-text">Date & Créneau : ' . $value['atelier']->getDateDebutA() . '</p>');
                             echo ('</div>');
                             echo ('</div></li>');
                         } else {

@@ -50,7 +50,7 @@ $slide4 = $slideBDD->un_slide(4);
             <h1>'.$slide2->getTitreS().'</h1>
             <hr class="my-4">';
             if(isset($_SESSION['email'])){
-                echo ('<button class="btn btn-light" onclick="document.location="https://eva.beta.gouv.fr/"">Ulitiser EVA pour faire éclorer vos talents.</button>');
+                echo ('<button class="btn btn-light" onclick="document.location="https://eva.beta.gouv.fr/"">Utiliser EVA pour faire éclore vos talents.</button>');
             } else {
                 echo ('<button class="btn btn-light" onclick="document.location="Login.php"">Ulitiser EVA pour faire éclorer vos talents.</button>');
             }

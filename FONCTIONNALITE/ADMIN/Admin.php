@@ -44,12 +44,12 @@
                 if (isset($_SESSION['role'])) {
                     echo '
                <br><br>        <!-- Bouton pour les onglets --> 
-                <button class="tablink btn btn-dark" onclick="openPage(\'Catégories\', this, \'#5a00f0\')" id="defaultOpen">Catégories</button>&nbsp;&nbsp;   <!-- moteur de recherche : après changer de page ?????-->   
-                <button class="tablink btn btn-dark" onclick="openPage(\'Cartes\', this, \'#5a00f0\')" >Cartes</button>&nbsp;&nbsp;
-                <button class="tablink btn btn-dark" onclick="openPage(\'Utilisateurs\', this, \'#5a00f0\')" >Utilisateurs</button>&nbsp;&nbsp;
-                <button class="tablink btn btn-dark" onclick="openPage(\'Stats\', this, \'#5a00f0\')">Statistiques</button>&nbsp;&nbsp;
-                <button class="tablink btn btn-dark" onclick="openPage(\'Bandeau\', this, \'#5a00f0\')" >Bandeau</button>&nbsp;&nbsp;
-                <button class="tablink btn btn-dark" onclick="openPage(\'Paramètres\', this, \'#5a00f0\')">Paramètres</button><br><br>';
+                <button class="tablink btn btn-dark" onclick="openPage(\'Catégories\', this, \'#5a00f0\', \'cat\')" id="cat">Catégories</button>&nbsp;&nbsp;   <!-- moteur de recherche : après changer de page ?????-->   
+                <button class="tablink btn btn-dark" onclick="openPage(\'Cartes\', this, \'#5a00f0\', \'car\')" id="car">Cartes</button>&nbsp;&nbsp;
+                <button class="tablink btn btn-dark" onclick="openPage(\'Utilisateurs\', this, \'#5a00f0\', \'uti\')" id="uti">Utilisateurs</button>&nbsp;&nbsp;
+                <button class="tablink btn btn-dark" onclick="openPage(\'Stats\', this, \'#5a00f0\', \'sta\')" id="sta">Statistiques</button>&nbsp;&nbsp;
+                <button class="tablink btn btn-dark" onclick="openPage(\'Bandeau\', this, \'#5a00f0\', \'ban\')" id="ban">Bandeau</button>&nbsp;&nbsp;
+                <button class="tablink btn btn-dark" onclick="openPage(\'Paramètres\', this, \'#5a00f0\', \'par\')" id="par">Paramètres</button><br><br>';
 //<!--------------------------------------------------------------------------------------------------------------------------------------------->  
                     echo '<div id="Catégories" class="tabcontent">    <!-- Onglet catégorie --> 
                   <h3 style="text-align: left; color: #5a00f0 !important;">Catégories</h3><hr>
@@ -234,7 +234,7 @@
                     $besoins = new besoinBDD($bdd);
 
                     $besoinTab = $besoins->selectAllBesoins();
-                    
+
                     // $query = "select CodeB, TitreB, DescriptionB from besoins where VisibiliteB = 1 order by CodeB DESC";
 
                     if (isset($_GET['carteb']) AND!empty($_GET['carteb'])) { /* Recherche par mot clé dans le titre et description */
@@ -244,7 +244,7 @@
 
                         $besoinTab = $besoins->selectBesoinSearch($carteb);
                     }
-                    $besoinTab = array_reverse ($besoinTab);
+                    $besoinTab = array_reverse($besoinTab);
                     /* $result = mysqli_query($session, $query);
 
                       if ($result == false) {
@@ -381,7 +381,7 @@
 
                         $talentTab = $talents->selectTalentSearch($cartet);
                     }
-                    $talentTab = array_reverse ($talentTab);
+                    $talentTab = array_reverse($talentTab);
                     /* $result = mysqli_query($session, $query);
 
                       if ($result == false) {
@@ -421,13 +421,13 @@
                         echo('<h5>Aucun résultat</h5>');
                     }
 
-                   
+
                     echo ('</tbody>');
                     echo ('</table>');
 
                     echo('<br><h3 style="text-align: left; color: #5a00f0 !important;">Talents cachés</h3><br>');
 
-                   
+
 
                     echo ('<table class="table table-striped">');      /* Tableau pour afficher les talents cachés */
                     echo ('<thead>');
@@ -481,12 +481,12 @@
                     $atelierTab = $ateliers->selectAllAteliers();
                     if (isset($_GET['cartea']) AND!empty($_GET['cartea'])) { /* Recherche par mot clé dans le titre et description */
                         $cartet = htmlspecialchars($_GET['cartea']);
-                       
+
 
                         $atelierTab = $ateliers->selectAtelierSearch($cartet);
                     }
 
-                    $atelierTab = array_reverse ($atelierTab);    
+                    $atelierTab = array_reverse($atelierTab);
 
                     echo ('<table class="table table-striped">');      /* Tableau pour afficher les talents existantes */
                     echo ('<thead>');
@@ -525,18 +525,18 @@
                     }
 
 
-                   
+
                     echo ('</tbody>');
                     echo ('</table>');
 
                     echo('<br><h3 style="text-align: left; color: #5a00f0 !important;">Ateliers cachés</h3><br>');
 
-                   
+
 
                     echo ('<table class="table table-striped">');      /* Tableau pour afficher les talents cachés */
                     echo ('<thead>');
                     echo ('<tr>');
-                    
+
                     echo ('<th scope="col">#</th>');
                     echo ('<th scope="col">Titre</th>');
                     echo ('<th scope="col">Description</th>');
@@ -544,22 +544,22 @@
                     echo ('</tr>');
                     echo ('</thead>');
                     echo ('<tbody>');
-                     if (!empty($atelierTab)) {
+                    if (!empty($atelierTab)) {
 
                         foreach ($atelierTab as $value) {
                             if ($value->getVisibiliteA() == 0) {
-                            echo ('<tr>');
-                            echo ('<th scope="row">' . $value->getCodeA() . '</th>');
-                            echo ('<td>' . $value->getTitreA() . '</td>');
-                            echo ('<td>' . $value->getDescriptionA() . '</td>');
-                            echo ('<td>');
-                            echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
-                            echo ('<a style="display:flex;justify-content:center;align-items:center;" href="AdminAtelierX.php?t=' . $value->getCodeA() . '"><button type="button" class="btn "><img src="../../img/loupe.png" alt="Détail" width="30" height="30"></button></a>');                          
-                            echo ('<button type="submit" name="activera" value="' . $value->getCodeA() . '" class="btn "><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS82pYv9wgxfx27dUrgTr8zaGjZ6O3O2CONHA&usqp=CAU" alt="Activer" width="30" height="30"></button>');
-                            
-                            echo ('</div>');
-                            echo ('</td>');
-                            echo ('</tr>');
+                                echo ('<tr>');
+                                echo ('<th scope="row">' . $value->getCodeA() . '</th>');
+                                echo ('<td>' . $value->getTitreA() . '</td>');
+                                echo ('<td>' . $value->getDescriptionA() . '</td>');
+                                echo ('<td>');
+                                echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
+                                echo ('<a style="display:flex;justify-content:center;align-items:center;" href="AdminAtelierX.php?t=' . $value->getCodeA() . '"><button type="button" class="btn "><img src="../../img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
+                                echo ('<button type="submit" name="activera" value="' . $value->getCodeA() . '" class="btn "><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS82pYv9wgxfx27dUrgTr8zaGjZ6O3O2CONHA&usqp=CAU" alt="Activer" width="30" height="30"></button>');
+
+                                echo ('</div>');
+                                echo ('</td>');
+                                echo ('</tr>');
                             }
                         }
                     }
@@ -567,13 +567,13 @@
                     echo ('</table>');
                     echo ('<p>Veuillez choisir un atelier puis saisir un URL pour l\'activer</p>');
                     echo ('<input name="url" type="text"/>');
-                   
+
                     echo ('</form>');
                     echo ('</div>');
-                    
-                    
-                    
-                  echo '   
+
+
+
+                    echo '   
                     
                     <div id="projet" class="tabcontentc">      
                   <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
@@ -586,7 +586,7 @@
                     
                   <form action="AdminCarteInapproprieP.php" method="post">';
 
-                   
+
 
 
                     $projets = new projetBDD($bdd);
@@ -599,8 +599,8 @@
 
                         $projetTab = $projets->selectProjetSearch($cartep);
                     }
-                    $projetTab = array_reverse ($projetTab);
-                   // var_dump($projetTab);
+                    $projetTab = array_reverse($projetTab);
+                    // var_dump($projetTab);
 
                     echo ('<table class="table table-striped">');      /* Tableau pour afficher les talents existantes */
                     echo ('<thead>');
@@ -644,7 +644,7 @@
 
                     echo('<br><h3 style="text-align: left; color: #5a00f0 !important;">Projets cachés</h3><br>');
 
-                  
+
 
                     echo ('<table class="table table-striped">');      /* Tableau pour afficher les talents cachés */
                     echo ('<thead>');
@@ -656,29 +656,29 @@
                     echo ('</tr>');
                     echo ('</thead>');
                     echo ('<tbody>');
-                     if (!empty($projetTab)) {
+                    if (!empty($projetTab)) {
 
                         foreach ($projetTab as $value) {
                             if ($value->getVisibiliteP() == 0) {
-                            echo ('<tr>');
-                           
-                            echo ('<th scope="row">' . $value->getCodeP() . '</th>');
-                            
-                            echo ('<td>' . $value->getTitreP() . '</td>');
-                            echo ('<td>' . $value->getDescriptionP() . '</td>');
-                             echo ('<td>');
-                            echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
-                            echo ('<a  style="display:flex;justify-content:center;align-items:center;" href="AdminProjetX.php?t=' . $value->getCodeP() . '"><button type="button" class="btn "><img src="../../img/loupe.png" alt="Détail" width="30" height="30"></button></a>');                          
-                           echo ('<button type="submit" name="activerp" value="' . $value->getCodeP() . '" class="btn"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS82pYv9wgxfx27dUrgTr8zaGjZ6O3O2CONHA&usqp=CAU" alt="Activer" width="30" height="30"></button>');
-                            echo ('</div>');
-                            echo ('</td>');
-                            echo ('</tr>');
+                                echo ('<tr>');
+
+                                echo ('<th scope="row">' . $value->getCodeP() . '</th>');
+
+                                echo ('<td>' . $value->getTitreP() . '</td>');
+                                echo ('<td>' . $value->getDescriptionP() . '</td>');
+                                echo ('<td>');
+                                echo ('<div class="btn-group mr-2" role="group" aria-label="First group">');
+                                echo ('<a  style="display:flex;justify-content:center;align-items:center;" href="AdminProjetX.php?t=' . $value->getCodeP() . '"><button type="button" class="btn "><img src="../../img/loupe.png" alt="Détail" width="30" height="30"></button></a>');
+                                echo ('<button type="submit" name="activerp" value="' . $value->getCodeP() . '" class="btn"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS82pYv9wgxfx27dUrgTr8zaGjZ6O3O2CONHA&usqp=CAU" alt="Activer" width="30" height="30"></button>');
+                                echo ('</div>');
+                                echo ('</td>');
+                                echo ('</tr>');
                             }
                         }
                     }
                     echo ('</tbody>');
                     echo ('</table>');
-                   
+
                     echo ('</form>');
                     echo ('</div>')
                     ?>         
@@ -702,15 +702,15 @@
                     $utilisateurs = new utilisateurBDD($bdd);
 
                     $utilisateurTab = $utilisateurs->selectAllUtilisateurs();
-                   
+
 
                     if (isset($_GET['user']) AND!empty($_GET['user'])) { /* Recherche par mot clé dans prénom, nom, email des utilisateurs */
                         $user = htmlspecialchars($_GET['user']);
-                        
+
                         $utilisateurTab = $utilisateurs->selectUtilisateurSearch($user);
                     }
 
-                    
+
 
                     echo ('<table class="table table-striped">');      /* Tableau pour afficher les catégories existantes */
                     echo ('<thead>');
@@ -784,38 +784,38 @@
 
                     echo ('<dl>');
                     echo ('<dt>Nombre de mise en relation besoins : ' . $compteurBBDDs->relationBesoinsNBRAll() );
-                    
+
                     echo ('</dt>');
                     echo ('<dd style="text-indent:2em;"> - Nombre de mise en relation réussit : ' . $compteurBBDDs->relationBesoinsNBRReussi() );
-                   
+
                     echo ('</dd>');
                     echo ('<dd style="text-indent:2em;"> - Nombre de mise en relation échoué : ' . $compteurBBDDs->relationBesoinsNBREchoue() );
-                   
+
                     echo ('</dd>');
                     echo ('</dl>');
 
                     echo ('<dl>');
                     echo ('<dt>Nombre de mise en relation talents : ' . $compteurTBDDs->relationTalentsNBRAll());
-                   
+
                     echo ('</dt>');
                     echo ('<dd style="text-indent:2em;"> - Nombre de mise en relation réussit : ' . $compteurTBDDs->relationTalentsNBRReussi());
-                   
+
                     echo ('</dd>');
                     echo ('<dd style="text-indent:2em;"> - Nombre de mise en relation échoué : ' . $compteurTBDDs->relationTalentsNBREchoue());
-                    
+
                     echo ('</dd>');
                     echo ('</dl><br>');
                     //----------------------------------------------------------------------->                 
                     echo ('<h5 style="color: #5a00f0 !important; margin: 2rem 0;">Notes</h5><hr>');
                     echo ('<dl>');
                     echo ('<dt>Note moyenne : ' . $evaluerTBDD->moyenneNoteTAndNoteB());
-                    
+
                     echo ('</dt>');
                     echo ('<dd style="text-indent:2em;"><p> - Moyenne de notes besoin : ' . $evaluerBBDD->moyenneNoteB() );
-                   
+
                     echo ('</p></dd>');
                     echo ('<dd style="text-indent:2em;"><p> - Moyenne de notes talent : ' . $evaluerTBDD->moyenneNoteT());
-                  
+
                     echo ('</p></dd>');
                     echo ('</dl>');
                     //-----------------------------------------------------------------------> 
@@ -1016,7 +1016,7 @@
                         echo '<p>Le délai actuel est de ' . $parametresBDD->selectParamtre() . ' jours</p>';
                     }
 
-                    
+
 
                     echo '<form method="GET" action="AdminParametresFonction.php">
                     <p>Paramétrer le délais d\'envoie de mail d’évaluation : <input type=\'number\' name="interval"> jours </p>
@@ -1032,8 +1032,19 @@
 //<!---------------------------------------------------------------------------------------------------------------------------------------------> 
                 ?>
                 <script>
-                    function openPage(pageName, elmnt, color) {
+
+
+                    function openPage(pageName, elmnt, color, id) {
                         // Hide all elements with class="tabcontent" by default */
+
+                        /*lastpageName = pageName;
+                         lastelmnt = elmnt;
+                         lastcolor = color;*/
+
+                        
+                        localStorage.setItem('lastid', id);
+
+                        
                         var i, tabcontent, tablinks;
                         tabcontent = document.getElementsByClassName("tabcontent");
                         for (i = 0; i < tabcontent.length; i++) {
@@ -1050,11 +1061,28 @@
                         document.getElementById(pageName).style.display = "block";
 
                         // Add the specific color to the button used to open the tab content
+                        //elmnt.style.backgroundColor = color;
+                        //colorBackground(elmnt, color);
                         elmnt.style.backgroundColor = color;
+
                     }
 
+
+
+                    if (localStorage.getItem('lastid')) {
+
+                        //openPage(localStorage.getItem('lastpageName'), localStorage.getItem('lastelmnt'), localStorage.getItem('lastcolor'));
+                         document.getElementById(localStorage.getItem('lastid')).click();
+
+                    } else {
+                        
+                        document.getElementById("defaultOpen").click();
+                    }
+
+
+
                     // Get the element with id="defaultOpen" and click on it
-                    document.getElementById("defaultOpen").click();
+                    //document.getElementById("defaultOpen").click();
                 </script>
             </div>
         </div>

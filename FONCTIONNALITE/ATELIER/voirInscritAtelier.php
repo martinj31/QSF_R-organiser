@@ -85,7 +85,7 @@
                 <div class="row">
                     <div class="col-sm-8">
                         <div class="form-group">
-                            <label for="name">Search information:</label>
+                            <label for="name">Ajouter une personne:</label>
                             <input type="search" class="form-control" onkeyup="fetchData()" id="find" placeholder="fill the information">
 
                         </div>

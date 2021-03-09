@@ -841,8 +841,8 @@ if (isset($_POST['email'])) {
     } else {
         ?>
         <script type="text/javascript">
-            alert("Cet Email est déjà utilisé. \n Veuillez réessayer avec un autre email !");
-            document.location.href = 'Inscription.php';
+            alert("Cet Email n'est pas valide. \n Veuillez réessayer avec un autre email !");
+           // document.location.href = 'Inscription.php';
         </script>
         <?php
 
