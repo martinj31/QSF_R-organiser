@@ -1076,7 +1076,7 @@
 
                     } else {
                         
-                        document.getElementById("defaultOpen").click();
+                        document.getElementById("cat").click();
                     }
 
 
