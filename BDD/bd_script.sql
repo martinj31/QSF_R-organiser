@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 08 mars 2021 à 11:22
+-- Généré le : mer. 10 mars 2021 à 14:17
 -- Version du serveur :  10.4.14-MariaDB
 -- Version de PHP : 7.4.9
 
@@ -46,7 +46,7 @@ CREATE TABLE `ateliers` (
   `DateFinA` datetime DEFAULT NULL,
   `LieuA` tinytext NOT NULL,
   `NombreA` int(10) NOT NULL,
-  `DatePublicationA` date DEFAULT current_timestamp(),
+  `DatePublicationA` datetime DEFAULT current_timestamp(),
   `URL` tinytext NOT NULL,
   `PlusA` tinytext DEFAULT NULL,
   `TypeA` enum('Pro','Perso','Pro et Perso') DEFAULT NULL,
@@ -65,8 +65,8 @@ CREATE TABLE `besoins` (
   `CodeB` int(10) NOT NULL,
   `TitreB` tinytext NOT NULL,
   `DescriptionB` tinytext NOT NULL,
-  `DateButoireB` date NOT NULL,
-  `DatePublicationB` date DEFAULT current_timestamp(),
+  `DateButoireB` datetime NOT NULL,
+  `DatePublicationB` datetime DEFAULT current_timestamp(),
   `TypeB` enum('Pro','Perso','Pro et Perso') DEFAULT NULL,
   `CodeC` int(10) NOT NULL,
   `VisibiliteB` tinyint(1) DEFAULT 1,
@@ -126,7 +126,7 @@ CREATE TABLE `emails` (
   `Destinataire` int(10) NOT NULL,
   `Sujet` tinytext NOT NULL,
   `Contenu` text NOT NULL,
-  `DateEvaluation` date NOT NULL DEFAULT current_timestamp(),
+  `DateEvaluation` datetime NOT NULL DEFAULT current_timestamp(),
   `VisibiliteE` tinyint(1) DEFAULT 1,
   `CodeCarte` int(10) NOT NULL,
   `TypeCarte` enum('besoin','talent') NOT NULL
@@ -141,7 +141,7 @@ CREATE TABLE `emails` (
 CREATE TABLE `evaluerb` (
   `NoteB` int(10) NOT NULL,
   `AvisB` text DEFAULT NULL,
-  `DateEB` date NOT NULL DEFAULT current_timestamp(),
+  `DateEB` datetime NOT NULL DEFAULT current_timestamp(),
   `CodeU` int(10) NOT NULL,
   `CodeB` int(10) NOT NULL,
   `CodeEB` int(11) NOT NULL
@@ -157,7 +157,7 @@ CREATE TABLE `evaluert` (
   `CodeET` int(10) NOT NULL,
   `NoteT` int(10) NOT NULL,
   `AvisT` text DEFAULT NULL,
-  `DateET` date NOT NULL DEFAULT current_timestamp(),
+  `DateET` datetime NOT NULL DEFAULT current_timestamp(),
   `CodeU` int(10) NOT NULL,
   `CodeT` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -208,7 +208,7 @@ CREATE TABLE `projets` (
   `DescriptionP` tinytext NOT NULL,
   `LieuP` varchar(50) NOT NULL,
   `DateButoireP` datetime NOT NULL,
-  `DatePublicationP` date DEFAULT current_timestamp(),
+  `DatePublicationP` datetime DEFAULT current_timestamp(),
   `TypeP` enum('Pro','Perso','Pro et Perso') DEFAULT NULL,
   `CodeC` int(10) NOT NULL,
   `VisibiliteP` tinyint(1) DEFAULT 1,
@@ -262,7 +262,7 @@ CREATE TABLE `talents` (
   `CodeT` int(10) NOT NULL,
   `TitreT` tinytext NOT NULL,
   `DescriptionT` tinytext NOT NULL,
-  `DatePublicationT` date DEFAULT current_timestamp(),
+  `DatePublicationT` datetime DEFAULT current_timestamp(),
   `TypeT` enum('Pro','Perso','Pro et Perso') DEFAULT NULL,
   `CodeC` int(10) NOT NULL,
   `VisibiliteT` tinyint(1) DEFAULT 1,
