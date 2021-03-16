@@ -2,6 +2,8 @@
 
 require('../../CLASS/BesoinClass.php');
 
+
+echo 'Page : Besoin';
 //use '../CLASS/BesoinClass.php';
 
 class besoinBDD {

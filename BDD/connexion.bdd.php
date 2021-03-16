@@ -1,5 +1,7 @@
 <?php
         // Connexion à la base de donnée
+
+echo 'Page : connexion ';
     final class BDD{
     
     protected $DB = null;

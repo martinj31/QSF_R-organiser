@@ -1,7 +1,7 @@
 <?php
 
 require('../../CLASS/TalentClass.php');
-
+echo 'Page : Talent';
 //use '../CLASS/BesoinClass.php';
 
 class talentBDD {

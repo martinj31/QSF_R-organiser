@@ -8,6 +8,8 @@
 
 require('../../CLASS/ProjetClass.php');
 
+echo 'Page : Projet';
+
 //use '../CLASS/BesoinClass.php';
 
 class projetBDD {

@@ -8,6 +8,9 @@
 
 require('../../CLASS/AtelierClass.php');
 
+
+echo 'Page : Atelier';
+
 //use '../CLASS/BesoinClass.php';
 
 class atelierBDD {

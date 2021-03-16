@@ -1,11 +1,15 @@
 <?php
 
+echo 'Page : Fonction';
+
 require_once('../../BDD/connexion.bdd.php');
 require_once('../../BDD/utilisateur.bdd.php');
 require_once('../../BDD/projet.bdd.php');
 require_once('../PROJET/ProjetCommenceMail.php');
 require_once('../../BDD/atelier.bdd.php');
 require_once('../ATELIER/AtelierCommenceMail.php');
+
+echo 'Page : Fonction 2 (apres les requieres de la page Fonctions)';
 // 1. Connexion à la base de donnée
 
 
