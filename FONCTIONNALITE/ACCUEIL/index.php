@@ -3,8 +3,8 @@
     <head>
         <!-- Link -->
         <?php
-        require_once '../../FONCTIONCOMMUNE/Fonctions.php';
-        require_once ("../../FONCTIONNALITE/link.php");
+        require_once('../../FONCTIONCOMMUNE/Fonctions.php');
+        require_once('../../FONCTIONNALITE/link.php');
         require_once('../../BDD/connexion.bdd.php');
         require_once('../../BDD/besoin.bdd.php');
         require_once('../../BDD/talent.bdd.php');
@@ -31,7 +31,7 @@
 </head>
 <body>
     <!-- Menu -->
-    <?php require_once "../../FONCTIONNALITE/menu.php"; ?><!-- Fin Menu -->
+    <?php require_once('../../FONCTIONNALITE/menu.php'); ?><!-- Fin Menu -->
     <!--=========================================================================================================================================-->
     <?php
     require_once('../../FONCTIONNALITE/slide.html.php');
@@ -44,7 +44,7 @@
 
                 <form method="get" id="form-pro-perso">
                     <?php
-                    require_once '../../FONCTIONCOMMUNE/Fonctions.php';
+                    require_once('../../FONCTIONCOMMUNE/Fonctions.php');
                     
                     if (empty($_SESSION['email'])) {
                         echo ('<div class="btn-group" role="group" aria-label="Basic example">');
@@ -78,7 +78,7 @@
                     </div>
                     <div class="flex-parent d-flex flex-wrap justify-content-around mt-3" id="cartesB">
                         <?php
-                       require_once '../../FONCTIONCOMMUNE/Fonctions.php';
+                       require_once('../../FONCTIONCOMMUNE/Fonctions.php');
 
 
                         if (isset($_SESSION['type'])) {
@@ -541,7 +541,7 @@
     </section>
 
     <!-- footer -->
-    <?php require "../../FONCTIONNALITE/footer.php"; ?>
+    <?php require('../../FONCTIONNALITE/footer.php'); ?>
     <!-- Fin footer -->
 
 

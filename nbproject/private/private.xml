@@ -14,12 +14,12 @@
         <group>
             <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONCOMMUNE/Fonctions.php</file>
             <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/PROJET/voirInscritProjet.php</file>
+            <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/ATELIER/Saisir1Atelier.php</file>
             <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/ADMIN/AdminUtilisateur.php</file>
-            <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/ADMIN/Admin.php</file>
-            <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/ADMIN/AdminParametresFonction.php</file>
             <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/INSCRIPTION/AjouterUtilisateurs.php</file>
             <file>file:/C:/xampp/htdocs/QSF/QSF/FONCTIONNALITE/MONESPACE/MonProfil.php</file>
             <file>file:/C:/xampp/htdocs/QSF/QSF/CLASS/AtelierClass.php</file>
+            <file>file:/C:/xampp/htdocs/QSF/QSF/README.md</file>
         </group>
     </open-files>
 </project-private>
