@@ -23,22 +23,22 @@
     
         <ul id="nav">
           <li class="nav-item active">
-            <a class="nav-link" href="index.php">Accueil <span class="sr-only">(current)</span> </a> 
+            <a class="nav-link" href="../ACCUEIL/index.php">Accueil <span class="sr-only">(current)</span> </a> 
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="FONCTIONNALITE/BESOIN/Besoin.php">Besoins</a>
+            <a class="nav-link" href="../BESOIN/Besoin.php">Besoins</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="FONCTIONNALITE/TALENT/Talent.php">Talents</a>
+            <a class="nav-link" href="../TALENT/Talent.php">Talents</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" href="FONCTIONNALITE/ATELIER/Atelier.php">Ateliers</a>
+              <a class="nav-link" href="../ATELIER/Atelier.php">Ateliers</a>
           </li> 
           <li class="nav-item">
-            <a class="nav-link" href="FONCTIONNALITE/PROJET/Projet.php">Projets</a>
+            <a class="nav-link" href="../PROJET/Projet.php">Projets</a>
           </li> 
           <li class="nav-item">
-            <a class="nav-link" href="FONCTIONNALITE/CATEGORIE/AbonnerCategorie.php">Catégories</a>
+            <a class="nav-link" href="../CATEGORIE/AbonnerCategorie.php">Catégories</a>
           </li>  
         </ul>
           
@@ -49,9 +49,9 @@
             <?php
             //header('Content-type: text/html; charset=UTF-8', true);
           
-          require_once ('FONCTIONCOMMUNE/Fonctions.php');
-            require_once('BDD/connexion.bdd.php');
-        require_once('BDD/utilisateur.bdd.php');
+          require_once ('../../FONCTIONCOMMUNE/Fonctions.php');
+            require_once('../../BDD/connexion.bdd.php');
+        require_once('../../BDD/utilisateur.bdd.php');
            
             $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
             $bdd = $db->connect();

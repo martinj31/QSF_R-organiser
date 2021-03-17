@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-require('CLASS/AtelierClass.php');
+require('../../CLASS/AtelierClass.php');
 
 
 

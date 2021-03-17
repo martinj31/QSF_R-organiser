@@ -1,7 +1,7 @@
 <?php
-require_once('FONCTIONCOMMUNE/Fonctions.php');
-require_once('BDD/connexion.bdd.php');
-require_once('BDD/slide.bdd.php');
+require_once('../../FONCTIONCOMMUNE/Fonctions.php');
+require_once('../../BDD/connexion.bdd.php');
+require_once('../../BDD/slide.bdd.php');
 
 
 $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD

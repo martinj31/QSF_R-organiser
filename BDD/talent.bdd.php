@@ -1,6 +1,6 @@
 <?php
 
-require('CLASS/TalentClass.php');
+require('../../CLASS/TalentClass.php');
 
 //use '../CLASS/BesoinClass.php';
 

@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-require('CLASS/ProjetClass.php');
+require('../../CLASS/ProjetClass.php');
 
 //use '../CLASS/BesoinClass.php';
 

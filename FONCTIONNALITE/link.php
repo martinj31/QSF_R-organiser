@@ -1,5 +1,6 @@
 <?php 
 
+
 ?>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -36,6 +37,6 @@
 
 <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>  
 
-<link href="STYLE/style.css" rel="stylesheet" type="text/css">
+<link href="../../STYLE/style.css" rel="stylesheet" type="text/css">
 <link href="css/owl.carousel.min.css" rel="stylesheet">
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
