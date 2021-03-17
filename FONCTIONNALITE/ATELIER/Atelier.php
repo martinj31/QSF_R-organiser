@@ -202,11 +202,11 @@
                         }
                         
                         if($conteurAtelier == 0){
-                            echo('<h5 style="color: red !important;>Aucun résultat</h5>');
+                            echo('<h5 style="color: red !important;">Aucun résultat</h5>');
                         }
                     } else {
 
-                        echo('<h5style="color: red !important;>Aucun résultat</h5>');
+                        echo('<h5style="color: red !important;">Aucun résultat</h5>');
                     }
 
                     
