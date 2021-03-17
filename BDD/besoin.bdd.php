@@ -1,9 +1,8 @@
 <?php
 
-require('../../CLASS/BesoinClass.php');
+require('CLASS/BesoinClass.php');
 
 
-echo 'Page : Besoin';
 //use '../CLASS/BesoinClass.php';
 
 class besoinBDD {

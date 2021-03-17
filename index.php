@@ -3,13 +3,13 @@
     <head>
         <!-- Link -->
         <?php
-        require_once('../../FONCTIONCOMMUNE/Fonctions.php');
-        require_once('../../FONCTIONNALITE/link.php');
-        require_once('../../BDD/connexion.bdd.php');
-        require_once('../../BDD/besoin.bdd.php');
-        require_once('../../BDD/talent.bdd.php');
-        require_once('../../BDD/atelier.bdd.php');
-        require_once('../../BDD/projet.bdd.php');
+        require_once('FONCTIONCOMMUNE/Fonctions.php');
+        require_once('FONCTIONNALITE/link.php');
+        require_once('BDD/connexion.bdd.php');
+        require_once('BDD/besoin.bdd.php');
+        require_once('BDD/talent.bdd.php');
+        require_once('BDD/atelier.bdd.php');
+        require_once('BDD/projet.bdd.php');
         ?><!-- Link -->
         
            
@@ -31,10 +31,10 @@
 </head>
 <body>
     <!-- Menu -->
-    <?php require_once('../../FONCTIONNALITE/menu.php'); ?><!-- Fin Menu -->
+    <?php require_once('FONCTIONNALITE/menu.php'); ?><!-- Fin Menu -->
     <!--=========================================================================================================================================-->
     <?php
-    require_once('../../FONCTIONNALITE/slide.html.php');
+    require_once('FONCTIONNALITE/slide.html.php');
     ?><!--=========================================================================================================================================-->
     <section class="feature-section section-gap-full" id="feature-section">
         <div class="container">
@@ -44,7 +44,7 @@
 
                 <form method="get" id="form-pro-perso">
                     <?php
-                    require_once('../../FONCTIONCOMMUNE/Fonctions.php');
+                    require_once('FONCTIONCOMMUNE/Fonctions.php');
                     
                     if (empty($_SESSION['email'])) {
                         echo ('<div class="btn-group" role="group" aria-label="Basic example">');
@@ -58,7 +58,7 @@
 
                 <div class="container" id="besoins">
                     <div class="col-lg-12 header-left">
-                        <h1><a href="../BESOIN/Besoin.php">Les besoins</a></h1>
+                        <h1><a href="FONCTIONNALITE/BESOIN/Besoin.php">Les besoins</a></h1>
                     </div>
                     <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
                         <form class="form-inline my-2 my-lg-0" method="get">
@@ -78,7 +78,7 @@
                     </div>
                     <div class="flex-parent d-flex flex-wrap justify-content-around mt-3" id="cartesB">
                         <?php
-                       require_once('../../FONCTIONCOMMUNE/Fonctions.php');
+                       require_once('FONCTIONCOMMUNE/Fonctions.php');
 
 
                         if (isset($_SESSION['type'])) {
@@ -152,7 +152,7 @@
                                     echo ('<div class="card-body card text-center">');
                                     echo ('<h5 class="card-title">' . $value['besoin']->getTitreB() . '</h5>');
                                     echo ('<p class="card-text"><strong>Délais souhaité: </strong><br>' . $value['besoin']->getDateButoireB() . '</p>');
-                                    echo ('<a href="../BESOIN/BesoinX.php?t=' . $value['besoin']->getCodeB() . '" class="btn btn-outline-dark">Voir la demande</a>');
+                                    echo ('<a href="FONCTIONNALITE/BESOIN/BesoinX.php?t=' . $value['besoin']->getCodeB() . '" class="btn btn-outline-dark">Voir la demande</a>');
                                     echo ('</div>');
                                     echo ('</div></div>');
                                 }
@@ -175,7 +175,7 @@
                 <!--=========================================================================================================================================-->
                 <div class="container" id="talents">
                     <div class="col-lg-12 header-left">
-                        <h1><a href="../TALENT/Talent.php">Les talents</a></h1>
+                        <h1><a href="FONCTIONNALITE/TALENT/Talent.php">Les talents</a></h1>
                     </div>
                     <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
                         <form class="form-inline my-2 my-lg-0" method="get">
@@ -208,7 +208,7 @@
                                     echo ('<div class="card-body card text-center">');
                                     echo ('<h5 class="card-title">' . $value['talent']->getTitreT() . '</h5>');
 
-                                    echo ('<a href="../TALENT/TalentX.php?t=' . $value['talent']->getCodeT() . '" class="btn btn-outline-dark">Voir la demande</a>');
+                                    echo ('<a href="FONCTIONNALITE/TALENT/TalentX.php?t=' . $value['talent']->getCodeT() . '" class="btn btn-outline-dark">Voir la demande</a>');
                                     echo ('</div>');
                                     echo ('</div></div>');
                                 }
@@ -387,7 +387,7 @@
                 <!--=========================================================================================================================================-->
                 <div class="container" id="ateliers">
                     <div class="col-lg-12 header-left">
-                        <h1><a href="../ATELIER/Atelier.php">Les ateliers</a></h1>
+                        <h1><a href="FONCTIONNALITE/ATELIER/Atelier.php">Les ateliers</a></h1>
                     </div>
                     <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
                         <form class="form-inline my-2 my-lg-0" method="get">
@@ -428,18 +428,18 @@
                                     echo ('<h5 class="card-title">' . $value['atelier']->getTitreA() . '</h5>');
                                     echo ('<p class="card-text"><strong>Date de publication: :</strong><br>' . $value['atelier']->getDatePublicationA() . '</p>');
                                     echo ('<p class="card-text"><strong>Date & Créneau : </strong><br>' . $value['atelier']->getDateDebutA() . ' à ' . $value['atelier']->getDateFinA() . '</p>');
-                                    echo ('<a href="../ATELIER/AtelierX.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir le détail</a><br>');
+                                    echo ('<a href="FONCTIONNALITE/ATELIER/AtelierX.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir le détail</a><br>');
                                     //echo ('<p></p><a href="' . $value['atelier']->getURL() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
                                     if (isset($usercode)) {
                                         if ($role == "createur") {
-                                            echo ('<p></p><a href="../ATELIER/voirInscritAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir les inscrits</a>');
+                                            echo ('<p></p><a href="FONCTIONNALITE/ATELIER/voirInscritAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir les inscrits</a>');
                                         } else if ($role == "participant") {
-                                            echo ('<p></p><a href="../ATELIER/desinscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Je me désinscrit </a>');
+                                            echo ('<p></p><a href="FONCTIONNALITE/ATELIER/desinscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Je me désinscrit </a>');
                                         } else {
-                                            echo ('<p></p><a href="../ATELIER/inscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
+                                            echo ('<p></p><a href="FONCTIONNALITE/ATELIER/inscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
                                         }
                                     } else {
-                                        echo ('<p></p><a href="../ATELIER/inscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
+                                        echo ('<p></p><a href="FONCTIONNALITE/ATELIER/inscriptionAtelier.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
                                     }
                                     echo ('</div>');
                                     echo ('</div></div>');
@@ -466,7 +466,7 @@
                 <!--=========================================================================================================================================-->
                 <div class="container" id="talents">
                     <div class="col-lg-12 header-left">
-                        <h1><a href="../TALENT/Talent.php">Les Projets</a></h1>
+                        <h1><a href="FONCTIONNALITE/TALENT/Talent.php">Les Projets</a></h1>
                     </div>
                     <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
                         <form class="form-inline my-2 my-lg-0" method="get">
@@ -507,17 +507,17 @@
                                     echo ('<h5 class="card-title">' . $value['projet']->getTitreP() . '</h5>');
                                     echo ('<p class="card-text"><strong>Date de publication: </strong><br>' . date("d-m-yy", strtotime($value['projet']->getDatePublicationP())) . '</p>');
                                     echo ('<p class="card-text"><strong>Date & Créneau : </strong><br>' . $value['projet']->getDateButoireP() . '</p>');
-                                    echo ('<a href="../PROJET/ProjetX.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir la demande</a>');
+                                    echo ('<a href="FONCTIONNALITE/PROJET/ProjetX.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir la demande</a>');
                                     if (isset($usercode)) {
                                         if ($role == "createur") {
-                                            echo ('<p></p><a href="../PROJET/voirInscritProjet.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir les inscrits</a>');
+                                            echo ('<p></p><a href="FONCTIONNALITE/PROJET/voirInscritProjet.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir les inscrits</a>');
                                         } else if ($role == "participant") {
-                                            echo ('<p></p><a href="../PROJET/desinscriptionProjet.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Je me désinscrit </a>');
+                                            echo ('<p></p><a href="FONCTIONNALITE/PROJET/desinscriptionProjet.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Je me désinscrit </a>');
                                         } else {
-                                            echo ('<p></p><a href="../PROJET/inscriptionProjet.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
+                                            echo ('<p></p><a href="FONCTIONNALITE/PROJET/inscriptionProjet.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
                                         }
                                     } else {
-                                        echo ('<p></p><a href="../PROJET/inscriptionProjet.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
+                                        echo ('<p></p><a href="FONCTIONNALITE/PROJET/inscriptionProjet.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
                                     }
 
                                     echo ('</div>');
@@ -541,7 +541,7 @@
     </section>
 
     <!-- footer -->
-    <?php require('../../FONCTIONNALITE/footer.php'); ?>
+    <?php require('FONCTIONNALITE/footer.php'); ?>
     <!-- Fin footer -->
 
 

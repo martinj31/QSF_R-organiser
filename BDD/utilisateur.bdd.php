@@ -1,6 +1,6 @@
 <?php
 
-require('../../CLASS/UtilisateurClass.php');
+require('CLASS/UtilisateurClass.php');
 
 class utilisateurBDD {
     /*

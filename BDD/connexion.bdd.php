@@ -1,7 +1,7 @@
 <?php
         // Connexion à la base de donnée
 
-echo 'Page : connexion ';
+
     final class BDD{
     
     protected $DB = null;
@@ -21,12 +21,15 @@ echo 'Page : connexion ';
                 try
                {  
                     if(is_null($this->DB)){
-                        $this->DB = new PDO("mysql:host=bm124975-001.privatesql;port=35171;dbname=bd_qualif_qsf;charset=utf8","bd_qualif_qsf","mYSQLQSF31");
+                        //$this->DB = new PDO("mysql:host=bm124975-001.privatesql;port=35171;dbname=bd_qualif_qsf;charset=utf8","bd_qualif_qsf","mYSQLQSF31");
+                        $this->DB = new PDO("mysql:host=localhost;dbname=qsf;charset=utf8","root","");
                     }
                     return $this->DB;
                 } catch (Exception $ex) {
                     die('Erreur : '.$ex->getMessage());
                 }
+                
+                return null;
                 
         }
         

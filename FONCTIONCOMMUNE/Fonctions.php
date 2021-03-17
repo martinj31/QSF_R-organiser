@@ -1,28 +1,27 @@
 <?php
 
-echo 'Page : Fonction';
 
-require_once('../../BDD/connexion.bdd.php');
-require_once('../../BDD/utilisateur.bdd.php');
-require_once('../../BDD/projet.bdd.php');
-require_once('../PROJET/ProjetCommenceMail.php');
-require_once('../../BDD/atelier.bdd.php');
-require_once('../ATELIER/AtelierCommenceMail.php');
 
-echo 'Page : Fonction 2 (apres les requieres de la page Fonctions)';
+require_once('BDD/connexion.bdd.php');
+require_once('BDD/utilisateur.bdd.php');
+require_once('BDD/projet.bdd.php');
+require_once('FONCTIONNALITE/PROJET/ProjetCommenceMail.php');
+require_once('BDD/atelier.bdd.php');
+require_once('FONCTIONNALITE/ATELIER/AtelierCommenceMail.php');
+
 // 1. Connexion à la base de donnée
 
 
- $nomlogin = "bd_qualif_qsf";                    // Ici, nous connectons avec le serveur local, si vous voulez le tester sur d'autre serveur, vous pouvez changer ces 3 variables
+ /*$nomlogin = "bd_qualif_qsf";                    // Ici, nous connectons avec le serveur local, si vous voulez le tester sur d'autre serveur, vous pouvez changer ces 3 variables
   $nompasswd = "mYSQLQSF31";
   $nombase = "bd_qualif_qsf";
   $serveur = "bm124975-001.privatesql";
-  $port_bdd = "35171"; 
-/*
+  $port_bdd = "35171"; */
+
 $nomlogin = "root";                    // Ici, nous connectons avec le serveur local, si vous voulez le tester sur d'autre serveur, vous pouvez changer ces 3 variables
 $nompasswd = "";
 $nombase = "qsf";
-$serveur = "localhost";*/
+$serveur = "localhost";
 //$port_bdd = "35171";
 
 $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
@@ -32,7 +31,7 @@ $utilisateurBDD = new utilisateurBDD($bdd);
 $atelierBDD = new atelierBDD($bdd);
 $projetBDD = new projetBDD($bdd);
 
-$session = mysqli_connect($serveur, $nomlogin, $nompasswd, $nombase  , $port_bdd );
+$session = mysqli_connect($serveur, $nomlogin, $nompasswd, $nombase  /*, $port_bdd*/ );
 
 if ($session == NULL) { // Test de connexion n'est pas réussié
     echo ("<p>Echec de connection</p>");
