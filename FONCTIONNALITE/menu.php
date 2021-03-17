@@ -4,7 +4,7 @@
             <div class="row">
                 <!-- dope Menu -->
                 <nav class="dope-navbar justify-content-between" id="dopeNav">
-                    <a class="nav-brand" href="/QSF/QSF/FONCTIONNALITE/ACCUEIL/index.php">
+                    <a class="nav-brand" href="../../FONCTIONNALITE/ACCUEIL/index.php">
                         <img class="logo-normal" src="../../img/coup-de-main-coup-de-pouce_1.png">
                         <img class="logo-sticky" src="../../img/coup-de-main-coup-de-pouce-2.png">
 
@@ -49,7 +49,7 @@
             <?php
             //header('Content-type: text/html; charset=UTF-8', true);
           
-          require_once ('../../FONCTIONCOMMUNE/Fonctions.php');
+          require_once('../../FONCTIONCOMMUNE/Fonctions.php');
             require_once('../../BDD/connexion.bdd.php');
         require_once('../../BDD/utilisateur.bdd.php');
            
