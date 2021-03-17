@@ -31,7 +31,7 @@ $utilisateurBDD = new utilisateurBDD($bdd);
 $atelierBDD = new atelierBDD($bdd);
 $projetBDD = new projetBDD($bdd);
 
-$session = mysqli_connect($serveur, $nomlogin, $nompasswd, $nombase  /*, $port_bdd */);
+$session = mysqli_connect($serveur, $nomlogin, $nompasswd, $nombase  , $port_bdd );
 
 if ($session == NULL) { // Test de connexion n'est pas réussié
     echo ("<p>Echec de connection</p>");

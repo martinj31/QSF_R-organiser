@@ -1,6 +1,6 @@
 <?php
 
-require('../../CLASS/categorieClass.php');
+require('../../CLASS/CategorieClass.php');
 /* function afficher_categories() {  //fonction pour l'affichage des catégories
 
   $bdd = connect();
