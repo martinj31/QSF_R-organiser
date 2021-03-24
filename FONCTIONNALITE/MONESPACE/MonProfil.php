@@ -179,8 +179,8 @@
                 echo ('<img src="' . $value['photo'] . '" class="card-img-top" alt="...">');
                 echo ('<div class="card-body card text-center">');
                 echo ('<h5 class="card-title">' . $value['besoin']->getTitreB() . '</h5>');
-                echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['besoin']->getDatePublicationB())) . '</p>');
-                echo ('<p class="card-text">Délais souhaité: ' . date("d-m-yy", strtotime($value['besoin']->getDateButoireB())) . '</p>');
+                echo ('<p class="card-text">Date de publication: ' . date("d-m-Y", strtotime($value['besoin']->getDatePublicationB())) . '</p>');
+                echo ('<p class="card-text">Délais souhaité: ' . date("d-m-Y", strtotime($value['besoin']->getDateButoireB())) . '</p>');
                 echo ('<a href="../BESOIN/BesoinX.php?t=' . $value['besoin']->getCodeB() . '" class="btn btn-outline-dark">Voir la demande</a>');
                 echo ('<p></p><a href="BesoinModification.php?t=' . $value['besoin']->getCodeB() . '" class="btn btn-outline-dark">Modifier</a>');
                 if ($value['besoin']->getReponseB() > 0) {       // si il y a des réponses non traitées, affichir le button "Voir la réponse"             
@@ -274,7 +274,7 @@
                 echo ('<img src="' . $value['photo'] . '" class="card-img-top" alt="...">');
                 echo ('<div class="card-body card text-center">');
                 echo ('<h5 class="card-title">' . $value['talent']->getTitreT() . '</h5>');
-                echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['talent']->getDatePublicationT())) . '</p>');
+                echo ('<p class="card-text">Date de publication: ' . date("d-m-Y", strtotime($value['talent']->getDatePublicationT())) . '</p>');
                 echo ('<a href="../TALENT/TalentX.php?t=' . $value['talent']->getCodeT() . '" class="btn btn-outline-dark">Voir le détail</a>');
                 echo ('<p></p><a href="TalentModification.php?t=' . $value['talent']->getCodeT() . '" class="btn btn-outline-dark">Modifier</a>');
                 if ($value['talent']->getReponseT() > 0) { // si il y a des réponses non traitées, affichir le button "Voir la réponse"
@@ -360,7 +360,7 @@
                 echo ('<img src="' . $value["photo"] . '" class="card-img-top" alt="...">');
                 echo ('<div class="card-body card text-center">');
                 echo ('<h5 class="card-title">' . $value['atelier']->getTitreA() . '</h5>');
-                echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
+                echo ('<p class="card-text">Date de publication: ' . date("d-m-Y", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
                 echo ('<p class="card-text">Date & Créneau : ' . $value['atelier']->getDateDebutA() . ' à ' . $value['atelier']->getDateFinA() . '</p>');
                 echo ('<a href="../ATELIER/AtelierX.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir le détail</a>');
 
@@ -467,7 +467,7 @@
                 echo ('<img src="' . $value["photo"] . '" class="card-img-top" alt="...">');
                 echo ('<div class="card-body card text-center">');
                 echo ('<h5 class="card-title">' . $value['projet']->getTitreP() . '</h5>');
-                echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['projet']->getDatePublicationP())) . '</p>');
+                echo ('<p class="card-text">Date de publication: ' . date("d-m-Y", strtotime($value['projet']->getDatePublicationP())) . '</p>');
                 echo ('<p class="card-text">Date & Créneau : ' . $value['projet']->getDateButoireP() . '</p>');
                 echo ('<a href="../PROJET/ProjetX.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir le détail</a>');
 

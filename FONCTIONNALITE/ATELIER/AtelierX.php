@@ -66,7 +66,7 @@
                      if ($value['atelier']->getVisibiliteA() == 1) {
                          echo ('<p><img src="' . $value["photo"] . '" class="card-img-top" alt="' . $value["nomPhoto"] . '" style="width: 15rem;"</p>');
                         echo ('<p><strong> Date  & Créneau horaire : </strong>' . $value['atelier']->getDateDebutA() . ' à ' . $value['atelier']->getDateFinA() . '</p>');
-                        echo ('<p><strong> Date Publication : </strong>' . date("d-m-yy", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
+                        echo ('<p><strong> Date Publication : </strong>' . date("d-m-Y", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
                         
                         echo ('<p><strong>Type d\'atelier : </strong>' . $value['atelier']->getTypeA() . '</p>');
                         echo ('<p><strong>Description: </strong>' . $value['atelier']->getDescriptionA() . '</p>');

@@ -53,8 +53,8 @@
                     
 
                     echo ('<p><img src="' . $value['photo'] . '" class="card-img-top" alt="..."  style="width: 15rem;"</p>');
-                        echo ('<p><strong> Date Butoire:  </strong>' . date("d-m-yy", strtotime($value['projet']->getDateButoireP())) . '</p>');
-                        echo ('<p><strong> Date Publication:  </strong>' . date("d-m-yy", strtotime($value['projet']->getDatePublicationP())) . '</p>');
+                        echo ('<p><strong> Date Butoire:  </strong>' . date("d-m-Y", strtotime($value['projet']->getDateButoireP())) . '</p>');
+                        echo ('<p><strong> Date Publication:  </strong>' . date("d-m-Y", strtotime($value['projet']->getDatePublicationP())) . '</p>');
                        
                         echo ('<p><strong>Type: </strong>' . $value['projet']->getTypeP() . '</p>');
                         echo ('<p><strong>Lieu: </strong>' . $value['projet']->getLieuP() . '</p>');

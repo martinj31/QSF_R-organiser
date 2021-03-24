@@ -464,14 +464,14 @@
                 </div>
 
                 <!--=========================================================================================================================================-->
-                <div class="container" id="talents">
+                <div class="container" id="projets">
                     <div class="col-lg-12 header-left">
-                        <h1><a href="../TALENT/Talent.php">Les Projets</a></h1>
+                        <h1><a href="../PROJET/Projet.php">Les Projets</a></h1>
                     </div>
                     <div class="flex-parent d-flex justify-content-md-between bd-highlight mb-2">
                         <form class="form-inline my-2 my-lg-0" method="get">
                             <input aria-label="Search" class="form-control mr-sm-2" name="motT" placeholder="Animation/BI/..." type="search"> <button class="btn btn-outline-dark" type="submit">Recherche</button>
-                        </form><?php is_login_new_talent(); ?>
+                        </form><?php is_login_new_projet(); ?>
                     </div>
                     <div class="flex-parent d-flex flex-wrap justify-content-around mt-3" id="cartesP">
                         <?php
@@ -505,7 +505,7 @@
                                     echo ('<img src="' . $value['photo'] . '" class="card-img-top" alt="...">');
                                     echo ('<div class="card-body card text-center">');
                                     echo ('<h5 class="card-title">' . $value['projet']->getTitreP() . '</h5>');
-                                    echo ('<p class="card-text"><strong>Date de publication: </strong><br>' . date("d-m-yy", strtotime($value['projet']->getDatePublicationP())) . '</p>');
+                                    echo ('<p class="card-text"><strong>Date de publication: </strong><br>' . date("d-m-Y", strtotime($value['projet']->getDatePublicationP())) . '</p>');
                                     echo ('<p class="card-text"><strong>Date & Créneau : </strong><br>' . $value['projet']->getDateButoireP() . '</p>');
                                     echo ('<a href="../PROJET/ProjetX.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir la demande</a>');
                                     if (isset($usercode)) {

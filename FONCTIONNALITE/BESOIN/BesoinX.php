@@ -60,8 +60,8 @@
 
                     if (strtotime($value['besoin']->getDateButoireB()) >= strtotime(date("Y-m-d H:i:s")) && $value['besoin']->getVisibiliteB() == 1) {
                         echo ('<p><img src="' . $value['photo'] . '" class="card-img-top" alt="..."  style="width: 15rem;"</p>');
-                        echo ('<p><strong> Date Butoire: </strong>' . date("d-m-yy", strtotime($value['besoin']->getDateButoireB())) . '</p>');
-                        echo ('<p><strong> Date Publication: </strong>' . date("d-m-yy", strtotime($value['besoin']->getDatePublicationB())) . '</p>');
+                        echo ('<p><strong> Date Butoire: </strong>' . date("d-m-Y", strtotime($value['besoin']->getDateButoireB())) . '</p>');
+                        echo ('<p><strong> Date Publication: </strong>' . date("d-m-Y", strtotime($value['besoin']->getDatePublicationB())) . '</p>');
                         
                         echo ('<p><strong>Type: </strong>' . $value['besoin']->getTypeB() . '</p>');
                         echo ('<p><strong>Description: </strong>' . $value['besoin']->getDescriptionB() . '</p>');

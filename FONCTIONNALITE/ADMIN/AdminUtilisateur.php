@@ -112,8 +112,8 @@
                             echo ('<img src="' . $value['photo'] . '" class="card-img-top" alt="...">');
                             echo ('<div class="card-body card text-center">');
                             echo ('<h5 class="card-title">' . $value['besoin']->getTitreB() . '</h5>');
-                            echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['besoin']->getDatePublicationB())) . '</p>');
-                            echo ('<p class="card-text">Délais souhaité: ' . date("d-m-yy", strtotime($value['besoin']->getDateButoireB())) . '</p>');
+                            echo ('<p class="card-text">Date de publication: ' . date("d-m-Y", strtotime($value['besoin']->getDatePublicationB())) . '</p>');
+                            echo ('<p class="card-text">Délais souhaité: ' . date("d-m-Y", strtotime($value['besoin']->getDateButoireB())) . '</p>');
                             echo ('</div>');
                             echo ('</div></li>');
                         }
@@ -190,7 +190,7 @@
                         echo ('<img src="' . $value['photo'] . '" class="card-img-top" alt="...">');
                         echo ('<div class="card-body card text-center">');
                         echo ('<h5 class="card-title">' . $value['talent']->getTitreT() . '</h5>');
-                        echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['talent']->getDatePublicationT())) . '</p>');
+                        echo ('<p class="card-text">Date de publication: ' . date("d-m-Y", strtotime($value['talent']->getDatePublicationT())) . '</p>');
 
                         echo ('</div>');
                         echo ('</div></li>');
@@ -270,7 +270,7 @@
                             echo ('<img src="' . $value["photo"] . '" class="card-img-top" alt="...">');
                             echo ('<div class="card-body card text-center">');
                             echo ('<h5 class="card-title">' . $value['atelier']->getTitreA() . '</h5>');
-                            echo ('<p class="card-text">Date de publication: ' . date("d-m-yy", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
+                            echo ('<p class="card-text">Date de publication: ' . date("d-m-Y", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
                             echo ('<p class="card-text">Date & Créneau : ' . $value['atelier']->getDateDebutA() . '</p>');
                             echo ('</div>');
                             echo ('</div></li>');

@@ -34,7 +34,7 @@
                     <?php
                     require_once('../../FONCTIONCOMMUNE/Fonctions.php');
                     date_default_timezone_set('Europe/Paris');
-                    echo "Date de création :   " . date("d/m/yy");
+                    echo "Date de création :   " . date("d/m/Y");
 
                     $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
                     $bdd = $db->connect();
@@ -85,11 +85,11 @@
                     </div>
                     <div class="form-group">
                         <label for="inputEmail4">Date butoire(<span style="color:red">*</span>)</label>
-                        <input type="datetime-local" name="datebutoire" class="form-control col-md-4" id="inputEmail4" required />
+                        <input type="datetime-local" name="datebutoire"  id="inputEmail4" required />
                     </div>
                     <div class="form-group">
                         <label for="inputEmail4">Lieu du Projet(<span style="color:red">*</span>)</label>
-                        <input type="text" name="lieu" class="form-control col-md-4"  id="inputEmail4" required />
+                        <input type="text" name="lieu"   id="inputEmail4" required />
                     </div>
                     <div class="form-group">
                         <label for="inputAddress">Type de besoin(<span style="color:red">*</span>)</label>				

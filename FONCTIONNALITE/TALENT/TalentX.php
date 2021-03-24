@@ -64,7 +64,7 @@
                     
                     if ($value['talent']->getVisibiliteT() == 1) {
                         echo ('<p><img src="' . $value["photo"] . '" class="card-img-top" alt="..." style="width: 15rem;"</p>');
-                        echo ('<p><strong> Date Publication: </strong>' . date("d-m-yy", strtotime($value['talent']->getDatePublicationT())) . '</p>');
+                        echo ('<p><strong> Date Publication: </strong>' . date("d-m-Y", strtotime($value['talent']->getDatePublicationT())) . '</p>');
                         echo ('<p><strong>Type: </strong>' . $value['talent']->getTypeT() . '</p>');
                         echo ('<p><strong>Description: </strong>' .$value['talent']->getDescriptionT() . '</p>');
                         echo ('<hr>');

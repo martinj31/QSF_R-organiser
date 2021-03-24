@@ -141,7 +141,7 @@
                                 echo ('<img src="' . $value['photo'] . '" class="card-img-top" alt="...">');
                                 echo ('<div class="card-body card text-center">');
                                 echo ('<h5 class="card-title">' . $value['projet']->getTitreP() . '</h5>');
-                                echo ('<p class="card-text"><strong>Date de publication:  </strong><br>' . date("d-m-yy", strtotime($value['projet']->getDatePublicationP())) . '</p>');
+                                echo ('<p class="card-text"><strong>Date de publication:  </strong><br>' . date("d-m-Y", strtotime($value['projet']->getDatePublicationP())) . '</p>');
                                 echo ('<p class="card-text"><strong>Date & Créneau :  </strong><br>' . $value['projet']->getDateButoireP() . '</p>');
                                 echo ('<a href="ProjetX.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir la demande</a>');
                                 if (isset($usercode)) {

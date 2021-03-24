@@ -797,11 +797,14 @@ if (isset($_POST['email'])) {
         $Mailer->SMTPDebug = 0;
         $Mailer->isSMTP();
 
-        //$Mailer->SMTPAuth = true;
+        $Mailer->SMTPAuth = true;
         $Mailer->Timeout = 10000;
-        $Mailer->Host = 'smtp.cpam-toulouse.cnamts.fr';
-        $Mailer->Port = 25;
+        $Mailer->Host = 'ssl0.ovh.net';
+        $Mailer->Port = 587;
         $Mailer->isHTML(true);
+        $Mailer->Username = 'qsf@cpam31.fr';      // SMTP login
+        $Mailer->Password = 'qsf_113101';
+        $Mailer->SMTPSecure = 'tls';
         $Mailer->CharSet = "UTF-8";
         //$Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
         $Mailer->setFrom('admincmcp@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
@@ -839,12 +842,27 @@ if (isset($_POST['email'])) {
 
         }
     } else {
-        ?>
+        
+        $EndMailUrssaf = "@urssaf.fr";
+        $EndMailCpam = "@assurance-maladie.fr";
+        
+        if(strpos($Email, $EndMailUrssaf) !== false || strpos($Email, $EndMailCpam) !== false){
+             ?>
         <script type="text/javascript">
             alert("Cet Email n'est pas valide. \n Veuillez réessayer avec un autre email !");
-           // document.location.href = 'Inscription.php';
+            document.location.href = 'Inscription.php';
         </script>
         <?php
+        }else{
+             ?>
+        <script type="text/javascript">
+            alert("Ce Email n'appartient pas au domaine 'assurance-maladie'. \n Veuillez réessayer avec un autre email !");
+            document.location.href = 'Inscription.php';
+        </script>
+        <?php
+        }
+        
+       
 
     }
 }

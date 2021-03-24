@@ -34,7 +34,7 @@
                     <?php
                     require_once('../../FONCTIONCOMMUNE/Fonctions.php');
                     date_default_timezone_set('Europe/Paris');
-                    echo "Date de création :   " . date("d/m/yy");
+                    echo "Date de création :   " . date("d/m/Y");
 
                     $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
                     $bdd = $db->connect();

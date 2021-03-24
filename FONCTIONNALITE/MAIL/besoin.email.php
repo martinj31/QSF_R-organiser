@@ -18,21 +18,21 @@ $emailBDD = new emailBDD($bdd);
 $besoinBDD = new besoinBDD($bdd);
 $day = $parametresBDD->selectParamtre();
 //requête pour insérer provenance, destinataire, sujet, contenu et la date d'évaluation dans la bdd
-/*$req1 = "SELECT * FROM `parametres` WHERE 1";
-$result1 = mysqli_query($session, $req1);
-if ($days = mysqli_fetch_array($result1)) {
-    $day = $days['Interval'];
-}*/
+/* $req1 = "SELECT * FROM `parametres` WHERE 1";
+  $result1 = mysqli_query($session, $req1);
+  if ($days = mysqli_fetch_array($result1)) {
+  $day = $days['Interval'];
+  } */
 
 //date d'aujourd'hui + le délais d'évaluation
 $dateevaluation = date("Y-m-d", strtotime("+$day day"));
-$sujet = "[COUP DE MAIN, COUP DE POUCE] Répondre à votre besoin ". $_POST['titrecarte'];
+$sujet = "[COUP DE MAIN, COUP DE POUCE] Répondre à votre besoin " . $_POST['titrecarte'];
 
-/*$req = "select s.CodeU from besoins as b, saisir as s where b.CodeB = {$_POST['codecarte']} and b.CodeB = s.CodeB";
-$TableauDestinataires = array();
-foreach (mysqli_query($session, $req) as $row) {
-    $TableauDestinataires[] = $row['CodeU'];
-}*/
+/* $req = "select s.CodeU from besoins as b, saisir as s where b.CodeB = {$_POST['codecarte']} and b.CodeB = s.CodeB";
+  $TableauDestinataires = array();
+  foreach (mysqli_query($session, $req) as $row) {
+  $TableauDestinataires[] = $row['CodeU'];
+  } */
 $TableauDestinataires[] = $utilisateurBDD->saisirUserIDByBesoin($_POST['codecarte']);
 $email = new email([]);
 $email->setProvenance($_SESSION['codeu']);
@@ -44,18 +44,18 @@ $email->setCodeCarte($_POST['codecarte']);
 $email->setTypeCarte('besoin');
 
 foreach ($TableauDestinataires as $apprenant) {
-    
+
     $email->setDestinataire($apprenant);
-    
+
     $emailBDD->addEmail($email);
-    /*$sql = "insert into emails(Provenance,Destinataire,Sujet,Contenu,DateEvaluation,VisibiliteE,CodeCarte,TypeCarte) values({$_SESSION['codeu']},$apprenant,'[COUP DE MAIN, COUP DE POUCE] Répondre à votre besoin {$_POST["titrecarte"]}','{$_POST['contenu_besoin']}','$dateevaluation',1,{$_POST['codecarte']},'besoin')";
-    mysqli_query($session, $sql);*/
+    /* $sql = "insert into emails(Provenance,Destinataire,Sujet,Contenu,DateEvaluation,VisibiliteE,CodeCarte,TypeCarte) values({$_SESSION['codeu']},$apprenant,'[COUP DE MAIN, COUP DE POUCE] Répondre à votre besoin {$_POST["titrecarte"]}','{$_POST['contenu_besoin']}','$dateevaluation',1,{$_POST['codecarte']},'besoin')";
+      mysqli_query($session, $sql); */
 }
 
 // incrémenter sur besoins.ReponseB
 $besoinBDD->UpdateReponseBAugment($_POST['codecarte']);
-/*$query = "UPDATE besoins SET ReponseB = ReponseB + 1 WHERE CodeB = {$_POST['codecarte']}";
-mysqli_query($session, $query);*/
+/* $query = "UPDATE besoins SET ReponseB = ReponseB + 1 WHERE CodeB = {$_POST['codecarte']}";
+  mysqli_query($session, $query); */
 
 //requête prendre l'email destinataire
 $liste = '';
@@ -472,33 +472,36 @@ $message = '
     </div>
     </body>
     </html> ';
-/*$headers[] = 'MIME-Version: 1.0';
-$headers[] = 'Content-type:text/html;charset=iso-8859-1';
-$headers[] = 'From: COUP DE MAIN, COUP DE POUCE<admincmcp@assurance-maladie.fr>'; // En-têtes additionnels  
-mail($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail 
-header("location:../BESOIN/Besoin.php");*/
+/* $headers[] = 'MIME-Version: 1.0';
+  $headers[] = 'Content-type:text/html;charset=iso-8859-1';
+  $headers[] = 'From: COUP DE MAIN, COUP DE POUCE<admincmcp@assurance-maladie.fr>'; // En-têtes additionnels
+  mail($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail
+  header("location:../BESOIN/Besoin.php"); */
 
 
 $Mailer = new PHPMailer\PHPMailer\PHPMailer(true);
-        $Mailer->SMTPDebug = 0;
-        $Mailer->isSMTP();
+$Mailer->SMTPDebug = 0;
+$Mailer->isSMTP();
 
-        //$Mailer->SMTPAuth = true;
-        $Mailer->Timeout = 10000;
-        $Mailer->Host = 'smtp.cpam-toulouse.cnamts.fr';
-        $Mailer->Port = 25;
-        $Mailer->isHTML(true);
-        $Mailer->CharSet = "UTF-8";
-        //$Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
-        $Mailer->setFrom('admincmcp@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
-        $Mailer->Subject = $sujet;
-        $Mailer->Body = $message;
-        //$Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
-        $Mailer->AddAddress($destinataire);
-        //comme $Mailer->AddAddress($destinataire); ne marche pas cela bloque la redirection (header("Location:../MONESPACE/MonProfil.php");)
-        if ($Mailer->send()) {
-            header("location:../BESOIN/Besoin.php");
-        }
+$Mailer->SMTPAuth = true;
+$Mailer->Timeout = 10000;
+$Mailer->Host = 'ssl0.ovh.net';
+$Mailer->Port = 587;
+$Mailer->isHTML(true);
+$Mailer->Username = 'qsf@cpam31.fr';      // SMTP login
+$Mailer->Password = 'qsf_113101';
+$Mailer->SMTPSecure = 'tls';
+$Mailer->CharSet = "UTF-8";
+//$Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
+$Mailer->setFrom('admincmcp@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
+$Mailer->Subject = $sujet;
+$Mailer->Body = $message;
+//$Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
+$Mailer->AddAddress($destinataire);
+//comme $Mailer->AddAddress($destinataire); ne marche pas cela bloque la redirection (header("Location:../MONESPACE/MonProfil.php");)
+if ($Mailer->send()) {
+    header("location:../BESOIN/Besoin.php");
+}
 ?>
 <!--<script>
     document.location.href = window.history.go(-2);

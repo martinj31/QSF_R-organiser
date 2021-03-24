@@ -49,7 +49,7 @@
                                     <?php
                                     require_once('../../FONCTIONCOMMUNE/Fonctions.php');
                                     date_default_timezone_set('Europe/Paris');
-                                    echo "Date de création :   " . date("d/m/yy");
+                                    echo "Date de création :   " . date("d/m/Y");
                                     ?>
                                     <div class="form-row align-items-center">
                                         <div class="col-auto my-1">
@@ -99,13 +99,13 @@
                                     
                                     <div class="form-group">
                                         <label for="inputEmail4">Date et Heure debut d'Atelier (<span style="color:red">*</span>)</label>
-                                        <input type="datetime-local" id="meeting-time" 
+                                        <input type="datetime-local" id="inputEmail4" 
                                                name="dateDebut" 
                                                min="2020-10-29T00:00" max="2022-06-14T00:00">
                                     </div>
                                     <div class="form-group">
                                         <label for="inputEmail4">Date et Heure fin d'Atelier(<span style="color:red">*</span>)</label>
-                                        <input type="datetime-local" id="meeting-time"
+                                        <input type="datetime-local" id="inputEmail4"
                                                name="dateFin" 
                                                min="2020-10-29T00:00" max="2022-06-14T00:00">
                                     </div>
@@ -134,10 +134,10 @@
                                             <label class="form-check-label" for="inlineRadio3">Pro&Perso</label>
                                         </div>               
                                     </div>   
-                                    <div class="form-group">
+                                   <!-- <div class="form-group">
                                         <label for="inputEmail4">En savoir plus (si vous le souhaitez, indiquez un site internet pour plus d'informations) <br> [e.x. https://fr.wikipedia.org/wiki/Yoga] </label>
                                         <input type="text" name="plus" class="form-control col-md-4" id="inputEmail4" />
-                                    </div>
+                                    </div>-->
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Créer</button> 

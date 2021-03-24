@@ -182,7 +182,7 @@
                                 echo ('<img src="' . $value["photo"] . '" class="card-img-top" alt="...">');
                                 echo ('<div class="card-body card text-center">');
                                 echo ('<h5 class="card-title">' . $value['atelier']->getTitreA() . '</h5>');
-                                echo ('<p class="card-text"><strong>Date de publication: </strong><br>' . date("d-m-yy", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
+                                echo ('<p class="card-text"><strong>Date de publication: </strong><br>' . date("d-m-Y", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
                                 echo ('<p class="card-text"><strong>Date & Créneau : </strong><br>' . $value['atelier']->getDateDebutA() . ' à ' . $value['atelier']->getDateFinA() . '</p>');
                                 echo ('<a href="../ATELIER/AtelierX.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir le détail</a><br>');
                                 if (isset($usercode)) {

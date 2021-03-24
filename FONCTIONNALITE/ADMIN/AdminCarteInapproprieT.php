@@ -1,7 +1,5 @@
 <?php
 
-
-
 require_once('../../FONCTIONCOMMUNE/Fonctions.php');
 require_once('../../BDD/connexion.bdd.php');
 require_once('../../BDD/talent.bdd.php');
@@ -28,7 +26,7 @@ $userBDD = new utilisateurBDD($bdd);
 if (isset($_POST['desactivert'])) {
     $result = "supprimé";
     $CodeT = $_POST['desactivert'];
-    
+
     $talentBDD->userUpdateTalentNotVisible($CodeT);
     $titreEtEmail = $talentBDD->saisirEmailEtTitreTalent($CodeT);
     var_dump($titreEtEmail);
@@ -41,9 +39,9 @@ if (isset($_POST['desactivert'])) {
 
 if (isset($_POST['activert'])) {
     $result = "activé";
-    
+
     $CodeTC = $_POST['activert'];
-  
+
     $talentBDD->userUpdateTalentVisible($CodeTC);
     $titreEtEmail = $talentBDD->saisirEmailEtTitreTalent($CodeTC);
 
@@ -412,11 +410,14 @@ if ($titreEtEmail[0]['Email'] != NULL) {
     $Mailer->SMTPDebug = 0;
     $Mailer->isSMTP();
 
-    //$Mailer->SMTPAuth = true;
+    $Mailer->SMTPAuth = true;
     $Mailer->Timeout = 10000;
-    $Mailer->Host = 'smtp.cpam-toulouse.cnamts.fr';
-    $Mailer->Port = 25;
+    $Mailer->Host = 'ssl0.ovh.net';
+    $Mailer->Port = 587;
     $Mailer->isHTML(true);
+    $Mailer->Username = 'qsf@cpam31.fr';      // SMTP login
+    $Mailer->Password = 'qsf_113101';
+    $Mailer->SMTPSecure = 'tls';
     $Mailer->CharSet = "UTF-8";
     $Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
     $Mailer->Subject = $sujet;

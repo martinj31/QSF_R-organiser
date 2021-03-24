@@ -34,7 +34,7 @@
                     <?php
                     require_once('../../FONCTIONCOMMUNE/Fonctions.php');
                     date_default_timezone_set('Europe/Paris');
-                    echo "Date de modification :   " . date("d/m/yy");
+                    echo "Date de modification :   " . date("d/m/Y");
                     ?>         
                     <?php
                     $T = $_GET['t'];

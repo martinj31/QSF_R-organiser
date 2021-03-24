@@ -1,5 +1,11 @@
 <?php
 
+ if (!isset($_SESSION['email'])) {
+     
+     header("Location:../INSCRIPTION/Login.php");
+     
+ }
+
 require_once('../../FONCTIONCOMMUNE/Fonctions.php');
 require_once('../../BDD/categorie.bdd.php');
 require_once('../../BDD/connexion.bdd.php');
@@ -9,6 +15,8 @@ require_once('../../PHPMailer/src/Exception.php');
 require_once('../../PHPMailer/src/PHPMailer.php');
 require_once('../../PHPMailer/src/SMTP.php');
 require_once('../../PHPMailer/src/PHPMailerAutoload.php');
+
+
 
 $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
 $bdd = $db->connect();
@@ -385,11 +393,14 @@ if (isset($_POST['nomcp'])) {
         $Mailer->SMTPDebug = 0;
         $Mailer->isSMTP();
 
-        //$Mailer->SMTPAuth = true;
+        $Mailer->SMTPAuth = true;
         $Mailer->Timeout = 10000;
-        $Mailer->Host = 'smtp.cpam-toulouse.cnamts.fr';
-        $Mailer->Port = 25;
+        $Mailer->Host = 'ssl0.ovh.net';
+        $Mailer->Port = 587;
         $Mailer->isHTML(true);
+        $Mailer->Username = 'qsf@cpam31.fr';      // SMTP login
+        $Mailer->Password = 'qsf_113101';
+        $Mailer->SMTPSecure = 'tls';
         $Mailer->CharSet = "UTF-8";
         //$Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
         $Mailer->setFrom($Email, 'COUP DE MAIN, COUP DE POUCE');

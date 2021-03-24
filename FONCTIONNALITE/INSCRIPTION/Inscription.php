@@ -42,7 +42,7 @@
 			  </div>
 			  <div class="form-group">
 				<label for="inputAddress">Email (Pro & Perso)</label>
-				<input type="text" class="form-control" name="email" id="inputAddress" placeholder="@gmail.com" maxlength="255" required>
+				<input type="text" class="form-control" name="email" id="inputAddress" placeholder="@assurance-maladie.fr" maxlength="255" required>
 			  </div>
                         
 			  <div class="form-group">

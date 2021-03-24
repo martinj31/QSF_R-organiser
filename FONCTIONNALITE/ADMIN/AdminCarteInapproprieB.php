@@ -9,7 +9,7 @@ require_once('../../PHPMailer/src/PHPMailer.php');
 require_once('../../PHPMailer/src/SMTP.php');
 require_once('../../PHPMailer/src/PHPMailerAutoload.php');
 
-$result= "";
+$result = "";
 $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
 $bdd = $db->connect();
 
@@ -20,7 +20,7 @@ $userBDD = new utilisateurBDD($bdd);
 //cacher la carte
 if (isset($_POST['desactiverb'])) {
     $CodeB = $_POST['desactiverb'];
-$result = "supprimé";
+    $result = "supprimé";
     $besoinBDD->userUpdateBesoinVisible($CodeB, 0);
 
     /* $stmt1 = mysqli_prepare($session, "UPDATE besoins SET VisibiliteB = 0 WHERE CodeB = ?");
@@ -368,7 +368,7 @@ href="https://www.twitter.com/" target="_blank"><img width="24" border="0" heigh
 
 </span><p style="padding: 0; margin: 0;">&nbsp;</p><span class="mso-font-fix-tahoma">
 
-</span><p style="padding: 0; margin: 0;">Votre besoin « ' . $titreEtEmail[0]['Titre'] . '» a été '.$result. ' par l\'administrateur</p><span class="mso-font-fix-tahoma">
+</span><p style="padding: 0; margin: 0;">Votre besoin « ' . $titreEtEmail[0]['Titre'] . '» a été ' . $result . ' par l\'administrateur</p><span class="mso-font-fix-tahoma">
 
 </span><p style="padding: 0; margin: 0;"> à cause des contenus inappropriés.</p><span class="mso-font-fix-tahoma">
 
@@ -467,26 +467,29 @@ href="https://www.twitter.com/" target="_blank"><img width="24" border="0" heigh
       $header .= "Disposition-Notification-To:l'email d'un administrateur"; // c'est ici que l'on ajoute la directive */
 
     // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
-   /* $headers[] = 'MIME-Version: 1.0';
-    $headers[] = 'Content-type: text/html; charset=iso-8859-1';
+    /* $headers[] = 'MIME-Version: 1.0';
+      $headers[] = 'Content-type: text/html; charset=iso-8859-1';
 
-    // En-têtes additionnels
+      // En-têtes additionnels
 
-    $headers[] = 'From: [COUP DE MAIN, COUP DE POUCE]<admincmcp@assurance-maladie.fr>';
+      $headers[] = 'From: [COUP DE MAIN, COUP DE POUCE]<admincmcp@assurance-maladie.fr>';
 
 
 
-    mail($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail */
-    
+      mail($destinataire, $sujet, $message, implode("\r\n", $headers)); // on envois le mail */
+
     $Mailer = new PHPMailer\PHPMailer\PHPMailer(true);
     $Mailer->SMTPDebug = 0;
     $Mailer->isSMTP();
 
-    //$Mailer->SMTPAuth = true;
+    $Mailer->SMTPAuth = true;
     $Mailer->Timeout = 10000;
-    $Mailer->Host = 'smtp.cpam-toulouse.cnamts.fr';
-    $Mailer->Port = 25;
+    $Mailer->Host = 'ssl0.ovh.net';
+    $Mailer->Port = 587;
     $Mailer->isHTML(true);
+    $Mailer->Username = 'qsf@cpam31.fr';      // SMTP login
+    $Mailer->Password = 'qsf_113101';
+    $Mailer->SMTPSecure = 'tls';
     $Mailer->CharSet = "UTF-8";
     $Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
     $Mailer->Subject = $sujet;

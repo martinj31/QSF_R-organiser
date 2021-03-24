@@ -1,7 +1,9 @@
-<?php  //script
+<?php
+
+//script
 // si la date d'aujourd'hui est égale à la date d'évaluation, envoyer le mail 
-    require_once ('../Fonctions.php');
-    require_once ('../Fonctions.php');
+require_once ('../Fonctions.php');
+require_once ('../Fonctions.php');
 require_once('../../BDD/connexion.bdd.php');
 require_once('../../BDD/utilisateur.bdd.php');
 require_once('../../PHPMailer/src/Exception.php');
@@ -16,19 +18,19 @@ $utilisateurBDD = new utilisateurBDD($bdd);
 
 $Mails = $utilisateurBDD->selectUtilisateurEmailTalentByDate($today);
 
-    // liste des destinataire qui vont recevoir un mail d'évaluation sur besoin
-    $liste = '';
-    $today = date();
-    //$req = "select DISTINCT u.Email from emails as e, utilisateurs as u where e.TypeCarte = 'talent' and e.DateEvaluation = '$today' and ( e.Provenance = u.CodeU or e.Destinataire = u.CodeU ) ";
-    foreach  ($Mails as $ligne) {
-        $liste = $liste.$ligne.', ';
-    }
-    $liste = rtrim($liste,', ');
-    
-    //email pour evaluation de l'expérience
-    $to = "$liste";
-    $subject = "[COUP DE MAIN, COUP DE POUCE] Evaluation sur votre expérience de la plateforme [talent]"; // sujet du mail
-    $content = '
+// liste des destinataire qui vont recevoir un mail d'évaluation sur besoin
+$liste = '';
+$today = date();
+//$req = "select DISTINCT u.Email from emails as e, utilisateurs as u where e.TypeCarte = 'talent' and e.DateEvaluation = '$today' and ( e.Provenance = u.CodeU or e.Destinataire = u.CodeU ) ";
+foreach ($Mails as $ligne) {
+    $liste = $liste . $ligne . ', ';
+}
+$liste = rtrim($liste, ', ');
+
+//email pour evaluation de l'expérience
+$to = "$liste";
+$subject = "[COUP DE MAIN, COUP DE POUCE] Evaluation sur votre expérience de la plateforme [talent]"; // sujet du mail
+$content = '
     <!DOCTYPE html>
     <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 
@@ -510,27 +512,30 @@ $Mails = $utilisateurBDD->selectUtilisateurEmailTalentByDate($today);
     </div>
     </body>
     </html> ';
-    /*$from = 'MIME-Version: 1.0' . "\r\n";
-    $from .= "Content-type:text/html;charset=iso-8859-1" . "\r\n";
-    $from .= 'From: COUP DE MAIN, COUP DE POUCE<cmcp@cpam31.fr>' . "\r\n"; // En-têtes additionnels  
-    mail ($to, $subject, $content, $from); // on envois le mail  */
-    
-    $Mailer = new PHPMailer\PHPMailer\PHPMailer(true);
+/* $from = 'MIME-Version: 1.0' . "\r\n";
+  $from .= "Content-type:text/html;charset=iso-8859-1" . "\r\n";
+  $from .= 'From: COUP DE MAIN, COUP DE POUCE<cmcp@cpam31.fr>' . "\r\n"; // En-têtes additionnels
+  mail ($to, $subject, $content, $from); // on envois le mail */
+
+$Mailer = new PHPMailer\PHPMailer\PHPMailer(true);
 $Mailer->SMTPDebug = 0;
 $Mailer->isSMTP();
 
-//$Mailer->SMTPAuth = true;
+$Mailer->SMTPAuth = true;
 $Mailer->Timeout = 10000;
-$Mailer->Host = 'smtp.cpam-toulouse.cnamts.fr';
-$Mailer->Port = 25;
+$Mailer->Host = 'ssl0.ovh.net';
+$Mailer->Port = 587;
 $Mailer->isHTML(true);
+$Mailer->Username = 'qsf@cpam31.fr';      // SMTP login
+$Mailer->Password = 'qsf_113101';
+$Mailer->SMTPSecure = 'tls';
 $Mailer->CharSet = "UTF-8";
 //$Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
 $Mailer->setFrom('cmcp@cpam31.fr', 'COUP DE MAIN, COUP DE POUCE');
 $Mailer->Subject = $sujet;
 $Mailer->Body = $message;
 //$Mailer->AddAddress('Julien.martinezfouche@assurance-maladie.fr');
- $Mailer->AddAddress($to);
+$Mailer->AddAddress($to);
 //comme $Mailer->AddAddress($destinataire); ne marche pas cela bloque la redirection (header("Location:../MONESPACE/MonProfil.php");)
 if ($Mailer->send()) {
     header("Location:../MONESPACE/MonProfil.php");

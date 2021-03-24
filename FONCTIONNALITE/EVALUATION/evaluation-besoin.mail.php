@@ -21,7 +21,7 @@ $Mails = $utilisateurBDD->selectUtilisateurEmailBesoinByDate($today);
 //$req = "select DISTINCT u.Email from emails as e, utilisateurs as u where e.TypeCarte = 'besoin' and e.DateEvaluation = '$today' and ( e.Provenance = u.CodeU or e.Destinataire = u.CodeU ) ";
 foreach ($Mails as $ligne) {
     $liste = $liste . $ligne
-           . ', ';
+            . ', ';
 }
 $liste = rtrim($liste, ', ');
 
@@ -520,11 +520,14 @@ $Mailer = new PHPMailer\PHPMailer\PHPMailer(true);
 $Mailer->SMTPDebug = 0;
 $Mailer->isSMTP();
 
-//$Mailer->SMTPAuth = true;
+$Mailer->SMTPAuth = true;
 $Mailer->Timeout = 10000;
-$Mailer->Host = 'smtp.cpam-toulouse.cnamts.fr';
-$Mailer->Port = 25;
+$Mailer->Host = 'ssl0.ovh.net';
+$Mailer->Port = 587;
 $Mailer->isHTML(true);
+$Mailer->Username = 'qsf@cpam31.fr';      // SMTP login
+$Mailer->Password = 'qsf_113101';
+$Mailer->SMTPSecure = 'tls';
 $Mailer->CharSet = "UTF-8";
 //$Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
 $Mailer->setFrom('cmcp@cpam31.fr', 'COUP DE MAIN, COUP DE POUCE');

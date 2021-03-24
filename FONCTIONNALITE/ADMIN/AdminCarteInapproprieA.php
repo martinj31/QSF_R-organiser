@@ -33,22 +33,22 @@ if (isset($_POST['desactivera'])) {
 
 // réactiver la carte 
 if (isset($_POST['activera'])) {
-    
-    
-    
+
+
+
     $result = "activé";
     $CodeAC = $_POST['activera'];
-    
+
     if (isset($_POST['url'])) {
-        
+
         $URL = $_POST['url'];
         $atelierBDD->userUpdateAtelierVisibleAndURL($CodeAC, $URL);
-    }else{
+    } else {
         $atelierBDD->userUpdateAtelierVisibleOui($CodeAC);
     }
 
-    
-    
+
+
     /* $stmt2 = mysqli_prepare($session, "UPDATE ateliers SET VisibiliteA = 1, URL = ? WHERE CodeA = ?");
       mysqli_stmt_bind_param($stmt2, 'si', $URL, $CodeAC);
       mysqli_stmt_execute($stmt2); */
@@ -418,11 +418,14 @@ href="https://www.twitter.com/" target="_blank"><img width="24" border="0" heigh
     $Mailer->SMTPDebug = 0;
     $Mailer->isSMTP();
 
-    //$Mailer->SMTPAuth = true;
+    $Mailer->SMTPAuth = true;
     $Mailer->Timeout = 10000;
-    $Mailer->Host = 'smtp.cpam-toulouse.cnamts.fr';
-    $Mailer->Port = 25;
+    $Mailer->Host = 'ssl0.ovh.net';
+    $Mailer->Port = 587;
     $Mailer->isHTML(true);
+    $Mailer->Username = 'qsf@cpam31.fr';      // SMTP login
+    $Mailer->Password = 'qsf_113101';
+    $Mailer->SMTPSecure = 'tls';
     $Mailer->CharSet = "UTF-8";
     $Mailer->setFrom('Laurete-noreply@assurance-maladie.fr', 'COUP DE MAIN, COUP DE POUCE');
     $Mailer->Subject = $sujet;
