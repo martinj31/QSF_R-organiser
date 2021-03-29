@@ -543,3 +543,29 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+--
+-- Déchargement des données de la table `categories`
+--
+
+INSERT INTO `categories` (`CodeC`, `NomC`, `DescriptionC`, `PhotoC`, `VisibiliteC`) VALUES
+(1, 'Sport', 'Basketball, Football,...', 'https://www.bls.gov/spotlight/2017/sports-and-exercise/images/cover_image.jpg', 1),
+(2, 'Animation', 'Réunions créatives, Pitcher...', 'https://www.maxicasting.com/sites/default/files/styles/medium_article/public/field/image/Virginie_Guilhaume.jpg?itok=9llLIC0Q', 1),
+(3, 'Outils métiers', '', 'https://www.cm-alsace.fr/sites/default/files/styles/header_banner/public/image/201405/page_tic.jpg?itok=mvNBiA_w', 1),
+(4, 'Développement personnel', 'Yoga, méditation', 'http://mylenebeaudoin.com/wp-content/uploads/2019/04/Capture-d%C3%A9cran-2019-03-03-21.39.08-1080x675.png', 1),
+(5, 'Associatif', '', 'https://i2.wp.com/www.maxmanroe.com/wp-content/uploads/2017/09/Pengertian-Struktur-Organisasi.png?w=600&ssl=1', 1),
+(6, 'Covoiturage', '', 'http://www.ipj.news/enquetes/wp-content/uploads/sites/26/2019/06/illustration-covoiturage-20170827.jpg', 1),
+(7, 'Bureautique', 'Word, Excel, Outlook, PowerPoint...', 'http://romualdtechnology.asso-web.com/uploaded/image/image-bureautique2-480x290.jpg', 1),
+(8, 'Informatique', 'Réseaux, Site Web, Réparation PC...', 'https://www.nbs-system.com/wp-content/uploads/2018/03/180403_NBS_Attaque_protection_siteWeb-788x433.jpg', 1),
+(9, 'Loisir', 'Cuisine, Bricolage, Musique, Théâtre, Cinéma, Cilture, Philatélie, généalogie...', 'https://www.lepointdufle.net/ia/sportsloisirs1.jpg', 1),
+(10, 'Autres', '', 'https://www.ccilaval.qc.ca/wp-content/uploads/2017/02/Icone_Autre.jpg', 1);
+
+--
+-- Déchargement des données de la table `slides`
+--
+
+INSERT INTO `slides` (`NumSlide`, `TitreS`, `PhotoS`, `TextS1`, `TextS2`, `TextS3`) VALUES
+('1', 'coucou les amies dev', 'https://r1pbk8s6fm-flywheel.netdna-ssl.com/wp-content/uploads/2018/04/map-connectivity-1200x400.jpg', 'COUP DE MAIN, COUP DE POUCE est une plateforme qui permet de partager les compétences entre collaborateurs.', 'Partageons nos talents, la solitarité c\'est aussi entre nous.', ''),
+('2', 'Oui, vous avez des talents !', 'https://www.bravopromo.fr/cdn/blog/1200x400/le-green-friday-par-bravopromo-201911151231-preview.jpg', '', '', ''),
+('3', 'Nouvelle du jour', 'https://gray-ktuu-prod.cdn.arcpublishing.com/resizer/gDT0TCs6HrkaegOnMo6p0ZZX694=/1200x400/smart/cloudfront-us-east-1.images.arcpublishing.com/gray/3BWLQZ7DZ5NMFF35HJEJ7KFTR4.jpg', 'Some quick example text to build on the card title and make up the bulk of the card\'s content.Some quick example text to build on the card title and make up the bulk of the card\'s content,Some quick example text to build on the card title and make up the bulk of the card\'s content,Some quick example text to build on the card title and make up the bulk of the card\'s content,Some quick example text to build on the card title and make up the bulk of the card\'s content.', '', ''),
+('4', 'Retours d\'expériences des utilisateurs', 'https://i.pinimg.com/originals/d1/a5/d3/d1a5d3d96f0862664846c7800e3c8aff.jpg', 'Some quick example text to build on the card title and make up the bulk of the card\'s content.', 'Some quick example text to build on the card title and make up the bulk of the card\'s content.', 'Some quick example text to build on the card title and make up the bulk of the card\'s content.');

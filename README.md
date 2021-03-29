@@ -71,3 +71,18 @@ Compte Phpmyadmin:
                             echo ("Cette base n'existe pas</br>");
                     }  
          }
+
+Pour importer la base de données "QSF":
+    - Importer la base de données depuis le fichier 'sql' qui se trouve (BDD/bd_script.sql).
+    - Il contient la structuration de la BDD et les données de "categories" et de "slides".
+
+Le caroussel peut etre modifié de deux façon:
+    - Etre en mode 'admin' et modifier dans la partie 'Bandeau'.
+    - Update directement depuis la base de données.
+
+Pour créer un compte administrateur:
+    - Créer un compte basique.
+    - Mettre le role du compte à 'admin' directement depuis la base de données.
+    - Mofier le role d'un utilisateur en 'admin' fait de l'utilisateur un nouvel administrateur.
+
+
