@@ -85,7 +85,7 @@
                     </div>
                     <div class="form-group">
                         <label for="inputEmail4">Date butoire(<span style="color:red">*</span>)</label>
-                        <input type="datetime-local" name="datebutoire"  id="inputEmail4" required />
+                        <input type="date" name="datebutoire"  id="inputEmail4" required />
                     </div>
                     <div class="form-group">
                         <label for="inputEmail4">Lieu du Projet(<span style="color:red">*</span>)</label>

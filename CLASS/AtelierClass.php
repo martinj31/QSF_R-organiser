@@ -24,6 +24,7 @@ class atelier{
     private $_CodeC;
     private $_VisibiliteA;
     private $_MailCommence;
+    private $_HoraireA;
     
     
     
@@ -107,8 +108,11 @@ class atelier{
         $this->_MailCommence = $_MailCommence;
     }
 
-    
-        
+    function setHoraireA($_Horaire) {
+        $this->_HoraireA = $_Horaire;
+    }
+
+            
     
     
     
@@ -169,6 +173,10 @@ class atelier{
 
      function getMailCommence() {
          return $this->_MailCommence;
+     }
+
+     function getHoraireA() {
+         return $this->_HoraireA;
      }
 
 

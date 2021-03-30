@@ -12,12 +12,12 @@ $DateFin = $_POST['datefin'];
 $Type = $_POST['type'];
 $Lieu = $_POST['lieu'];
 $Nombre = $_POST['nb'];
-$URL = $_POST['url'];
-$Plus = $_POST['plus'];
-$DatePublicationA = date("yy/m/d");
+//$URL = $_POST['url'];
+//$Plus = $_POST['plus'];
+//$DatePublicationA = date("yy/m/d");
 $Categorie = $_POST['categorie'];
 $CodeA = $_POST['codeA'];
-
+$HoraireA = $_POST['horaire'];
 
 
 $atelier = new atelier([]);
@@ -30,11 +30,12 @@ $atelier->setDateFinA($DateFin);
 $atelier->setLieuA($Lieu);
 $atelier->setNombreA($Nombre);
 $atelier->setCodeC($Categorie);
-$atelier->setPlusA($Plus);
+//$atelier->setPlusA($Plus);
 $atelier->setCodeA($CodeA);
 $atelier->setTypeA($Type);
-$atelier->setURL($URL);
-$atelier->setDatePublicationA($DatePublicationA);
+//$atelier->setURL($URL);
+//$atelier->setDatePublicationA($DatePublicationA);
+$atelier->setHoraireA($HoraireA);
 
 $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD
 $bdd = $db->connect();

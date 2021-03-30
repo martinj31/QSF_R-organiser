@@ -106,13 +106,18 @@
 
                             echo('<div class="form-group">');
                             echo('<label for="inputEmail4">Date de debut atelier(<span style="color:red">*</span>)</label>');
-                            echo('<input type="datetime-local" name="datedebut" value="' . strftime('%Y-%m-%dT%H:%M:%S', strtotime($value['atelier']->getDateFinA())) . '" class="form-control col-md-4" id="inputEmail4" maxlength="100" >');
+                            echo('<input type="date" name="datedebut" value="' . strftime('%Y-%m-%d', strtotime($value['atelier']->getDateDebutA())) . '" class="form-control col-md-4" id="inputEmail4" maxlength="100" >');
                             echo('</div>');
                             
                             echo('<div class="form-group">');
                             echo('<label for="inputEmail4">Date de fin atelier (<span style="color:red">*</span>)</label>');
-                            echo('<input type="datetime-local" name="datefin" value="' . strftime('%Y-%m-%dT%H:%M:%S', strtotime($value['atelier']->getDateFinA())) . '" class="form-control col-md-4" id="inputEmail4" maxlength="100" >');
+                            echo('<input type="date" name="datefin" value="' . strftime('%Y-%m-%d', strtotime($value['atelier']->getDateFinA())) . '" class="form-control col-md-4" id="inputEmail4" maxlength="100" >');
                             echo('</div>');
+                            
+                            echo ('<div class="form-group">');
+                            echo ('<label for="inputEmail4">Horaire d\'atelier(<span style="color:red">*</span>)</label>');
+                            echo ('<input type="text" name="horaire" class="form-control col-md-4" id="inputEmail4" maxlength="50" value="' . $value['atelier']->getHoraireA() . '" required>');
+                            echo ('</div>');
                             
                             echo('<div class="form-group">');
                             echo('<label for="inputEmail4">Description(<span style="color:red">*</span>)</label><br/>');
@@ -129,7 +134,7 @@
                             echo ('<input type="text" name="nb" class="form-control col-md-4" id="inputEmail4" maxlength="50" value="' . $value['atelier']->getNombreA() . '" required>');
                             echo ('</div>');
 
-                            echo ('<div class="form-group">');
+                            /*echo ('<div class="form-group">');
                             echo ('<label for="inputEmail4">URL de l\'inscription(<span style="color:red">*</span>)</label>');
                             echo ('<input type="text" name="url" class="form-control col-md-4" id="inputEmail4" maxlength="100" value="' . $value['atelier']->getURL() . '" >');
                             echo ('</div>');
@@ -137,7 +142,7 @@
                             echo ('<div class="form-group">');
                             echo ('<label for="inputEmail4">En savoir plus</label>');
                             echo ('<input type="text" name="plus" class="form-control col-md-4" id="inputEmail4" maxlength="100" value="' . $value['atelier']->getPlusA() . '">');
-                            echo ('</div>');
+                            echo ('</div>');*/
 
 
                             if ($value['atelier']->getTypeA() == "Pro") {

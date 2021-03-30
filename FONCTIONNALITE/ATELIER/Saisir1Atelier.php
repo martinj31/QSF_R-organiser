@@ -8,7 +8,8 @@ $DateFin = $_POST['dateFin'];
 $Lieu = $_POST['lieu'];
 $Nombre = $_POST['nb'];
 $Type = $_POST['type'];
-$Plus = $_POST['plus'];
+//$Plus = $_POST['plus'];
+$Horaire = $_POST['horaire'];
 //$DatePublicationA = date("yy/m/d");
 
 require_once('../../FONCTIONCOMMUNE/Fonctions.php');
@@ -30,9 +31,9 @@ $atelier->setDateFinA($DateFin);
 $atelier->setLieuA($Lieu);
 $atelier->setNombreA($Nombre);
 $atelier->setCodeC($Categorie);
-$atelier->setPlusA($Plus);
+//$atelier->setPlusA($Plus);
 $atelier->setTypeA($Type);
-
+$atelier->setHoraireA($Horaire);
 
 
 $db = new BDD(); // Utilisation d'une classe pour la connexion à la BDD

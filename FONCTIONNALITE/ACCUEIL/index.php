@@ -151,7 +151,7 @@
                                     echo ('<img src="' . $value['photo'] . '" class="card-img-top" alt="...">');
                                     echo ('<div class="card-body card text-center">');
                                     echo ('<h5 class="card-title">' . $value['besoin']->getTitreB() . '</h5>');
-                                    echo ('<p class="card-text"><strong>Délais souhaité: </strong><br>' . $value['besoin']->getDateButoireB() . '</p>');
+                                    echo ('<p class="card-text"><strong>Délais souhaité: </strong><br>' . date("d-m-Y", strtotime($value['besoin']->getDateButoireB())) . '</p>');
                                     echo ('<a href="../BESOIN/BesoinX.php?t=' . $value['besoin']->getCodeB() . '" class="btn btn-outline-dark">Voir la demande</a>');
                                     echo ('</div>');
                                     echo ('</div></div>');
@@ -426,8 +426,8 @@
                                     echo ('<img src="' . $value["photo"] . '" class="card-img-top" alt="...">');
                                     echo ('<div class="card-body card text-center">');
                                     echo ('<h5 class="card-title">' . $value['atelier']->getTitreA() . '</h5>');
-                                    echo ('<p class="card-text"><strong>Date de publication: :</strong><br>' . $value['atelier']->getDatePublicationA() . '</p>');
-                                    echo ('<p class="card-text"><strong>Date & Créneau : </strong><br>' . $value['atelier']->getDateDebutA() . ' à ' . $value['atelier']->getDateFinA() . '</p>');
+                                    echo ('<p class="card-text"><strong>Date de publication: :</strong><br>' . date("d-m-Y", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
+                                    echo ('<p class="card-text"><strong>Date & Créneau : </strong><br>' . date("d-m-Y", strtotime($value['atelier']->getDateDebutA())) . ' à ' .date("d-m-Y", strtotime( $value['atelier']->getDateFinA())) . '</p>');
                                     echo ('<a href="../ATELIER/AtelierX.php?t=' . $value['atelier']->getCodeA() . '" class="btn btn-outline-dark">Voir le détail</a><br>');
                                     //echo ('<p></p><a href="' . $value['atelier']->getURL() . '" class="btn btn-outline-dark">Je m\'inscris</a>');
                                     if (isset($usercode)) {
@@ -506,7 +506,7 @@
                                     echo ('<div class="card-body card text-center">');
                                     echo ('<h5 class="card-title">' . $value['projet']->getTitreP() . '</h5>');
                                     echo ('<p class="card-text"><strong>Date de publication: </strong><br>' . date("d-m-Y", strtotime($value['projet']->getDatePublicationP())) . '</p>');
-                                    echo ('<p class="card-text"><strong>Date & Créneau : </strong><br>' . $value['projet']->getDateButoireP() . '</p>');
+                                    echo ('<p class="card-text"><strong>Date : </strong><br>' . date("d-m-Y", strtotime($value['projet']->getDateButoireP())) . '</p>');
                                     echo ('<a href="../PROJET/ProjetX.php?t=' . $value['projet']->getCodeP() . '" class="btn btn-outline-dark">Voir la demande</a>');
                                     if (isset($usercode)) {
                                         if ($role == "createur") {

@@ -58,9 +58,9 @@
                 foreach ($atelierTab as $value) {
                     echo ('<p><img src="' . $value["photo"] . '" class="card-img-top" alt="' . $value["nomPhoto"] . '" style="width: 15rem;"</p>');
                    
-                    echo ('<h3><strong> Date  & Créneau horaire : </strong>' . $value['atelier']->getDateDebutA() . ' à ' . $value['atelier']->getDateFinA()  . '</h3>');
-                    echo ('<p><strong> Date Publication : </strong>' . date("d-m-yy", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
-                    
+                    echo ('<h3><strong> Date : </strong>' . date("d-m-Y", strtotime($value['atelier']->getDateDebutA())) . ' à ' . date("d-m-Y", strtotime($value['atelier']->getDateFinA()))  . '</h3>');
+                    echo ('<p><strong> Date Publication : </strong>' . date("d-m-Y", strtotime($value['atelier']->getDatePublicationA())) . '</p>');
+                    echo ('<p><strong> Créneau horaire : </strong>' . $value['atelier']->getHoraireA() . '</p>');
                     echo ('<p><strong>Type d\'atelier : </strong>' . $value['atelier']->getTypeA() . '</p>');
                     echo ('<p><strong>Description: </strong>' . $value['atelier']->getDescriptionA() . '</p>');
                     echo ('<p><strong>Lieu d\'atelier : </strong>' . $value['atelier']->getLieuA() . '</p>');

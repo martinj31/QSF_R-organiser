@@ -98,17 +98,23 @@
                                     </div>
                                     
                                     <div class="form-group">
-                                        <label for="inputEmail4">Date et Heure debut d'Atelier (<span style="color:red">*</span>)</label>
-                                        <input type="datetime-local" id="inputEmail4" 
+                                        <label for="inputEmail4">Date debut d'Atelier (<span style="color:red">*</span>)</label><br/>
+                                        <input type="date" id="inputEmail4" 
                                                name="dateDebut" 
-                                               min="2020-10-29T00:00" max="2022-06-14T00:00">
+                                               min="2021-02-29T00:00" max="2022-06-14T00:00" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="inputEmail4">Date et Heure fin d'Atelier(<span style="color:red">*</span>)</label>
-                                        <input type="datetime-local" id="inputEmail4"
+                                        <label for="inputEmail4">Date fin d'Atelier(<span style="color:red">*</span>)</label><br/>
+                                        <input type="date" id="inputEmail4"
                                                name="dateFin" 
-                                               min="2020-10-29T00:00" max="2022-06-14T00:00">
+                                               min="2021-02-29T00:00" max="2022-06-14T00:00" required>
                                     </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="inputEmail4">Horaire d'atelier [e.x. 14h30 à 17h00 ] (<span style="color:red">*</span>)</label>
+                                        <input type="text" name="horaire" class="form-control col-md-4"  id="inputEmail4" required />
+                                    </div>
+                                    
                                     <div class="form-group">
                                         <label for="inputEmail4">Lieu (Pensez à réserver la salle) [e.x. 6.36 Salle de créativité] (<span style="color:red">*</span>)</label>
                                         <input type="text" name="lieu" class="form-control col-md-4"  id="inputEmail4" required />

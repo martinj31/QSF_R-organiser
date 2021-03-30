@@ -105,7 +105,7 @@
 
                             echo('<div class="form-group">');
                             echo('<label for="inputEmail4">Date butoire(<span style="color:red">*</span>)</label>');
-                            echo('<input type="date" name="datebutoire" value="' . $value['besoin']->getDateButoireB() . '" class="form-control col-md-4" id="inputEmail4" maxlength="10" required>');
+                            echo('<input type="date" name="datebutoire" value="' .  strftime('%Y-%m-%d', strtotime($value['besoin']->getDateButoireB())) . '" class="form-control col-md-4" id="inputEmail4" maxlength="10" required>');
                             echo('</div>');
 
                             if ($value['besoin']->getTypeB() == "Pro") {

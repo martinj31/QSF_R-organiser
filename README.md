@@ -72,7 +72,7 @@ Compte Phpmyadmin:
                     }  
          }
 
-Pour importer la base de données "QSF":
+Pour importer la base de données "cmcp":
     - Importer la base de données depuis le fichier 'sql' qui se trouve (BDD/bd_script.sql).
     - Il contient la structuration de la BDD et les données de "categories" et de "slides".
 
