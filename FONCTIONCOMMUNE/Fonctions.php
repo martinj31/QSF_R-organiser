@@ -12,9 +12,9 @@ require_once('../ATELIER/AtelierCommenceMail.php');
 // 1. Connexion à la base de donnée
 
 
- $nomlogin = "bd_qualif_cmcp";                    // Ici, nous connectons avec le serveur local, si vous voulez le tester sur d'autre serveur, vous pouvez changer ces 3 variables
+ $nomlogin = "bd_qualif_qsf";                    // Ici, nous connectons avec le serveur local, si vous voulez le tester sur d'autre serveur, vous pouvez changer ces 3 variables
   $nompasswd = "mYSQLQSF31";
-  $nombase = "bd_qualif_cmcp";
+  $nombase = "bd_qualif_qsf";
   $serveur = "bm124975-001.privatesql";
   $port_bdd = "35171";
 /*
